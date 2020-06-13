@@ -171,6 +171,13 @@ html {
   margin: 0;
   margin-right: 1rem;
 }
+#slider div.pic,
+#slider div.preview {
+  text-align: center;
+}
+#main #slider div.preview a {
+  display: inline-block;
+}
 #main #body #top10 h3 {
   height: 30px;
 }
@@ -188,8 +195,6 @@ html {
   overflow-x: scroll;
 }
 #html #pictures div ul li img {
-  width: 192px;
-  height: 144px;
   border: double;
   display: inline-block;
 }
