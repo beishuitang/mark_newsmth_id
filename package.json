@@ -11,6 +11,7 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "localforage": "^1.7.4",
     "vue": "^2.6.11"
   },
   "devDependencies": {
