@@ -1,17 +1,10 @@
 <template>
   <div>
     <form @submit.prevent="modify(1)">
-      <button
-        type="button"
-        @click.prevent="modify(-1)"
-      >测试👎</button>
-      <input
-        type="text"
-        v-model.trim="tagName"
-        :placeholder="currentTags"
-      />
+      <input type="text" v-model.trim="tagName" :placeholder="currentTags" />
       <span>({{currentScore(reasonUrl)}})</span>
-      <button type="submit">👍</button>
+      <button type="submit">赞美👍</button>
+      <button type="button" @click.prevent="modify(-1)">鄙视👎</button>
     </form>
   </div>
 </template>
@@ -68,4 +61,7 @@ export default {
 </script>
 
 <style scoped>
+button {
+  line-height: unset;
+}
 </style>

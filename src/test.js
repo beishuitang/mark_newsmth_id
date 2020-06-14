@@ -11,6 +11,9 @@ export default {
     usersData: {
         'langman': {
             score: 3,
+            show: true,
+            showContent: true,
+            showTags: true,
             tags:
             {
                 'sb': {
@@ -80,7 +83,18 @@ export default {
         let userScoreEl = tagUtils.getUserScoreElement();
         let tagModifierEl = tagUtils.getTagModifierElement();
         let userTags = tagUtils.getUserTagsElement();
+        let modifierSwitch = tagUtils.getModifierSwitchElement();
         let aContent = articleElement.querySelector('.a-body .a-content');
+        let aHead = articleElement.querySelector('.a-head');
+        let aFunc = aHead.querySelector('.a-func');
+
+        let a_u_name = aHead.querySelector('.a-u-name');
+        let a_u_sex = aHead.querySelector('.a-u-sex');
+        let li = document.createElement('li');
+        li.appendChild(a_u_sex);
+        li.appendChild(a_u_name);
+        aFunc.insertBefore(li, aFunc.firstChild);
+        aFunc.appendChild(modifierSwitch);
         aContent.insertBefore(tagModifierEl, aContent.firstChild);
         aContent.insertBefore(userTags, aContent.firstChild);
         articleElement.querySelector('.a-u-name').appendChild(userScoreEl);

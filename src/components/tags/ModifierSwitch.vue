@@ -1,29 +1,15 @@
 <template>
-  <a>
-    <span>{{tagName}}</span>
-    ({{tagScore}})
-  </a>
+  <li>
+    <samp class="ico-pos-edit"></samp>
+    <a href="#" class="a-addfavor">标记</a>
+  </li>
 </template>
 
 <script>
 export default {
   name: "ModifierSwitch",
   props: {
-    msg: String,
-    tagName: String,
-    tag: Object
-  },
-  computed: {
-    tagScore: function() {
-      let result = 0;
-      for (const reasonUrl in this.tag) {
-        if (Object.prototype.hasOwnProperty.call(this.tag, reasonUrl)) {
-          const reason = this.tag[reasonUrl];
-          result += reason.score;
-        }
-      }
-      return result;
-    }
+    msg: String
   }
 };
 </script>

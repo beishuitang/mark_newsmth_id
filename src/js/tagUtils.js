@@ -2,11 +2,12 @@ export default {
     getUserTagsElement: function () {
         let element = document.createElement('user-tags');
         element.setAttribute(':tags', 'user.tags');
+        element.setAttribute('v-if', 'showTags');
         return element;
     },
     getModifierSwitchElement: function () {
         let element = document.createElement('modifier-switch');
-        element.setAttribute('v-on:click.native', 'switch-modifier');
+        element.setAttribute('v-on:click.native', 'showModifier=!showModifier');
         return element;
     },
     getTagModifierElement: function () {
@@ -19,6 +20,7 @@ export default {
     },
     getUserScoreElement: function () {
         let element = document.createElement('user-score');
+        element.setAttribute('v-on:click.native', 'showTags=!showTags');
         element.setAttribute(':user', 'user');
         return element;
     },

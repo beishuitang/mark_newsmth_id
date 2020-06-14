@@ -20,16 +20,13 @@ export default {
   },
   data: function() {
     return {
+      show: this.user.show,
+      showContent: this.user.showContent,
+      showTags: this.user.showTags,
       showModifier: true
     };
   },
   computed: {
-    // articleUrl: function() {
-    //   let reg = /article\/(\w+?)\/(\d+)/;
-    //   let m = location.href.match(reg);
-    //   let result = m[1] + "/" + m[2] + "/" + this.articleId;
-    //   return result;
-    // },
     article: function() {
       return { url: this.articleUrl, content: this.articleContent };
     },

@@ -58,7 +58,6 @@ html {
 #html #html_body thead,
 #html #html_body tr,
 #html #html_body th,
-#html #html_body td,
 #html #html_body article,
 #html #html_body aside,
 #html #html_body figure,
@@ -81,6 +80,12 @@ html {
 #html_body #main li {
   font-size: unset;
   line-height: 1.5rem;
+  height: unset;
+  width: unset;
+}
+
+#html #html_body td {
+  font-size: unset;
   height: unset;
   width: unset;
 }
