@@ -12,6 +12,7 @@ html {
 #html_body,
 #html #html_body input,
 #html #html_body ul,
+#html #html_body li,
 #html #html_body h1,
 #html #html_body h2,
 #html #html_body h3,
@@ -77,13 +78,6 @@ html {
   float: unset;
   width: unset;
 }
-#html_body #main li {
-  font-size: unset;
-  line-height: 1.5rem;
-  height: unset;
-  width: unset;
-}
-
 #html #html_body td {
   font-size: unset;
   height: unset;
@@ -206,11 +200,11 @@ html {
 #html #ranking ul {
   background-size: 1rem auto;
 }
-#main .article .a-head li {
-  float: left;
-}
 .a-left {
   display: none;
+}
+.a-u-sex{
+  margin-right: unset;
 }
 #main .likes {
   margin: unset;
