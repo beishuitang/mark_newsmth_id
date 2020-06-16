@@ -1,6 +1,7 @@
 export default {
   PREFIX_STR: "smth_id_mark_",
-  storage_keys: {
+  storageKeys: {
+    STORAGE_USERS_DATA: 'users_data',
     STORAGE_MAINPAGE: 'mainpage',
     STORAGE_FRAME: 'frame',
     STORAGE_FONT_SIZE: "font_size",

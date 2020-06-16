@@ -1,5 +1,5 @@
 // import Vue from 'vue/dist/vue.esm'
-// import SingleArticle from '@/components/tags/SingleArticle'
+import { storageData } from "../mainData";
 import tagStore from '@/js/tagStore'
 export default function () {
     // nForum/#!article/Reader/6974
@@ -27,21 +27,6 @@ export default function () {
         let a_func_info = a_bottom.querySelector('.a-func-info');
 
         let a_post = a_head.querySelector('.a-post');
-        // tag function
-        let el = false;
-        a_func.appendChild(modifierSwitch);
-        a_content.insertBefore(tagModifierEl, a_content.firstChild);
-        a_content.insertBefore(userTags, a_content.firstChild);
-        a_u_name.appendChild(userScoreEl);
-        let articleId = a_post.href.substring(a_post.href.lastIndexOf('/'))
-        let userId = a_u_name.querySelector('a').innerText;
-        console.log(userId);
-        if (el) {
-            new singleArticle({
-                el: articleElement,
-                propsData: { articleUrl: board + '/' + topicId + articleId, userId: userId, user: this.usersData[userId] }
-            });
-        }
         // mobile function
         let li = document.createElement('li');
         li.appendChild(a_u_sex);
@@ -49,5 +34,22 @@ export default function () {
         a_func.insertBefore(li, a_func.firstChild);
         a_func.appendChild(a_pos);
         a_bottom.lastElementChild.appendChild(a_func_info);
+
+        // tag function
+        a_func.appendChild(modifierSwitch);
+        a_content.insertBefore(tagModifierEl, a_content.firstChild);
+        a_content.insertBefore(userTags, a_content.firstChild);
+        a_u_name.appendChild(userScoreEl);
+        let articleId = a_post.href.substring(a_post.href.lastIndexOf('/'))
+        let userId = a_u_name.querySelector('a').innerText;
+        storageData.checkUser(userId);
+        new singleArticle({
+            el: articleElement,
+            propsData: { articleUrl: board + '/' + topicId + articleId, userId: userId, user: storageData.usersData[userId] }
+        });
+        let el = false;
+        if (el) {
+            console.log(el)
+        }
     }
 }

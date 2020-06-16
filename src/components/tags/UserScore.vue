@@ -1,5 +1,5 @@
 <template>
-  <a>
+  <a href="javascript:void(0);">
     <span>({{user.score}})</span>
   </a>
 </template>

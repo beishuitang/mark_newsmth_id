@@ -1,8 +1,8 @@
 import Vue from 'vue/dist/vue.esm';
-import config from "@/config/config";
+import config from "../config/config";
 import { mut } from "./commonUtils";
-import TopHead from '@/components/TopHead';
-import BotFoot from '@/components/BotFoot';
+import TopHead from '../components/TopHead';
+import BotFoot from '../components/BotFoot';
 export default {
     addId: function () {
         document.getElementsByTagName('body')[0].setAttribute('id', "html_body")
@@ -15,7 +15,7 @@ export default {
         document.getElementsByTagName('head')[0].appendChild(metaEl);
     },
     loadFontSize: function () {
-        let fontSize = localStorage.getItem(config.storage_keys.storage_font_size);
+        let fontSize = localStorage.getItem(config.storageKeys.STORAGE_FONT_SIZE);
         if (fontSize != null) {
             document.querySelector("html").style.fontSize = fontSize;
         }

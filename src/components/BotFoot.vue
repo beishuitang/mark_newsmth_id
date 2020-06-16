@@ -21,6 +21,7 @@ html {
 #html #html_body h6,
 #html #html_body div,
 #html #html_body a,
+#html #html_body button,
 #html #html_body span,
 #html #html_body object,
 #html #html_body iframe,

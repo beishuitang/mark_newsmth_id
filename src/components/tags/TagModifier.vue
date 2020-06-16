@@ -61,7 +61,4 @@ export default {
 </script>
 
 <style scoped>
-button {
-  line-height: unset;
-}
 </style>

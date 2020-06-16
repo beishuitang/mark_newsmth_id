@@ -4,7 +4,9 @@ import UserScore from './components/tags/UserScore'
 import SingleTag from './components/tags/SingleTag'
 import TagModifier from './components/tags/TagModifier'
 import SingleArticle from './components/tags/SingleArticle'
-import tagUtils from './js/tagUtils'
+import tagStore from './js/tagStore'
+import pageArticleFunction from './js/pages/pageArticleFunction'
+import { storageData } from './js/mainData';
 // import SingleArticle from '@/components/tags/SingleArticle'
 // import tagUtils from './js/tagUtils';
 export default {
@@ -80,13 +82,14 @@ export default {
         // location.pathname = '/nForum/'
         // location.hash = '#!article/Reader/697241';
         let articleElement = document.querySelector('.article');
-        let userScoreEl = tagUtils.getUserScoreElement();
-        let tagModifierEl = tagUtils.getTagModifierElement();
-        let userTags = tagUtils.getUserTagsElement();
-        let modifierSwitch = tagUtils.getModifierSwitchElement();
+        let userScoreEl = tagStore.getUserScoreElement();
+        let tagModifierEl = tagStore.getTagModifierElement();
+        let userTags = tagStore.getUserTagsElement();
+        let modifierSwitch = tagStore.getModifierSwitchElement();
         let aContent = articleElement.querySelector('.a-body .a-content');
         let aHead = articleElement.querySelector('.a-head');
         let aFunc = aHead.querySelector('.a-func');
+        let aPos = aHead.querySelector('.a-pos');
 
         let a_u_name = aHead.querySelector('.a-u-name');
         let a_u_sex = aHead.querySelector('.a-u-sex');
@@ -95,14 +98,29 @@ export default {
         li.appendChild(a_u_name);
         aFunc.insertBefore(li, aFunc.firstChild);
         aFunc.appendChild(modifierSwitch);
+        aFunc.appendChild(aPos);
         aContent.insertBefore(tagModifierEl, aContent.firstChild);
         aContent.insertBefore(userTags, aContent.firstChild);
         articleElement.querySelector('.a-u-name').appendChild(userScoreEl);
         new (Vue.extend(SingleArticle))({
             el: articleElement,
-            propsData: { articleUrl: 'url/sd', userId: 'langman', user: this.usersData['langman'] }
+            propsData: { articleUrl: 'url3', userId: 'langman', user: this.usersData['langman'] }
         });
 
+    },
+    t8: function () {
+        pageArticleFunction();
+    },
+    t9: function () {
+        let reason = storageData.getAssignableReason();
+        console.log(reason);
+        reason.score = 1;
+        reason.score = 4;
+        console.log(reason);
+        let newReason = { score: 4, s: 'gg' };
+        Object.assign(reason, newReason);
+        console.log(reason.score)
+        console.log(JSON.stringify(reason));
     },
     test: function () {
         // this.t1()
@@ -111,7 +129,9 @@ export default {
         // this.t4()
         // this.t5()
         // this.t6()
-        this.t7()
+        // this.t7()
+        this.t8()
+        // this.t9();
         // let articleElement = document.querySelector('.article');
         // let pElement = articleElement.querySelector('.a-content p');
         // pElement.parentNode.appendChild(tagUtils.getUserScore());

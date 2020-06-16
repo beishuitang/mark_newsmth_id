@@ -4,6 +4,7 @@ import TagModifier from "./TagModifier";
 import UserTags from "./UserTags";
 import ModifierSwitch from "./ModifierSwitch";
 import ShowSwitch from "./ShowSwitch";
+import { storageData } from "../../js/mainData";
 export default {
   name: "SingleArticle",
   components: {
@@ -20,10 +21,10 @@ export default {
   },
   data: function() {
     return {
-      show: this.user.show,
-      showContent: this.user.showContent,
-      showTags: this.user.showTags,
-      showModifier: true
+      show: this.user.state.showUser,
+      showContent: this.user.state.showContent,
+      showTags: this.user.state.showTags,
+      showModifier:true 
     };
   },
   computed: {
@@ -36,22 +37,23 @@ export default {
   },
   methods: {
     // TODO modify对象滚动
-    // modifyTag: function(tags) {
-    // let modify = this.main_data.get_modify_sample();
-    // modify.type = 0;
-    // modify.user.id = this.user_id;
-    // modify.user.tags = tags;
-    // main_data.on_modify(modify, this.article);
-    // },
+    modifyTag: function(tags) {
+      let usersData = {};
+      usersData[this.userId] = { tags: tags };
+      storageData.acceptModify(usersData);
+    },
     // modifyState: function(state) {
-    // let modify = this.main_data.get_modify_sample();
-    // modify.type = 2;
-    // modify.user.id = this.user_id;
-    // modify.user.state = state;
-    // main_data.on_modify(modify, this.article);
+    //   let modify = this.main_data.get_modify_sample();
+    //   modify.type = 2;
+    //   modify.user.id = this.user_id;
+    //   modify.user.state = state;
+    //   main_data.on_modify(modify, this.article);
     // },
     switchModifier: function() {
       this.showModifier = !this.showModifier;
+    },
+    switchTags: function() {
+      this.showTags = !this.showTags;
     }
   }
 };
