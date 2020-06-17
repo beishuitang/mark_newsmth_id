@@ -109,6 +109,9 @@ export default {
 
     },
     t8: function () {
+
+        location.pathname = '/nForum/'
+        location.hash = '#!article/Reader/697241';
         pageArticleFunction();
     },
     t9: function () {

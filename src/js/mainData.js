@@ -50,25 +50,6 @@ export var sessionData = {
 export var storageData = {
     // usersData: {},
     usersData: {
-        'langman': {
-            score: 3,
-            state: {
-                showUser: true,
-                showContent: true,
-                showTags: true,
-            },
-            tags:
-            {
-                'sb': {
-                    'url1': { score: -1 },
-                    'url2': { score: -5 }
-                },
-                'nb': {
-                    'url3': { score: 1 },
-                    'url4': { score: 2 }
-                },
-            }
-        }
     },
     init: function () {
         let usersData = localStorage.getItem(config.storageKeys.STORAGE_USERS_DATA);
@@ -120,15 +101,15 @@ export var storageData = {
             Object.keys(update.tags).forEach(tagName => {
                 Object.keys(update.tags[tagName]).forEach(reasonUrl => {
                     if (!Object.prototype.hasOwnProperty.call(user.tags, tagName)) {
-                        Vue.set(user.tags, tagName, update.tags[tagName]);
-                    } else if (!Object.prototype.hasOwnProperty.call(user.tags[tagName], reasonUrl)) {
-                        Vue.set(user.tags[tagName], reasonUrl, update.tags[tagName][reasonUrl]);
-                    } else {
-                        let s = update.tags[tagName][reasonUrl].score;
-                        let reason = user.tags[tagName][reasonUrl];
-                        reason.score += s;
-                        user.score += s;
+                        Vue.set(user.tags, tagName, {});
                     }
+                    if (!Object.prototype.hasOwnProperty.call(user.tags[tagName], reasonUrl)) {
+                        Vue.set(user.tags[tagName], reasonUrl, { score: 0 });
+                    }
+                    let s = update.tags[tagName][reasonUrl].score;
+                    let reason = user.tags[tagName][reasonUrl];
+                    reason.score += s;
+                    user.score += s;
                 });
 
             });

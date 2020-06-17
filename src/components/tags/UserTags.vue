@@ -38,10 +38,9 @@ export default {
   },
   methods: {
     switchSelected: function(tagName) {
-      console.log(tagName);
       let index = this.selected.indexOf(tagName);
       if (index === -1) {
-        this.selected.push(tagName);
+        this.selected.unshift(tagName);
       } else {
         this.selected.splice(index, 1);
       }

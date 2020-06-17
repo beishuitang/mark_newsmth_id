@@ -47,9 +47,5 @@ export default function () {
             el: articleElement,
             propsData: { articleUrl: board + '/' + topicId + articleId, userId: userId, user: storageData.usersData[userId] }
         });
-        let el = false;
-        if (el) {
-            console.log(el)
-        }
     }
 }
