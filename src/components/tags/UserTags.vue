@@ -5,7 +5,7 @@
       :tagName="tagName"
       :tag="tag"
       :key="tagName"
-      @clicked="switchSelected(tagName)"
+      @click.native="switchSelected(tagName)"
     ></single-tag>
 
     <tag-reasons
@@ -38,6 +38,7 @@ export default {
   },
   methods: {
     switchSelected: function(tagName) {
+      console.log(tagName);
       let index = this.selected.indexOf(tagName);
       if (index === -1) {
         this.selected.push(tagName);

@@ -13,15 +13,17 @@ export default {
     tagName: String,
     tag: Object
   },
+  data: function() {
+    return {
+      myTag: this.tag
+    };
+  },
   computed: {
     tagScore: function() {
       let result = 0;
-      for (const reasonUrl in this.tag) {
-        if (Object.prototype.hasOwnProperty.call(this.tag, reasonUrl)) {
-          const reason = this.tag[reasonUrl];
-          result += reason.score;
-        }
-      }
+      Object.values(this.myTag).forEach(reason => {
+        result += reason.score;
+      });
       return result;
     }
   }

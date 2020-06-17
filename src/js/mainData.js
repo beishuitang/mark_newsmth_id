@@ -120,16 +120,15 @@ export var storageData = {
             Object.keys(update.tags).forEach(tagName => {
                 Object.keys(update.tags[tagName]).forEach(reasonUrl => {
                     if (!Object.prototype.hasOwnProperty.call(user.tags, tagName)) {
-                        Vue.set(user.tags, tagName, {});
+                        Vue.set(user.tags, tagName, update.tags[tagName]);
+                    } else if (!Object.prototype.hasOwnProperty.call(user.tags[tagName], reasonUrl)) {
+                        Vue.set(user.tags[tagName], reasonUrl, update.tags[tagName][reasonUrl]);
+                    } else {
+                        let s = update.tags[tagName][reasonUrl].score;
+                        let reason = user.tags[tagName][reasonUrl];
+                        reason.score += s;
+                        user.score += s;
                     }
-                    if (!Object.prototype.hasOwnProperty.call(user.tags[tagName], reasonUrl)) {
-                        Vue.set(user.tags[tagName], reasonUrl, {});
-                        Vue.set(user.tags[tagName][reasonUrl], 'score', 0);
-                    }
-                    let s = update.tags[tagName][reasonUrl].score;
-                    let reason = user.tags[tagName][reasonUrl];
-                    reason.score += s;
-                    user.score += s;
                 });
 
             });
@@ -171,6 +170,9 @@ export var forageData = {
     },
     onBodyMutation: function () {
         // this.restorePageNumber();
+    },
+    saveArticle: function (article) {
+        localforage.setItem(article.url, article.content);
     },
     savePageNumber: function (m) {
         localforage.setItem(config.PRIFIX_STR + m[1], m[3] ? m[3] : 1);

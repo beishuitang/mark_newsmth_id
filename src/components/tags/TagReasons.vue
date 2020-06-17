@@ -1,18 +1,27 @@
 <template>
-  <a>
-    <span>{{tagName}}</span>
-  </a>
+  <div>
+    <single-reason
+      v-for="(reason, reasonUrl) in tag"
+      :tagName="tagName"
+      :reason="reason"
+      :reasonUrl="reasonUrl"
+      :key="reasonUrl"
+    ></single-reason>
+  </div>
 </template>
 
 <script>
+import SingleReason from "./SingleReason";
 export default {
   name: "TagReasons",
   props: {
     msg: String,
-    tagName: String,
-    tag: Object
+    tag: Object,
+    tagName: String
   },
-  computed: {}
+  components: {
+    SingleReason
+  }
 };
 </script>
 

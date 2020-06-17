@@ -4,7 +4,7 @@ import TagModifier from "./TagModifier";
 import UserTags from "./UserTags";
 import ModifierSwitch from "./ModifierSwitch";
 import ShowSwitch from "./ShowSwitch";
-import { storageData } from "../../js/mainData";
+import { storageData, forageData } from "../../js/mainData";
 export default {
   name: "SingleArticle",
   components: {
@@ -23,12 +23,15 @@ export default {
     return {
       show: this.user.state.showUser,
       showContent: this.user.state.showContent,
+      // showTags: false,
+      // TODO 响应式更新
       showTags: this.user.state.showTags,
-      showModifier:true 
+      showModifier: true,
     };
   },
   computed: {
     article: function() {
+      console.log(Object.keys(this.user));
       return { url: this.articleUrl, content: this.articleContent };
     },
     articleContent: function() {
@@ -41,6 +44,7 @@ export default {
       let usersData = {};
       usersData[this.userId] = { tags: tags };
       storageData.acceptModify(usersData);
+      forageData.saveArticle(this.article);
     },
     // modifyState: function(state) {
     //   let modify = this.main_data.get_modify_sample();

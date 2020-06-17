@@ -19,16 +19,17 @@ export default {
   },
   data: function() {
     return {
-      tagName: ""
+      tagName: "",
+      myTags: this.tags
     };
   },
   computed: {
     // TODO 转移到article
     currentTags: function() {
       let str = "";
-      for (const tagName in this.tags) {
-        if (Object.prototype.hasOwnProperty.call(this.tags, tagName)) {
-          const tag = this.tags[tagName];
+      for (const tagName in this.myTags) {
+        if (Object.prototype.hasOwnProperty.call(this.myTags, tagName)) {
+          const tag = this.myTags[tagName];
           if (Object.prototype.hasOwnProperty.call(tag, this.reasonUrl)) {
             str = str + tagName + " ";
           }
@@ -38,12 +39,13 @@ export default {
     }
   },
   methods: {
+    // TODO 响应式更新？
     currentScore: function name(url) {
       let tagName = this.tagName;
       let result = 0;
-      let tags = this.tags;
+      let myTags = this.myTags;
       try {
-        result = tags[tagName][url].score;
+        result = myTags[tagName][url].score;
       } catch {
         console.log();
       }
@@ -52,9 +54,9 @@ export default {
     modify: function(step) {
       let tag = {};
       tag[this.reasonUrl] = { score: step };
-      let tags = {};
-      tags[this.tagName] = tag;
-      this.$emit("modify", tags);
+      let myTags = {};
+      myTags[this.tagName] = tag;
+      this.$emit("modify", myTags);
     }
   }
 };

@@ -20,7 +20,7 @@ export default {
     getUserTagsElement: function () {
         let element = document.createElement('user-tags');
         element.setAttribute(':tags', 'user.tags');
-        element.setAttribute('v-show', 'showTags');
+        element.setAttribute('v-if', 'showTags');
         return element;
     },
     getModifierSwitchElement: function () {

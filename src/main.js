@@ -13,8 +13,8 @@ import test from './test';
 //   render: function (h) { return h(App) },
 // }).$mount('#app')
 
-// location.pathname = '/nForum/'
-// location.hash = '#!article/Reader/697241';
+location.pathname = '/nForum/'
+location.hash = '#!article/Reader/697241';
 frameUtils.loadCss();
 frameUtils.initDom();
 menuUtils.init();
