@@ -1,12 +1,8 @@
-// import Vue from 'vue/dist/vue.esm'
-// import App from './App.vue'
 import frameUtils from './js/frameUtils';
 import menuUtils from './js/menuUtils';
-// import { mut } from './js/commonUtils'
-import { sessionData, storageData, forageData } from './js/mainData'
-// import pageUtils from './js/pageUtils';
-// import tagStore from './js/tagStore'
-import test from './test';
+import { mut } from './js/commonUtils'
+import { sessionData, storageData } from './js/mainData'
+import pageDispatcher from './js/pageDispatcher'
 // Vue.config.productionTip = false
 
 // new Vue({
@@ -18,22 +14,22 @@ frameUtils.initDom();
 menuUtils.init();
 sessionData.init();
 storageData.init();
-forageData.init();
-// pageUtils.init();
-// tagStore.init();
-// window.addEventListener('hashchange', () => {
-//     sessionData.onhashchange();
-//     forageData.onhashchange();
-// });
-// let body = document.querySelector('#body');
-// let mutConfig = {
-//     attributes: false,
-//     childList: true,
-//     subtree: false
-// };
-// mut(body, mutConfig, function () {
-//     pageUtils.onMut();
-// })
+window.addEventListener('hashchange', () => {
+    sessionData.onhashchange();
+});
+let bodyElement = document.querySelector('#body');
+if (bodyElement.firstChild != null) {
+    pageDispatcher.dispatch();
+}
+
+let mutConfig = {
+    attributes: false,
+    childList: true,
+    subtree: false
+};
+mut(bodyElement, mutConfig, function () {
+    pageDispatcher.dispatch();
+})
 
 
-test.test();
+// test.test();

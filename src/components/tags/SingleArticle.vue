@@ -26,12 +26,11 @@ export default {
       // showTags: false,
       // TODO 响应式更新
       showTags: this.user.state.showTags,
-      showModifier: true,
+      showModifier: false
     };
   },
   computed: {
     article: function() {
-      console.log(Object.keys(this.user));
       return { url: this.articleUrl, content: this.articleContent };
     },
     articleContent: function() {

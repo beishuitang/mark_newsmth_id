@@ -1,7 +1,8 @@
-// import Vue from 'vue/dist/vue.esm'
 import { storageData } from "../mainData";
 import tagStore from '@/js/tagStore'
+import pageArticleSimplify from "./pageArticleSimplify";
 export default function () {
+    pageArticleSimplify();
     // nForum/#!article/Reader/6974
     let reg = /#!article\/([\w.]+)\/(\d+)($|\?)/
     let m = location.hash.match(reg);
