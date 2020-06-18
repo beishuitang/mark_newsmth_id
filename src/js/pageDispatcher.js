@@ -1,5 +1,6 @@
 import { sessionData } from './mainData'
 import pageArticleFunction from './pages/pageArticleFunction'
+import pageBoardFunction from './pages/pageBoardFunction'
 export default {
     dispatch: function () {
         switch (sessionData.mainHash) {
@@ -7,6 +8,9 @@ export default {
                 pageArticleFunction();
                 break;
 
+            case 'board':
+                pageBoardFunction();
+                break;
             default:
                 break;
         }
