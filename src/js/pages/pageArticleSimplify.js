@@ -2,9 +2,18 @@ export default function () {
     let articles = document.querySelectorAll('table.article')
     for (let index = 0; index < articles.length; index++) {
         const article = articles[index];
+        let a_body = article.querySelector('.a-body');
+        let a_bottom = article.querySelector('.a-bottom')
         let p = article.querySelector('.a-body .a-content>p');
         let pClone = p.cloneNode(false);
-        p.style = 'display:none';
+        article.setAttribute('v-if', 'show')
+        a_body.setAttribute('v-if', 'showContent')
+
+        a_bottom.setAttribute('v-if', '!simplify')
+        pClone.setAttribute('v-if', 'simplify')
+        p.setAttribute('v-if', '!simplify')
+        p.setAttribute('v-on:dblclick', 'simplify=!simplify')
+        pClone.setAttribute('v-on:dblclick', 'simplify=!simplify')
         let childNodes = p.childNodes;
         let replyChecked = false;
         let endChecked = false;

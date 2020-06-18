@@ -1,7 +1,8 @@
 import frameUtils from './js/frameUtils';
 import menuUtils from './js/menuUtils';
+import eventUtils from './js/eventUtil'
 import { mut } from './js/commonUtils'
-import { sessionData, storageData } from './js/mainData'
+import { sessionData, storageData, forageData } from './js/mainData'
 import pageDispatcher from './js/pageDispatcher'
 // Vue.config.productionTip = false
 
@@ -14,6 +15,8 @@ frameUtils.initDom();
 menuUtils.init();
 sessionData.init();
 storageData.init();
+forageData.init();
+eventUtils.preventDblclickDefault();
 window.addEventListener('hashchange', () => {
     sessionData.onhashchange();
 });

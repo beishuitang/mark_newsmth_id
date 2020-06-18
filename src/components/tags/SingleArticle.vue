@@ -26,7 +26,8 @@ export default {
       // showTags: false,
       // TODO 响应式更新
       showTags: this.user.state.showTags,
-      showModifier: false
+      showModifier: false,
+      simplify: true
     };
   },
   computed: {

@@ -51,6 +51,18 @@ export var storageData = {
     // usersData: {},
     usersData: {
     },
+    simplifyConfig: {
+        a_u_name: true,
+        ico_pos_reply: true,
+        ico_pos_template: false,
+        a_func_forward: false,
+        a_func_docross: false,
+        a_addfavor: false,
+        ico_pos_search: false,
+        ico_pos_user: false,
+        a_pos: true,
+        ico_pos_edit: true
+    },
     init: function () {
         let usersData = localStorage.getItem(config.storageKeys.STORAGE_USERS_DATA);
         if (usersData != null) {
@@ -131,6 +143,7 @@ export var storageData = {
     },
     acceptModify: function (usersDataModify) {
         this.mergeUpdates(usersDataModify);
+        forageData.saveModify(usersDataModify);
     }
 
 }
@@ -139,9 +152,8 @@ export var forageData = {
     // TODO
     reg: /(article\/[\w|.]+\/\d+)(\?p=(\d+))?/,
     init: function () {
-        //     window.addEventListener('hashchange', () => {
-        //         this.onhashchange();
-        //     });
+        this.article = localforage.createInstance({ name: "mark_newsmth_id", storeName: "article" });
+        this.modify = localforage.createInstance({ name: "mark_newsmth_id", storeName: "modify" });
     },
     onhashchange: function () {
         // let m = location.hash.match(this.reg);
@@ -152,8 +164,14 @@ export var forageData = {
     onBodyMutation: function () {
         // this.restorePageNumber();
     },
+    saveModify: function (modify) {
+        this.modify.setItem(new Date().getTime(), modify);
+    },
     saveArticle: function (article) {
-        localforage.setItem(article.url, article.content);
+        this.article.setItem(article.url, article.content);
+    },
+    getArticle: function (url, callback) {
+        localforage.getItem(url, callback)
     },
     savePageNumber: function (m) {
         localforage.setItem(config.PRIFIX_STR + m[1], m[3] ? m[3] : 1);

@@ -26,7 +26,6 @@ export default function () {
         let a_u_name = a_head.querySelector('.a-u-name');
         let a_u_sex = a_head.querySelector('.a-u-sex');
         let a_func_info = a_bottom.querySelector('.a-func-info');
-
         let a_post = a_head.querySelector('.a-post');
         // mobile function
         let li = document.createElement('li');

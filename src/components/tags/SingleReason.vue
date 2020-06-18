@@ -7,7 +7,7 @@
 </template>
 
 <script>
-import localforage from "localforage";
+import { forageData } from "@/js/mainData";
 export default {
   name: "TagReasons",
   props: {
@@ -22,7 +22,7 @@ export default {
     };
   },
   mounted: function() {
-    localforage.getItem(this.reasonUrl).then(value => {
+    forageData.article.getItem(this.reasonUrl).then(value => {
       this.content = value;
     });
   },
