@@ -1,4 +1,5 @@
 <script>
+import Vue from "vue/dist/vue.esm";
 import UserScore from "./UserScore";
 import TagModifier from "./TagModifier";
 import UserTags from "./UserTags";
@@ -27,7 +28,8 @@ export default {
       // TODO 响应式更新
       showTags: this.user.state.showTags,
       showModifier: false,
-      simplify: true
+      simplify: true,
+      simplifyConfig: Vue.$simplifyConfig
     };
   },
   computed: {

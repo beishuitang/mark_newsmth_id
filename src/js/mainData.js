@@ -1,4 +1,4 @@
-import Vue from 'vue'
+import Vue from 'vue/dist/vue.esm'
 import config from '../config/config'
 import localforage from "localforage"
 
@@ -52,16 +52,16 @@ export var storageData = {
     usersData: {
     },
     simplifyConfig: {
-        a_u_name: true,
-        ico_pos_reply: true,
-        ico_pos_template: false,
-        a_func_forward: false,
-        a_func_docross: false,
-        a_addfavor: false,
-        ico_pos_search: false,
-        ico_pos_user: false,
-        a_pos: true,
-        ico_pos_edit: true
+        'a-u-sex': true,
+        'ico-pos-reply': true,
+        'ico-pos-template': false,
+        'a-func-forward': false,
+        'a-func-docross': false,
+        'a-addfavor': false,
+        'ico-pos-search': false,
+        'ico-pos-user': false,
+        'a-pos': true,
+        'ico-pos-edit': true
     },
     init: function () {
         let usersData = localStorage.getItem(config.storageKeys.STORAGE_USERS_DATA);
@@ -71,6 +71,11 @@ export var storageData = {
         Object.values(this.usersData).forEach((user) => {
             this.reComputeScore(user);
         })
+        let simplifyConfig = localStorage.getItem(config.storageKeys.STORAGE_SIMPLIFY_CONFIG);
+        if (simplifyConfig != null) {
+            this.simplifyConfig = JSON.parse(simplifyConfig);
+        }
+        Vue.$simplifyConfig = this.simplifyConfig;
     },
     save: function () {
         localStorage.setItem(config.storageKeys.STORAGE_USERS_DATA, JSON.stringify(this.usersData));

@@ -22,6 +22,7 @@ window.addEventListener('hashchange', () => {
 });
 let bodyElement = document.querySelector('#body');
 if (bodyElement.firstChild != null) {
+    console.log('读取缓存')
     pageDispatcher.dispatch();
 }
 
@@ -31,6 +32,7 @@ let mutConfig = {
     subtree: false
 };
 mut(bodyElement, mutConfig, function () {
+    console.log('on mut')
     pageDispatcher.dispatch();
 })
 

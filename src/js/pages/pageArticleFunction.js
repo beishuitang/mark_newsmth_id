@@ -1,8 +1,9 @@
 import { storageData } from "../mainData";
 import tagStore from '@/js/tagStore'
-import pageArticleSimplify from "./pageArticleSimplify";
+// import pageArticleSimplify from "./pageArticleSimplify";
 export default function () {
-    pageArticleSimplify();
+    console.log('page article function')
+    // pageArticleSimplify();
     // nForum/#!article/Reader/6974
     let reg = /#!article\/([\w.]+)\/(\d+)($|\?)/
     let m = location.hash.match(reg);
@@ -34,8 +35,63 @@ export default function () {
         a_func.insertBefore(li, a_func.firstChild);
         a_func.appendChild(a_pos);
         a_bottom.lastElementChild.appendChild(a_func_info);
+        // simplify
+        let p = articleElement.querySelector('.a-body .a-content>p');
+        let pClone = p.cloneNode(false);
+        articleElement.setAttribute('v-if', 'show')
+        a_body.setAttribute('v-if', 'showContent')
+        Object.keys(storageData.simplifyConfig).forEach(key => {
+            let target = a_func.querySelector('.' + key)
+            // console.log(key)
+            // console.log(target)
+            if (target != null) {
+                target.parentNode.setAttribute('v-if', `simplifyConfig["${key}"]`);
+            }
+        });
+        a_bottom.setAttribute('v-if', '!simplify')
+        pClone.setAttribute('v-if', 'simplify')
+        p.setAttribute('v-if', '!simplify')
+        p.setAttribute('v-on:dblclick', 'simplify=!simplify')
+        pClone.setAttribute('v-on:dblclick', 'simplify=!simplify')
+        let childNodes = p.childNodes;
+        let replyChecked = false;
+        let endChecked = false;
+        let preBR = false;
+        for (let index = 6; index < childNodes.length; index++) {
+            const childNode = childNodes[index];
+            let div = document.createElement('div');
+            let fontNode = childNode.cloneNode(true);
+            div.style = 'max-height:3rem;overflow:hidden';
+            if (endChecked) {
+                if (childNode.nodeName == 'A') {
+                    pClone.appendChild(childNode.cloneNode(true));
+                }
+            } else if (childNode.nodeName == '#text' && childNode.nodeValue == ' -- ') {
+                pClone.appendChild(childNode.cloneNode(true));
+                endChecked = true;
+                // TODO 
+            } else if (childNode.nodeName == 'FONT' && childNode.classList.length > 0) {
+                if (!replyChecked) {
+                    pClone.appendChild(div);
+                    preBR = false;
+                }
+                div.appendChild(fontNode);
+                replyChecked = true;
+            } else if (childNode.nodeName == 'BR') {
+                if (!preBR == true) {
+                    pClone.appendChild(childNode.cloneNode(true));
+                }
+                preBR = true;
+            } else if (childNode.nodeName == '#text' && childNode.nodeValue.match(/[^\s]/) == null) {
+                pClone.appendChild(childNode.cloneNode(true));
+            } else {
+                preBR = false;
+                pClone.appendChild(childNode.cloneNode(true));
+            }
+        }
+        p.parentNode.insertBefore(pClone, p.nextSibling);
 
-        // tag function
+        // vue function
         a_func.appendChild(modifierSwitch);
         a_content.insertBefore(tagModifierEl, a_content.firstChild);
         a_content.insertBefore(userTags, a_content.firstChild);

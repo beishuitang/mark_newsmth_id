@@ -6,6 +6,7 @@ export default {
     STORAGE_FRAME: 'frame',
     STORAGE_FONT_SIZE: "font_size",
     STORAGE_HAND: 'hand',
+    STORAGE_SIMPLIFY_CONFIG: 'simplify_config',
   },
   init: function () {
     for (const key in this.storage_keys) {
