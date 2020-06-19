@@ -1,4 +1,4 @@
-import { storageData } from "../mainData";
+import mainData from "../mainData";
 import tagStore from '@/js/tagStore'
 // import pageArticleSimplify from "./pageArticleSimplify";
 export default function () {
@@ -40,7 +40,7 @@ export default function () {
         let pClone = p.cloneNode(false);
         articleElement.setAttribute('v-if', 'show')
         a_body.setAttribute('v-if', 'showContent')
-        Object.keys(storageData.simplifyConfig).forEach(key => {
+        Object.keys(mainData.simplifyConfig).forEach(key => {
             let target = a_func.querySelector('.' + key)
             // console.log(key)
             // console.log(target)
@@ -50,7 +50,7 @@ export default function () {
         });
         a_bottom.setAttribute('v-if', '!simplify')
         pClone.setAttribute('v-if', 'simplify')
-        p.setAttribute('v-if', '!simplify')
+        p.setAttribute('v-show', '!simplify')
         p.setAttribute('v-on:dblclick', 'simplify=!simplify')
         pClone.setAttribute('v-on:dblclick', 'simplify=!simplify')
         let childNodes = p.childNodes;
@@ -98,10 +98,10 @@ export default function () {
         a_u_name.appendChild(userScoreEl);
         let articleId = a_post.href.substring(a_post.href.lastIndexOf('/'))
         let userId = a_u_name.querySelector('a').innerText;
-        storageData.checkUser(userId);
+        mainData.checkUser(userId);
         new singleArticle({
             el: articleElement,
-            propsData: { articleUrl: board + '/' + topicId + articleId, userId: userId, user: storageData.usersData[userId] }
+            propsData: { articleUrl: board + '/' + topicId + articleId, userId: userId, user: mainData.usersData[userId] }
         });
     }
 }

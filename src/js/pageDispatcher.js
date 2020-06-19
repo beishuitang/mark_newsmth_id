@@ -1,9 +1,9 @@
-import { sessionData } from './mainData'
+import mainData from './mainData'
 import pageArticleFunction from './pages/pageArticleFunction'
 import pageBoardFunction from './pages/pageBoardFunction'
 export default {
     dispatch: function () {
-        switch (sessionData.mainHash) {
+        switch (mainData.mainHash) {
             case 'article':
                 pageArticleFunction();
                 break;

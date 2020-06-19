@@ -2,9 +2,10 @@ import frameUtils from './js/frameUtils';
 import menuUtils from './js/menuUtils';
 import eventUtils from './js/eventUtil'
 import { mut } from './js/commonUtils'
-import { sessionData, storageData, forageData } from './js/mainData'
+import mainData from './js/mainData'
 import pageDispatcher from './js/pageDispatcher'
 // Vue.config.productionTip = false
+// import test from './test'
 
 // new Vue({
 //   render: function (h) { return h(App) },
@@ -13,12 +14,10 @@ import pageDispatcher from './js/pageDispatcher'
 frameUtils.loadCss();
 frameUtils.initDom();
 menuUtils.init();
-sessionData.init();
-storageData.init();
-forageData.init();
+mainData.init();
 eventUtils.preventDblclickDefault();
 window.addEventListener('hashchange', () => {
-    sessionData.onhashchange();
+    mainData.onhashchange();
 });
 let bodyElement = document.querySelector('#body');
 if (bodyElement.firstChild != null) {
@@ -37,4 +36,4 @@ mut(bodyElement, mutConfig, function () {
 })
 
 
-// test.test();
+// test.init();

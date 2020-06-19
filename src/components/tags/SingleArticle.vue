@@ -5,7 +5,7 @@ import TagModifier from "./TagModifier";
 import UserTags from "./UserTags";
 import ModifierSwitch from "./ModifierSwitch";
 import ShowSwitch from "./ShowSwitch";
-import { storageData, forageData } from "../../js/mainData";
+import mainData from "../../js/mainData";
 export default {
   name: "SingleArticle",
   components: {
@@ -45,8 +45,8 @@ export default {
     modifyTag: function(tags) {
       let usersData = {};
       usersData[this.userId] = { tags: tags };
-      storageData.acceptModify(usersData);
-      forageData.saveArticle(this.article);
+      mainData.acceptModify(usersData);
+      mainData.saveArticle(this.article);
     },
     // modifyState: function(state) {
     //   let modify = this.main_data.get_modify_sample();

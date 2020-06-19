@@ -1,4 +1,5 @@
 export default {
+  PROJECT_NAME: 'mark_newsmth_id',
   PREFIX_STR: "smth_id_mark_",
   storageKeys: {
     STORAGE_USERS_DATA: 'users_data',
@@ -7,6 +8,7 @@ export default {
     STORAGE_FONT_SIZE: "font_size",
     STORAGE_HAND: 'hand',
     STORAGE_SIMPLIFY_CONFIG: 'simplify_config',
+    STORAGE_MODIFY_TIME: 'modify_time',
   },
   init: function () {
     for (const key in this.storage_keys) {
