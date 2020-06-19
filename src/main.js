@@ -1,7 +1,7 @@
 import frameUtils from './js/frameUtils';
 import menuUtils from './js/menuUtils';
 import eventUtils from './js/eventUtil'
-import { mut } from './js/commonUtils'
+import { mut, removeAd } from './js/commonUtils'
 import mainData from './js/mainData'
 import pageDispatcher from './js/pageDispatcher'
 // Vue.config.productionTip = false
@@ -19,10 +19,14 @@ eventUtils.preventDblclickDefault();
 window.addEventListener('hashchange', () => {
     mainData.onhashchange();
 });
+function actionOnMut() {
+    pageDispatcher.dispatch();
+    removeAd();
+}
 let bodyElement = document.querySelector('#body');
 if (bodyElement.firstChild != null) {
     console.log('读取缓存')
-    pageDispatcher.dispatch();
+    actionOnMut();
 }
 
 let mutConfig = {
@@ -32,7 +36,7 @@ let mutConfig = {
 };
 mut(bodyElement, mutConfig, function () {
     console.log('on mut')
-    pageDispatcher.dispatch();
+    actionOnMut();
 })
 
 

@@ -37,3 +37,19 @@ function relayTr(tr, tdIndexsToMergeArr, tdIndexToDelete) {
         tds[i].remove();
     }
 }
+export function removeAd() {
+    let list = [];
+    list.push(document.querySelectorAll('.clearfix'))
+    list.push(document.querySelectorAll('iframe'));
+    list.push(document.querySelectorAll('.mp_clear'))
+    list.push(document.querySelectorAll('.ad'))
+    list.push(document.querySelectorAll('#ban_ner'))
+    list.push(document.querySelectorAll('#left_adv'))
+    list.push(document.querySelectorAll('#sogou_banner'))
+    list.forEach(elements => {
+        for (let index = 0; index < elements.length; index++) {
+            const element = elements[index];
+            element.remove();
+        }
+    });
+}

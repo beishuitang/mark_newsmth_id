@@ -198,13 +198,16 @@ html {
   border: double;
   display: inline-block;
 }
+#html #html_body .boards li {
+  display: inline-block;
+}
 #html #ranking ul {
   background-size: 1rem auto;
 }
 .a-left {
   display: none;
 }
-.a-u-sex{
+.a-u-sex {
   margin-right: unset;
 }
 #main .likes {
