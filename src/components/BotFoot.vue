@@ -198,6 +198,10 @@ html {
   border: double;
   display: inline-block;
 }
+#html #pictures div ul li a {
+  display: inline-block;
+  width: 192px;
+}
 #html #html_body .boards li {
   display: inline-block;
 }
