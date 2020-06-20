@@ -197,12 +197,15 @@ html {
 #html #pictures div ul li img {
   border: double;
   display: inline-block;
+  width: 192px;
+  height: 144px;
 }
 #html #pictures div ul li a {
   display: inline-block;
   width: 192px;
 }
-#html #html_body .boards li {
+#main li {
+  /* #html #html_body .boards li { */
   display: inline-block;
 }
 #html #ranking ul {
