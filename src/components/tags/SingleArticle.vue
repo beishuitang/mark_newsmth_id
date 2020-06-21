@@ -1,5 +1,5 @@
 <script>
-import Vue from "vue/dist/vue.esm";
+import config from "@/config/config";
 import UserScore from "./UserScore";
 import TagModifier from "./TagModifier";
 import UserTags from "./UserTags";
@@ -29,7 +29,7 @@ export default {
       showTags: this.user.state.showTags,
       showModifier: false,
       simplify: true,
-      simplifyConfig: Vue.$simplifyConfig
+      simplifyConfig: config.simplifyConfig
     };
   },
   computed: {

@@ -1,3 +1,4 @@
+import config from './config/config'
 import frameUtils from './js/frameUtils';
 import menuUtils from './js/menuUtils';
 import eventUtils from './js/eventUtil'
@@ -11,11 +12,13 @@ import pageDispatcher from './js/pageDispatcher'
 //   render: function (h) { return h(App) },
 // }).$mount('#app')
 
+config.init();
 frameUtils.loadCss();
 frameUtils.initDom();
 menuUtils.init();
 mainData.init();
 eventUtils.preventDblclickDefault();
+eventUtils.initMenuAction();
 window.addEventListener('hashchange', () => {
     mainData.onhashchange();
 });

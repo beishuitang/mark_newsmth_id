@@ -108,7 +108,7 @@ html {
 #html #html_body #menu {
   padding: 0.3rem;
   position: fixed;
-  /* left: -100%; */
+  /* left: 0; */
   bottom: 0;
   z-index: 10;
   background-color: white;
@@ -171,13 +171,13 @@ html {
   margin: 0;
   margin-right: 1rem;
 }
-#slider div.pic,
+/* #slider div.pic,
 #slider div.preview {
   text-align: center;
 }
 #main #slider div.preview a {
   display: inline-block;
-}
+} */
 #main #body #top10 h3 {
   height: 30px;
 }
@@ -204,8 +204,7 @@ html {
   display: inline-block;
   width: 192px;
 }
-#main li {
-  /* #html #html_body .boards li { */
+#html #html_body .boards li {
   display: inline-block;
 }
 #html #ranking ul {

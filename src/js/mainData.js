@@ -15,18 +15,6 @@ export default {
     // storage data
     modifyTime: '0',
     usersData: {},
-    simplifyConfig: {
-        'a-u-sex': true,
-        'ico-pos-reply': true,
-        'ico-pos-template': false,
-        'a-func-forward': false,
-        'a-func-docross': false,
-        'a-addfavor': false,
-        'ico-pos-search': false,
-        'ico-pos-user': false,
-        'a-pos': true,
-        'ico-pos-edit': true
-    },
     // forageData
     modifyBuffer: {},
     // http://www.newsmth.net/nForum/#!article/Occupier/1575679?p=10
@@ -45,11 +33,8 @@ export default {
         Object.values(this.usersData).forEach((user) => {
             this.reComputeScore(user);
         })
-        let simplifyConfig = localStorage.getItem(config.storageKeys.STORAGE_SIMPLIFY_CONFIG);
-        if (simplifyConfig != null) {
-            this.simplifyConfig = JSON.parse(simplifyConfig);
-        }
         // TODO
+        this.simplifyConfig = config.simplifyConfig;
         Vue.$simplifyConfig = this.simplifyConfig;
         // 每天只添加一次
         let modifyTimeFromStorage = localStorage.getItem(config.storageKeys.STORAGE_MODIFY_TIME);

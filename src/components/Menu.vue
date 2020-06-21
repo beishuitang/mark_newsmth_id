@@ -1,12 +1,10 @@
 <script>
-// import HelloWorld from "./components/HelloWorld.vue";
-
 export default {
   name: "Menu",
-  props: ["config"],
+  props: ["menuConfig"],
   data: function() {
     return {
-      showMenu: false
+      // showMenu: this.menuConfig.showMenu
       // showMenu: config.showMenu ? config.showMenu : false
     };
   },
@@ -14,5 +12,14 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.slide-left-enter-active,
+.slide-left-leave-active {
+  left: 0;
+  transition: all 0.5s;
+}
+.slide-left-enter,
+.slide-left-leave-to {
+  left: -10rem;
+}
 </style>

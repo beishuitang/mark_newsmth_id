@@ -1,3 +1,4 @@
+import config from '../config/config'
 export default {
     addHandler: function (element, type, handler) {
         if (element.addEventListener)
@@ -14,6 +15,26 @@ export default {
             element.detachEvent("on" + type, handler);
         else
             element["on" + type] = handler;
+    },
+    initMenuAction: function () {
+        let menuConfig = config.menuConfig;
+        this.listenTouchDirection(document.querySelector('body'), false, false, function () {
+            console.log('right')
+            if (menuConfig.hand == 'left' && menuConfig.showMenu != true) {
+                menuConfig.showMenu = true;
+            } else if (menuConfig.hand != 'left' && menuConfig.showMenu != false) {
+                menuConfig.showMenu = false;
+            }
+        }, false, function () {
+            console.log('left')
+            if (menuConfig.hand != 'left' && menuConfig.showMenu != true) {
+                menuConfig.showMenu = true;
+            }
+            if (menuConfig.hand == 'left' && menuConfig.showMenu != false) {
+                menuConfig.showMenu = false;
+            }
+        });
+
     },
     preventDblclickDefault: function () {
         document.querySelector('body').addEventListener('mousedown', function (event) {

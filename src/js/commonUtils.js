@@ -53,3 +53,11 @@ export function removeAd() {
         }
     });
 }
+
+export function addTransition(el, name) {
+    let transition = document.createElement('transition');
+    transition.setAttribute('name', name)
+    el.parentNode.insertBefore(transition, el);
+    transition.appendChild(el);
+    return transition;
+}
