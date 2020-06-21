@@ -9,71 +9,10 @@ export default {
 html {
   word-break: break-word;
 }
+#html,
 #html_body,
-#html #html_body input,
-#html #html_body ul,
-#html #html_body li,
-#html #html_body h1,
-#html #html_body h2,
-#html #html_body h3,
-#html #html_body h4,
-#html #html_body h5,
-#html #html_body h6,
-#html #html_body div,
-#html #html_body a,
-#html #html_body button,
-#html #html_body span,
-#html #html_body object,
-#html #html_body iframe,
-#html #html_body p,
-#html #html_body blockquote,
-#html #html_body pre,
-#html #html_body abbr,
-#html #html_body address,
-#html #html_body cite,
-#html #html_body code,
-#html #html_body del,
-#html #html_body dfn,
-#html #html_body em,
-#html #html_body img,
-#html #html_body ins,
-#html #html_body kbd,
-#html #html_body q,
-#html #html_body small,
-#html #html_body strong,
-#html #html_body sub,
-#html #html_body sup,
-#html #html_body var,
-#html #html_body b,
-#html #html_body i,
-#html #html_body dl,
-#html #html_body dt,
-#html #html_body dd,
-#html #html_body ol,
-#html #html_body fieldset,
-#html #html_body form,
-#html #html_body label,
-#html #html_body legend,
-#html #html_body caption,
-#html #html_body tbody,
-#html #html_body tfoot,
-#html #html_body thead,
-#html #html_body tr,
-#html #html_body th,
-#html #html_body article,
-#html #html_body aside,
-#html #html_body figure,
-#html #html_body footer,
-#html #html_body header,
-#html #html_body hgroup,
-#html #html_body menu,
-#html #html_body nav,
-#html #html_body section,
-#html #html_body time,
-#html #html_body mark,
-#html #html_body audio,
-#html #html_body video {
-  font-size: unset;
+#html #html_body * {
+  font-size: 1rem;
   line-height: unset;
   height: unset;
   float: unset;
@@ -81,9 +20,7 @@ html {
   max-width: 100% !important;
 }
 #html #html_body td {
-  font-size: unset;
-  height: unset;
-  width: unset;
+  line-height: 1.2;
 }
 #main {
   margin: unset;
@@ -205,7 +142,7 @@ html {
   display: inline-block;
   width: 192px;
 }
-#html #html_body .boards li {
+#html #main li {
   display: inline-block;
 }
 #html #ranking ul {
