@@ -1,20 +1,26 @@
 import Vue from "vue/dist/vue.esm";
 import Menu from '@/components/Menu';
-import { addTransition } from './commonUtils'
 import config from "../config/config";
 export default {
     init: function () {
         let menu = document.querySelector('#menu')
-        menu.setAttribute('v-show', 'menuConfig.showMenu');
         let left_adv = menu.querySelector('#left_adv');
         if (left_adv != null) {
             left_adv.remove();
         }
-        addTransition(menu, 'slide-left');
         let m = Vue.extend(Menu);
+        let newMenu = document.createElement('menu');
+        document.querySelector('body').insertBefore(newMenu, menu);
         new m({
-            el: menu.parentNode,
+            el: newMenu,
             propsData: { menuConfig: config.menuConfig }
         });
+
+        newMenu = document.querySelector('#menu');
+        let length = menu.children.length;
+        for (let index = 0; index < length; index++) {
+            newMenu.appendChild(menu.firstChild);
+        }
+        menu.remove();
     }
 }

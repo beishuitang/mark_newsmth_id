@@ -1,12 +1,16 @@
+<template>
+  <transition name="slide-left">
+    <aside id="menu" v-show="menuConfig.showMenu">
+      <slot></slot>
+    </aside>
+  </transition>
+</template>
 <script>
 export default {
   name: "Menu",
   props: ["menuConfig"],
   data: function() {
-    return {
-      // showMenu: this.menuConfig.showMenu
-      // showMenu: config.showMenu ? config.showMenu : false
-    };
+    return {};
   },
   components: {}
 };
