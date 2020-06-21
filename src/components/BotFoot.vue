@@ -226,6 +226,9 @@ html {
   padding-top: unset;
   /* display: none; */
 }
+#main #body .article .a-content img {
+  max-width: 100%;
+}
 #main #body #quick_reply {
   width: 100%;
 }
