@@ -1,6 +1,5 @@
 import Vue from 'vue/dist/vue.esm';
 import config from "../config/config";
-import { mut } from "./commonUtils";
 import TopHead from '../components/TopHead';
 import BotFoot from '../components/BotFoot';
 import Backup from '../components/Backup'
@@ -21,24 +20,10 @@ export default {
             document.querySelector("html").style.fontSize = fontSize;
         }
     },
-    keepBodyWidth: function () {
-        let body = document.querySelector("body");
-        body.style.width = 'auto';
-        mut(body, {
-            attributes: true,
-            childList: false,
-            subtree: false
-        }, function () {
-            if (body.style.width != 'auto') {
-                body.style.width = 'auto';
-            }
-        })
-    },
     loadCss: function () {
         this.addId();
         this.addMeta();
         this.loadFontSize();
-        this.keepBodyWidth();
     },
     getGobackEl: function () {
         let a = document.createElement('a');
@@ -56,6 +41,9 @@ export default {
         let notice = document.querySelectorAll("#notice");
         notice[1].innerHTML = notice[0].innerHTML;
         notice[1].firstChild.appendChild(this.getGobackEl());
+    },
+    onMut: function () {
+        this.copyNavContent();
     },
     // init_frame_parts: function () {
     //     storage_data.frame_parts.forEach((part) => {
