@@ -15,21 +15,26 @@ html {
   font-size: 1rem;
   line-height: unset;
   height: unset;
-  float: unset;
   width: unset;
   max-width: 100% !important;
 }
-#html #html_body td {
-  line-height: 1.2;
+#html #menu *,
+#html #mp_wrapper div,
+#html #mp_wrapper ul {
+  float: unset;
 }
+#html #html_body samp {
+  width: 1rem;
+  height: 1rem;
+}
+/* #top_head #top_menu {
+  float: right;
+} */
 #main {
   margin: unset;
 }
 #main #body {
   margin-bottom: 0.5rem;
-}
-#html #html_body #top_menu {
-  float: right;
 }
 #bot_logo {
   text-align: center;
@@ -46,23 +51,18 @@ html {
 #html #html_body #menu {
   padding: 0.3rem;
   position: fixed;
-  /* left: 0; */
   bottom: 0;
   z-index: 10;
   background-color: white;
   max-height: 100%;
   overflow-y: scroll;
-  /* overflow-x: visible; */
-  /* width: 156px; */
 }
 #left_line samp {
   right: 0;
 }
 #html #html_body .toggler {
-  /* float: left; */
   height: 12px;
   width: 12px;
-  margin: 0 0.5rem;
   display: inline-block;
 }
 #html #html_body .x-folder,
@@ -73,13 +73,12 @@ html {
 .leaf-last samp,
 .leaf samp {
   vertical-align: text-top;
-  float: unset;
 }
 #u_login {
   padding: 0.5rem 0;
 }
 #menu #u_login .u-login-input input {
-  width: 6rem;
+  width: 5rem;
 }
 #menu .u-login-op .submit {
   margin: 0 -2px 0 22px;
@@ -87,35 +86,12 @@ html {
 .u-login-check {
   padding-left: 0.4rem;
 }
-#menu.left-hide {
-  left: -100%;
-  transition: all 0.5s;
-}
-#menu.right-hide {
-  right: -100%;
-  transition: all 0.5s;
-}
-#menu.left-show {
-  left: 0;
-  transition: all 0.5s;
-}
-#menu.right-show {
-  right: 0;
-  transition: all 0.5s;
-}
-#html #menu .x-search input {
+#menu #b_search {
   width: 5rem;
   height: 1rem;
   margin: 0;
   margin-right: 1rem;
 }
-/* #slider div.pic,
-#slider div.preview {
-  text-align: center;
-}
-#main #slider div.preview a {
-  display: inline-block;
-} */
 #main #body #top10 h3 {
   height: 30px;
 }
@@ -127,6 +103,7 @@ html {
 }
 #main .acts div {
   text-align: center;
+  display: inline-block;
 }
 #pictures div ul {
   display: flex;
@@ -142,9 +119,6 @@ html {
   display: inline-block;
   width: 192px;
 }
-#html #main li {
-  display: inline-block;
-}
 #html #ranking ul {
   background-size: 1rem auto;
 }
@@ -154,15 +128,21 @@ html {
 .a-u-sex {
   margin-right: unset;
 }
+.a-u-sex,
+.a-u-name,
+.a-func {
+  float: unset;
+}
 #main .likes {
   margin: unset;
 }
 #main #body .b-head .n-right,
 #main #body .a-pos,
 #main #body .a-back {
-  float: right;
   padding-top: unset;
-  /* display: none; */
+}
+#main #body .article {
+  width: 100%;
 }
 #main #body #quick_reply {
   width: 100%;
@@ -170,8 +150,8 @@ html {
 #main #body #quick_submit {
   width: 5rem;
 }
-#html textarea {
-  font-size: unset;
+#html #html_body textarea {
+  height: 5rem;
   width: 98%;
 }
 #html #html_body .post-title {
@@ -184,10 +164,6 @@ html {
   text-align: unset;
   padding-left: unset;
 }
-#html_body #main .msg-write-info div {
-  float: left;
-}
-
 #html #html_body table .a-u-name {
   margin: unset;
 }
@@ -195,11 +171,9 @@ html {
   width: 98%;
 }
 #html #html_body .u-info dt {
-  float: left;
   line-height: 2rem;
 }
 #html #html_body .u-info figure {
-  float: left;
   margin-right: 1rem;
 }
 #html #html_body .u-info dd {
@@ -210,11 +184,11 @@ html {
   text-align: center;
 }
 #html #html_body .board-list.corner .title_1 {
-  width: 6rem;
+  /* max-width: 6rem; */
   text-align: center;
 }
 #html #html_body .board-list.corner .title_4 {
-  width: 2rem;
+  /* max-width: 2rem; */
   text-align: center;
 }
 </style>
