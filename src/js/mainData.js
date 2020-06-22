@@ -11,14 +11,11 @@ export default {
     mainpagePart: {},
     picturesXOffset: 0,
     reg: /#!(\w+)(\/|$)/,
-
     // storage data
     modifyTime: '0',
     usersData: {},
     // forageData
     modifyBuffer: {},
-    // http://www.newsmth.net/nForum/#!article/Occupier/1575679?p=10
-    // reg: /(article\/[\w|.]+\/\d+)(\?p=(\d+))?/,
 
     init: function () {
         // sessionData
@@ -41,8 +38,9 @@ export default {
         if (modifyTimeFromStorage != null && (new Date() - new Date(parseInt(modifyTimeFromStorage))) < 24 * 60 * 60 * 1000) {
             this.modifyTime = modifyTimeFromStorage;
         } else {
-            this.modifyTime = new Date().getTime().toString();
-            localStorage.setItem(config.storageKeys.STORAGE_MODIFY_TIME, this.modifyTime);
+            // this.modifyTime = new Date().getTime().toString();
+            // localStorage.setItem(config.storageKeys.STORAGE_MODIFY_TIME, this.modifyTime);
+            this.updateModifyTime();
         }
 
         // forageData
@@ -51,7 +49,6 @@ export default {
         this.modify.getItem(this.modifyTime).then((value) => {
             this.modifyBuffer = value ? value : {}
         })
-
     },
     onhashchange: function () {
         if (this.mainHash === 'mainpage') {
@@ -63,9 +60,14 @@ export default {
         this.currentPage = location.hash.replace(/\?p=1$/, '');
         this.pageYOffsetData[this.prePage] = window.pageYOffset;
     },
-
-    save: function () {
+    updateModifyTime: function () {
+        this.modifyTime = new Date().getTime().toString();
+        localStorage.setItem(config.storageKeys.STORAGE_MODIFY_TIME, this.modifyTime);
+    },
+    saveUsersData: function () {
         localStorage.setItem(config.storageKeys.STORAGE_USERS_DATA, JSON.stringify(this.usersData));
+    },
+    saveModify: function () {
         this.modify.setItem(this.modifyTime, this.modifyBuffer);
     },
     getEmptyUser: function () {
@@ -95,43 +97,68 @@ export default {
         });
         user.score = score;
     },
-    mergeUpdate: function (user, update) {
+    mergeModify: function (user, modify) {
         // Object.assign(user, update);
-        if (Object.prototype.hasOwnProperty.call(update, 'state')) {
-            Object.keys(update.state).forEach(key => {
-                user.state[key] = update.state[key];
+        if (Object.prototype.hasOwnProperty.call(modify, 'state')) {
+            Object.keys(modify.state).forEach(key => {
+                user.state[key] = modify.state[key];
             });
         }
-        if (Object.prototype.hasOwnProperty.call(update, 'tags')) {
-            Object.keys(update.tags).forEach(tagName => {
-                Object.keys(update.tags[tagName]).forEach(reasonUrl => {
+        if (Object.prototype.hasOwnProperty.call(modify, 'tags')) {
+            Object.keys(modify.tags).forEach(tagName => {
+                Object.keys(modify.tags[tagName]).forEach(reasonUrl => {
                     if (!Object.prototype.hasOwnProperty.call(user.tags, tagName)) {
                         Vue.set(user.tags, tagName, {});
                     }
                     if (!Object.prototype.hasOwnProperty.call(user.tags[tagName], reasonUrl)) {
                         Vue.set(user.tags[tagName], reasonUrl, { score: 0 });
                     }
-                    let s = update.tags[tagName][reasonUrl].score;
+                    let s = modify.tags[tagName][reasonUrl].score;
                     let reason = user.tags[tagName][reasonUrl];
                     reason.score += s;
                     user.score += s;
                 });
-
             });
         }
     },
-    mergeUpdates: function (updates) {
-        Object.keys(updates).forEach(userId => {
-            this.mergeUpdate(this.usersData[userId], updates[userId]);
+    mergeModifies: function (modifies) {
+        Object.keys(modifies).forEach(userId => {
+            this.mergeModify(this.usersData[userId], modifies[userId]);
             if (!Object.prototype.hasOwnProperty.call(this.modifyBuffer, userId)) {
                 this.modifyBuffer[userId] = this.getEmptyUser();
             }
-            this.mergeUpdate(this.modifyBuffer[userId], updates[userId]);
+            this.mergeModify(this.modifyBuffer[userId], modifies[userId]);
         });
-        this.save();
+        this.saveUsersData();
+        this.saveModify();
+    },
+    mergeInputModifies: function (inputModifies) {
+        this.modify.keys().then(
+            function (keys) {
+                Object.keys(inputModifies).forEach((inputKey) => {
+                    if (!keys.includes(inputKey)) {
+                        this.mergeModifies(inputModifies[inputKey]);
+                    }
+                });
+            }
+        ).catch(function (err) {
+            console.log(err);
+        });
+    },
+    mergeInputArticles: function (inputArticles) {
+        this.article.keys().then(
+            function (keys) {
+                Object.keys(inputArticles).forEach((inputKey) => {
+                    if (!keys.includes(inputKey)) {
+                        this.saveArticle(inputArticles[inputKey]);
+                    }
+                })
+            }).catch(function (err) {
+                console.log(err);
+            });
     },
     acceptModify: function (ModifyData) {
-        this.mergeUpdates(ModifyData);
+        this.mergeModifies(ModifyData);
         // forageData.saveModify(ModifyData);
     },
     saveArticle: function (article) {
@@ -140,4 +167,24 @@ export default {
     getArticle: function (url, callback) {
         localforage.getItem(url, callback)
     },
+    getModifies: function (callback) {
+        let modifies = {}
+        this.modify.iterate(function (value, key) {
+            modifies[key] = value;
+        }).then(function () {
+            callback(modifies);
+        }).catch(function (err) {
+            console.log(err);
+        });
+    },
+    getArticles: function (callback) {
+        let articles = {}
+        this.article.iterate(function (value, key) {
+            articles[key] = value;
+        }).then(function () {
+            callback(articles);
+        }).catch(function (err) {
+            console.log(err);
+        });
+    }
 }

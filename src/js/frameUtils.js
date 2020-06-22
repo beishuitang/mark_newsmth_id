@@ -3,6 +3,7 @@ import config from "../config/config";
 import { mut } from "./commonUtils";
 import TopHead from '../components/TopHead';
 import BotFoot from '../components/BotFoot';
+import Backup from '../components/Backup'
 export default {
     addId: function () {
         document.getElementsByTagName('body')[0].setAttribute('id', "html_body")
@@ -64,6 +65,10 @@ export default {
     initDom: function () {
         new (Vue.extend(TopHead))({ el: '#top_head' });
         new (Vue.extend(BotFoot))({ el: '#bot_foot' });
+        let span = document.createElement('span');
+        span.setAttribute('id', 'backup')
+        document.querySelector('#bot_info').appendChild(span);
+        new (Vue.extend(Backup))({ el: '#backup' });
         this.copyNav();
         // TODO
         // this.init_frame_parts();

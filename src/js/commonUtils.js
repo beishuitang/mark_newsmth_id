@@ -39,9 +39,9 @@ function relayTr(tr, tdIndexsToMergeArr, tdIndexToDelete) {
 }
 export function removeAd() {
     let list = [];
-    list.push(document.querySelectorAll('.clearfix'))
+    // list.push(document.querySelectorAll('.clearfix'))
     list.push(document.querySelectorAll('iframe'));
-    list.push(document.querySelectorAll('.mp_clear'))
+    // list.push(document.querySelectorAll('.mp_clear'))
     list.push(document.querySelectorAll('.ad'))
     list.push(document.querySelectorAll('#ban_ner'))
     list.push(document.querySelectorAll('#left_adv'))
