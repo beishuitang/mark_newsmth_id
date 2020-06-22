@@ -20,6 +20,7 @@ export default function () {
     function actionOnMut() {
         pageDispatcher.dispatch();
         removeAd();
+        mainData.onMut();
     }
     let bodyElement = document.querySelector('#body');
     if (bodyElement.firstChild != null) {

@@ -60,6 +60,9 @@ export default {
         this.currentPage = location.hash.replace(/\?p=1$/, '');
         this.pageYOffsetData[this.prePage] = window.pageYOffset;
     },
+    onMut: function () {
+        window.scroll(0, this.pageYOffsetData[this.currentPage]);
+    },
     updateModifyTime: function () {
         this.modifyTime = new Date().getTime().toString();
         localStorage.setItem(config.storageKeys.STORAGE_MODIFY_TIME, this.modifyTime);
