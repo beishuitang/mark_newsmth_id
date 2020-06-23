@@ -45,7 +45,7 @@ export default function () {
             // console.log(key)
             // console.log(target)
             if (target != null) {
-                target.parentNode.setAttribute('v-if', `simplifyConfig["${key}"]`);
+                target.parentNode.setAttribute('v-if', `!simplify || simplifyConfig["${key}"]`);
             }
         });
         a_bottom.setAttribute('v-if', '!simplify')

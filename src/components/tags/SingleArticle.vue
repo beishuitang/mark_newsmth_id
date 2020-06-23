@@ -22,14 +22,15 @@ export default {
   },
   data: function() {
     return {
+      state: this.user.state,
       show: this.user.state.showUser,
       showContent: this.user.state.showContent,
       // showTags: false,
       // TODO 响应式更新
       showTags: this.user.state.showTags,
       showModifier: false,
-      simplify: true,
-      simplifyConfig: config.simplifyConfig
+      simplifyConfig: config.simplifyConfig,
+      simplify: config.simplifyConfig.simplify
     };
   },
   computed: {
