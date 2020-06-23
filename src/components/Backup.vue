@@ -29,10 +29,10 @@ export default {
       var reader = new FileReader(); //这里是核心！！！读取操作就是由它完成的。
       reader.readAsText(selectedFile); //读取文件的内容
       reader.onload = function() {
-        console.log("读取结果：", this.result); //当读取完成之后会回调这个函数，然后此时文件的内容存储到了result中。直接操作即可。
+        // console.log("读取结果：", this.result); //当读取完成之后会回调这个函数，然后此时文件的内容存储到了result中。直接操作即可。
         let json = JSON.parse(this.result);
-        mainData.mergeInputModifies(result.modifies);
-        mainData.mergeInputArticles(result.articles);
+        mainData.acceptImportModifies(json.modifies);
+        mainData.acceptImportArticles(json.articles);
       };
     },
     saveBackup: function() {
@@ -45,7 +45,7 @@ export default {
           "newsmth_backup_" +
           date.getFullYear() +
           "-" +
-          date.getMonth() +
+          (date.getMonth() + 1) +
           "-" +
           date.getDate() +
           ".json";

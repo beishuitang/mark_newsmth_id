@@ -70,8 +70,9 @@ export default {
     saveUsersData: function () {
         localStorage.setItem(config.storageKeys.STORAGE_USERS_DATA, JSON.stringify(this.usersData));
     },
-    saveModify: function () {
-        this.modify.setItem(this.modifyTime, this.modifyBuffer);
+    saveModify: function (modifyTime, modify) {
+        // this.modify.setItem(this.modifyTime, this.modifyBuffer);
+        this.modify.setItem(modifyTime, modify);
     },
     getEmptyUser: function () {
         return {
@@ -124,36 +125,45 @@ export default {
             });
         }
     },
-    mergeModifies: function (modifies) {
+    mergeModifies: function (modifies, ifImport) {
         Object.keys(modifies).forEach(userId => {
+            this.checkUser(userId);
             this.mergeModify(this.usersData[userId], modifies[userId]);
-            if (!Object.prototype.hasOwnProperty.call(this.modifyBuffer, userId)) {
-                this.modifyBuffer[userId] = this.getEmptyUser();
+            if (!ifImport) {
+                // 本地添加数据
+                if (!Object.prototype.hasOwnProperty.call(this.modifyBuffer, userId)) {
+                    this.modifyBuffer[userId] = this.getEmptyUser();
+                }
+                this.mergeModify(this.modifyBuffer[userId], modifies[userId]);
             }
-            this.mergeModify(this.modifyBuffer[userId], modifies[userId]);
         });
         this.saveUsersData();
-        this.saveModify();
+        this.saveModify(this.modifyTime, this.modifyBuffer);
     },
-    mergeInputModifies: function (inputModifies) {
-        this.modify.keys().then(
-            function (keys) {
-                Object.keys(inputModifies).forEach((inputKey) => {
-                    if (!keys.includes(inputKey)) {
-                        this.mergeModifies(inputModifies[inputKey]);
-                    }
-                });
-            }
+    acceptImportModifies: function (importModifies) {
+        this.modify.keys().then((keys) => {
+            let inputKeys = Object.keys(importModifies);
+            inputKeys.forEach((inputKey) => {
+                if (!keys || !keys.includes(inputKey)) {
+                    this.mergeModifies(importModifies[inputKey], true);
+                    this.saveModify(inputKey, importModifies[inputKey]);
+                }
+            });
+        }
         ).catch(function (err) {
             console.log(err);
         });
     },
-    mergeInputArticles: function (inputArticles) {
+    acceptImportArticles: function (importArticles) {
+        console.log(importArticles);
         this.article.keys().then(
-            function (keys) {
-                Object.keys(inputArticles).forEach((inputKey) => {
-                    if (!keys.includes(inputKey)) {
-                        this.saveArticle(inputArticles[inputKey]);
+            (keys) => {
+                Object.keys(importArticles).forEach((inputKey) => {
+                    if (!keys || !keys.includes(inputKey)) {
+                        this.saveArticle({
+                            url: inputKey,
+                            content: importArticles[inputKey]
+                        });
                     }
                 })
             }).catch(function (err) {
@@ -161,8 +171,7 @@ export default {
             });
     },
     acceptModify: function (ModifyData) {
-        this.mergeModifies(ModifyData);
-        // forageData.saveModify(ModifyData);
+        this.mergeModifies(ModifyData, false);
     },
     saveArticle: function (article) {
         this.article.setItem(article.url, article.content);
@@ -171,6 +180,7 @@ export default {
         localforage.getItem(url, callback)
     },
     getModifies: function (callback) {
+        this.updateModifyTime();
         let modifies = {}
         this.modify.iterate(function (value, key) {
             modifies[key] = value;
