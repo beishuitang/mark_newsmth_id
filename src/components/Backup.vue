@@ -1,8 +1,16 @@
 <template>
   <div>
-    <input type="file" id="newsmth_backup" accept="application/json" />
-    <button @click="handleFiles">导入数据</button>
-    <button @click="saveBackup">导出数据</button>
+    <button @click="showImport=!showImport">导入备份</button>
+    <button @click="prepareBackup">导出备份</button>
+    <div v-if="showImport">
+      <input type="file" id="newsmth_backup" accept="text/plain" />
+      <button @click="handleFiles">导入数据</button>
+    </div>
+    <div v-if="showExport">
+      <button @click="copyToClipboard">复制到剪切板</button>
+      <button :disabled="dis" @click="saveBackup">下载</button>
+      <textarea id="copytextarea" v-model="backup" readonly></textarea>
+    </div>
   </div>
 </template>
 <script>
@@ -13,9 +21,33 @@ export default {
   name: "Backup",
   props: [],
   data: function() {
-    return {};
+    return {
+      showImport: false,
+      showExport: false,
+      dis: true,
+      backup: ""
+    };
   },
   methods: {
+    prepareBackup: function() {
+      this.showExport = !this.showExport;
+      if (this.showExport) {
+        let backup = {
+          config: config,
+          usersData: mainData.usersData,
+          modifies: {},
+          articles: {}
+        };
+        mainData.getArticles(articles => {
+          backup.articles = articles;
+          mainData.getModifies(modifies => {
+            backup.modifies = modifies;
+            this.backup = JSON.stringify(backup);
+            this.dis = false;
+          });
+        });
+      }
+    },
     handleFiles: function handleFiles() {
       var files = document.getElementById("newsmth_backup").files; //获取读取的File对象
       if (files.length == 0) {
@@ -36,35 +68,31 @@ export default {
       };
     },
     saveBackup: function() {
-      function save(backup) {
-        var blob = new Blob([JSON.stringify(backup)], {
-          type: "text/plain;charset=utf-8"
-        });
-        let date = new Date();
-        let fileName =
-          "newsmth_backup_" +
-          date.getFullYear() +
-          "-" +
-          (date.getMonth() + 1) +
-          "-" +
-          date.getDate() +
-          ".json";
-        FileSaver.saveAs(blob, fileName);
-        mainData.updateModifyTime();
-      }
-      let backup = {
-        config: config,
-        usersData: mainData.usersData,
-        modifies: {},
-        articles: {}
-      };
-      mainData.getArticles(function(articles) {
-        backup.articles = articles;
-        mainData.getModifies(function(modifies) {
-          backup.modifies = modifies;
-          save(backup);
-        });
+      var blob = new Blob([this.backup], {
+        type: "text/plain;charset=utf-8"
       });
+      let date = new Date();
+      let fileName =
+        "newsmth_backup_" +
+        date.getFullYear() +
+        "-" +
+        (date.getMonth() + 1) +
+        "-" +
+        date.getDate() +
+        ".txt";
+      FileSaver.saveAs(blob, fileName);
+    },
+    copyToClipboard: function() {
+      var copyTextarea = document.querySelector("#copytextarea");
+      copyTextarea.focus();
+      copyTextarea.select();
+      try {
+        var successful = document.execCommand("copy");
+        var msg = successful ? "successful" : "unsuccessful";
+        console.log("Copying text command was " + msg);
+      } catch (err) {
+        console.log("Oops, unable to copy");
+      }
     }
   }
 };

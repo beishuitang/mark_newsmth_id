@@ -1,7 +1,8 @@
 <script>
+import Backup from "./Backup";
 export default {
   name: "BotFoot",
-  components: {}
+  components: { Backup }
 };
 </script>
 
