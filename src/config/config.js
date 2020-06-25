@@ -28,10 +28,11 @@ export default {
     'ico-pos-edit': true
   },
   init: function () {
-    for (const key in this.storage_keys) {
-      if (Object.prototype.hasOwnProperty.call(this.storage_keys, key)) {
-        const storage_key = this.storage_keys[key];
-        this.storage_keys[key] = this.prefix_str + storage_key;
+    for (const key in this.storageKeys) {
+      if (Object.prototype.hasOwnProperty.call(this.storageKeys, key)) {
+        const storage_key = this.storageKeys[key];
+        this.storageKeys[key] = this.PREFIX_STR + storage_key;
+        console.log(this)
       }
     }
     let simplifyConfig = localStorage.getItem(this.storageKeys.STORAGE_SIMPLIFY_CONFIG);
