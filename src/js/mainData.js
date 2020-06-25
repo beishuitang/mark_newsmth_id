@@ -68,7 +68,17 @@ export default {
         localStorage.setItem(config.storageKeys.STORAGE_MODIFY_TIME, this.modifyTime);
     },
     saveUsersData: function () {
-        localStorage.setItem(config.storageKeys.STORAGE_USERS_DATA, JSON.stringify(this.usersData));
+        let newUsersData = {};
+        Object.keys(this.usersData).forEach(userId => {
+            let user = this.usersData[userId];
+            if (Object.keys(user.tags).length != 0) {
+                newUsersData[userId] = user;
+            }
+        });
+        localStorage.setItem(config.storageKeys.STORAGE_USERS_DATA, JSON.stringify(newUsersData));
+    },
+    getUsersData: function () {
+        return JSON.parse(localStorage.getItem(config.storageKeys.STORAGE_USERS_DATA));
     },
     saveModify: function (modifyTime, modify) {
         // this.modify.setItem(this.modifyTime, this.modifyBuffer);

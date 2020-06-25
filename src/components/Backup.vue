@@ -34,7 +34,7 @@ export default {
       if (this.showExport) {
         let backup = {
           config: config,
-          usersData: mainData.usersData,
+          usersData: mainData.getUsersData,
           modifies: {},
           articles: {}
         };
