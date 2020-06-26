@@ -104,4 +104,10 @@ export default function () {
             propsData: { articleUrl: board + '/' + topicId + articleId, userId: userId, user: mainData.usersData[userId] }
         });
     }
+    let likes = document.querySelectorAll('.add_like');
+    if (likes.length == 2) {
+        likes[1].onclick = function () {
+            likes[0].click();
+        }
+    }
 }
