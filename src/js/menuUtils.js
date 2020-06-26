@@ -22,5 +22,8 @@ export default {
             newMenu.appendChild(menu.firstChild);
         }
         menu.remove();
+    },
+    onMut: function () {
+        config.menuConfig.showMenu = false;
     }
 }

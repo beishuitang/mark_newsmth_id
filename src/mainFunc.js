@@ -22,6 +22,7 @@ export default function () {
         removeAd();
         mainData.onMut();
         frameUtils.onMut();
+        menuUtils.onMut();
     }
     let bodyElement = document.querySelector('#body');
     if (bodyElement.firstChild != null) {
