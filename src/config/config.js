@@ -16,7 +16,7 @@ export default {
   },
   simplifyConfig: {
     simplify: true,
-    'a-u-sex': true,
+    // 'a-u-sex': true,
     'ico-pos-reply': true,
     'ico-pos-template': false,
     'a-func-forward': false,
@@ -24,15 +24,15 @@ export default {
     'a-addfavor': false,
     'ico-pos-search': false,
     'ico-pos-user': false,
-    'a-pos': true,
-    'ico-pos-edit': true
+    // 'a-pos': true,
+    // 'ico-pos-edit': false
+    showModifierSwitch: true
   },
   init: function () {
     for (const key in this.storageKeys) {
       if (Object.prototype.hasOwnProperty.call(this.storageKeys, key)) {
         const storage_key = this.storageKeys[key];
         this.storageKeys[key] = this.PREFIX_STR + storage_key;
-        console.log(this)
       }
     }
     let simplifyConfig = localStorage.getItem(this.storageKeys.STORAGE_SIMPLIFY_CONFIG);

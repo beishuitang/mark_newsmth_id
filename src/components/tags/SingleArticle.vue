@@ -1,5 +1,4 @@
 <script>
-import config from "@/config/config";
 import UserScore from "./UserScore";
 import TagModifier from "./TagModifier";
 import UserTags from "./UserTags";
@@ -17,29 +16,24 @@ export default {
   },
   props: {
     articleUrl: String,
+    articleContent: String,
     userId: String,
-    user: Object
+    user: Object,
+    simplifyConfig: Object
   },
   data: function() {
     return {
       state: this.user.state,
-      show: this.user.state.showUser,
-      showContent: this.user.state.showContent,
-      // showTags: false,
-      // TODO 响应式更新
-      showTags: this.user.state.showTags,
-      showModifier: false,
-      simplifyConfig: config.simplifyConfig,
-      simplify: config.simplifyConfig.simplify
+      showModifier: false
     };
   },
   computed: {
     article: function() {
       return { url: this.articleUrl, content: this.articleContent };
-    },
-    articleContent: function() {
-      return this.$el.querySelector(".a-content p").innerHTML;
     }
+    // articleContent: function() {
+    //   return this.$el.querySelector(".a-content p").innerHTML;
+    // }
   },
   methods: {
     // TODO modify对象滚动
@@ -49,18 +43,22 @@ export default {
       mainData.acceptModify(usersData);
       mainData.saveArticle(this.article);
     },
-    // modifyState: function(state) {
-    //   let modify = this.main_data.get_modify_sample();
-    //   modify.type = 2;
-    //   modify.user.id = this.user_id;
-    //   modify.user.state = state;
-    //   main_data.on_modify(modify, this.article);
-    // },
+    modifyConfig: function(key) {
+      let usersData = { state: {} };
+      usersData.state[key] = this.state[key];
+      mainData.acceptModify(usersData);
+      mainData.saveArticle(this.article);
+    },
     switchModifier: function() {
       this.showModifier = !this.showModifier;
     },
     switchTags: function() {
-      this.showTags = !this.showTags;
+      this.state.showTags = !this.state.showTags;
+      this.modifyConfig("showTags");
+    },
+    switchShowContent: function() {
+      this.state.showContent = !this.state.showContent;
+      this.modifyConfig("showContent");
     }
   }
 };

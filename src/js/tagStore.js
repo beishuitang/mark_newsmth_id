@@ -20,12 +20,13 @@ export default {
     getUserTagsElement: function () {
         let element = document.createElement('user-tags');
         element.setAttribute(':tags', 'user.tags');
-        element.setAttribute('v-if', 'showTags');
+        element.setAttribute('v-if', 'state.showTags');
         return element;
     },
     getModifierSwitchElement: function () {
         let element = document.createElement('modifier-switch');
         element.setAttribute('v-on:click.native', 'switchModifier');
+        element.setAttribute('v-if', 'state.showContent && simplifyConfig.showModifierSwitch');
         return element;
     },
     getTagModifierElement: function () {
