@@ -43,7 +43,8 @@ export default function () {
         a_bottom.lastElementChild.appendChild(a_func_info);
         // simplify
         let p = articleElement.querySelector('.a-body .a-content>p');
-        let pClone = p.cloneNode(false);
+        let pClone = document.createElement('div');
+        // let pClone = p.cloneNode(false);
         articleElement.setAttribute('v-if', 'state.showUser')
         a_body.setAttribute('v-if', 'state.showContent')
         Object.keys(mainData.simplifyConfig).forEach(key => {
@@ -60,43 +61,43 @@ export default function () {
         pClone.setAttribute('v-if', 'simplify')
         pClone.setAttribute('v-on:dblclick', 'simplify=!simplify')
         let childNodes = p.childNodes;
-        let replyChecked = false;
+        let referenceDiv1 = document.createElement('div');
+        let referenceDiv2 = document.createElement('div');
+        referenceDiv1.style = 'max-height:3rem;overflow:hidden';
+        referenceDiv2.style = 'max-height:2rem;overflow:hidden';
+        let replyDiv = document.createElement('div');
+        pClone.appendChild(replyDiv);
+        pClone.appendChild(referenceDiv1);
+        pClone.appendChild(referenceDiv2);
         let endChecked = false;
-        let preBR = false;
+        let replyChecked = false;
+        let currentDiv = replyDiv;
         for (let index = 6; index < childNodes.length; index++) {
             const childNode = childNodes[index];
-            let div = document.createElement('div');
-            let fontNode = childNode.cloneNode(true);
-            div.style = 'max-height:3rem;overflow:hidden';
+            let childNodeClone = childNode.cloneNode(true);
             if (endChecked) {
                 if (childNode.nodeName == 'A') {
-                    pClone.appendChild(childNode.cloneNode(true));
+                    pClone.appendChild(childNodeClone);
                 }
-            } else if (childNode.nodeName == '#text' && childNode.nodeValue == ' -- ') {
-                pClone.appendChild(childNode.cloneNode(true));
+            }
+            else if (childNode.nodeName == '#text' && childNode.nodeValue == ' -- ') {
+                pClone.appendChild(childNodeClone);
                 endChecked = true;
-                // TODO 
-            } else if (childNode.nodeName == 'FONT' && childNode.classList.length > 0) {
-                if (!replyChecked) {
-                    pClone.appendChild(div);
-                    preBR = false;
-                }
-                div.appendChild(fontNode);
-                replyChecked = true;
-            } else if (childNode.nodeName == 'BR') {
-                if (!preBR == true) {
-                    pClone.appendChild(childNode.cloneNode(true));
-                }
-                preBR = true;
-            } else if (childNode.nodeName == '#text' && childNode.nodeValue.match(/[^\s]/) == null) {
-                pClone.appendChild(childNode.cloneNode(true));
             } else {
-                preBR = false;
-                pClone.appendChild(childNode.cloneNode(true));
+                if (childNode.nodeName == '#text' && childNode.nodeValue.match(/^ 【\s?在.*的大作中提到:\s?】/) != null) {
+                    currentDiv = referenceDiv1;
+                }
+                else if (childNode.nodeName == '#text' && childNode.nodeValue.match(/[^\s]/) != null) {
+                    if (currentDiv == replyDiv) {
+                        replyChecked = true;
+                    } else if (!replyChecked) {
+                        currentDiv = referenceDiv2;
+                    }
+                }
+                currentDiv.appendChild(childNodeClone);
             }
         }
         p.parentNode.insertBefore(pClone, p.nextSibling);
-
         // vue function
         let articleId = a_post.href.substring(a_post.href.lastIndexOf('/'))
         let userId = a_u_name.querySelector('a').innerText;
