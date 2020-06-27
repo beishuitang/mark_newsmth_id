@@ -24,6 +24,13 @@ html {
 #html #mp_wrapper ul {
   float: unset;
 }
+.webkit-line-clamp {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+}
+
 #html #html_body samp {
   width: 1rem;
   height: 1rem;

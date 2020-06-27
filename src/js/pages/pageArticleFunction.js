@@ -63,8 +63,10 @@ export default function () {
         let childNodes = p.childNodes;
         let referenceDiv1 = document.createElement('div');
         let referenceDiv2 = document.createElement('div');
-        referenceDiv1.style = 'max-height:3rem;overflow:hidden';
-        referenceDiv2.style = 'max-height:2rem;overflow:hidden';
+        referenceDiv1.classList.add('webkit-line-clamp');
+        referenceDiv2.classList.add('webkit-line-clamp');
+        // referenceDiv1.style = 'max-height:3rem;overflow:hidden';
+        // referenceDiv2.style = 'max-height:2rem;overflow:hidden';
         let replyDiv = document.createElement('div');
         pClone.appendChild(replyDiv);
         pClone.appendChild(referenceDiv1);
