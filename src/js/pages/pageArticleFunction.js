@@ -49,16 +49,16 @@ export default function () {
         Object.keys(mainData.simplifyConfig).forEach(key => {
             let target = a_func.querySelector('.' + key)
             if (target != null) {
-                target.parentNode.setAttribute('v-if', `state.showContent && (!simplifyConfig.simplify || simplifyConfig["${key}"])`);
+                target.parentNode.setAttribute('v-if', `state.showContent && (!simplify || simplifyConfig["${key}"])`);
             }
         });
         a_head.setAttribute('v-on:dblclick', 'switchShowContent')
         a_body.setAttribute('v-if', 'state.showContent')
-        a_bottom.setAttribute('v-if', '!simplifyConfig.simplify')
-        p.setAttribute('v-show', '!simplifyConfig.simplify')
-        p.setAttribute('v-on:dblclick', 'simplifyConfig.simplify=!simplifyConfig.simplify')
-        pClone.setAttribute('v-if', 'simplifyConfig.simplify')
-        pClone.setAttribute('v-on:dblclick', 'simplifyConfig.simplify=!simplifyConfig.simplify')
+        a_bottom.setAttribute('v-if', '!simplify')
+        p.setAttribute('v-show', '!simplify')
+        p.setAttribute('v-on:dblclick', 'simplify=!simplify')
+        pClone.setAttribute('v-if', 'simplify')
+        pClone.setAttribute('v-on:dblclick', 'simplify=!simplify')
         let childNodes = p.childNodes;
         let replyChecked = false;
         let endChecked = false;

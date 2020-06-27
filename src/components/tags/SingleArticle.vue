@@ -24,7 +24,8 @@ export default {
   data: function() {
     return {
       state: this.user.state,
-      showModifier: false
+      showModifier: false,
+      simplify: this.simplifyConfig.simplify
     };
   },
   computed: {
