@@ -9,10 +9,13 @@ export default {
     STORAGE_HAND: 'hand',
     STORAGE_SIMPLIFY_CONFIG: 'simplify_config',
     STORAGE_MODIFY_TIME: 'modify_time',
+    STORAGE_PASSWORD: 'pass',
+    STORAGE_ID: 'id'
   },
   menuConfig: {
     hand: 'left',
     showMenu: false,
+    autoFillPassword: false
   },
   simplifyConfig: {
     simplify: true,
