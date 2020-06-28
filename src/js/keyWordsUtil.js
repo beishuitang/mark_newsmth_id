@@ -17,7 +17,6 @@ export default {
         return this.check(subtree[str[pos]], str, index, shift + 1);
     },
     checkKeyWord: function (keyWord) {
-        console.log(keyWord)
         let result = [];
         for (let index = 0; index < keyWord.length; index++) {
             let m = this.check(this.keyWordsTree, keyWord, index, 0);
