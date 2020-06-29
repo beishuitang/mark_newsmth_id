@@ -1,10 +1,10 @@
 <template>
   <div>
-    <form @submit.prevent="modify(1)">
+    <form @submit.prevent="modify(-1)">
       <input type="text" v-model.trim="tagName" :placeholder="currentTags" />
       <span>({{currentScore}})</span>
-      <button type="submit">赞美👍</button>
-      <button type="button" @click.prevent="modify(-1)">鄙视👎</button>
+      <button type="button" @click.prevent="modify(1)">赞</button>
+      <button type="submit">踩</button>
     </form>
   </div>
 </template>
@@ -19,7 +19,7 @@ export default {
   },
   data: function() {
     return {
-      tagName: "",
+      tagName: ""
     };
   },
   computed: {
