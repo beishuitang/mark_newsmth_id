@@ -64,7 +64,6 @@ export default {
     createNewModifyBuffer: function () {
         this.modifyTime = new Date().getTime().toString();
         this.modifyBuffer = {};
-        localStorage.setItem(config.storageKeys.STORAGE_MODIFY_TIME, this.modifyTime);
     },
     saveUsersData: function () {
         let newUsersData = {};
