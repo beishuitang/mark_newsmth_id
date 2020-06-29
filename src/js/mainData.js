@@ -15,6 +15,8 @@ export default {
     modifyTime: '0',
     usersData: {},
     // forageData
+    modify: null,
+    article: null,
     modifyBuffer: {},
 
     init: function () {
@@ -30,22 +32,18 @@ export default {
         Object.values(this.usersData).forEach((user) => {
             this.reComputeScore(user);
         })
-        // TODO
+        // TODO 无用？
         this.simplifyConfig = config.simplifyConfig;
-        Vue.$simplifyConfig = this.simplifyConfig;
-        // 每天只添加一次
-        let modifyTimeFromStorage = localStorage.getItem(config.storageKeys.STORAGE_MODIFY_TIME);
-        if (modifyTimeFromStorage != null && (new Date() - new Date(parseInt(modifyTimeFromStorage))) < 24 * 60 * 60 * 1000) {
-            this.modifyTime = modifyTimeFromStorage;
-        } else {
-            // this.modifyTime = new Date().getTime().toString();
-            // localStorage.setItem(config.storageKeys.STORAGE_MODIFY_TIME, this.modifyTime);
-            this.updateModifyTime();
-        }
 
         // forageData
         this.article = localforage.createInstance({ name: config.PROJECT_NAME, storeName: "article" });
         this.modify = localforage.createInstance({ name: config.PROJECT_NAME, storeName: "modify" });
+
+        // modifyTime modifyBuffer
+        this.modifyTime = localStorage.getItem(config.storageKeys.STORAGE_MODIFY_TIME);
+        if (this.modifyTime == null) {
+            this.createNewModifyBuffer();
+        }
         this.modify.getItem(this.modifyTime).then((value) => {
             this.modifyBuffer = value ? value : {}
         })
@@ -63,8 +61,9 @@ export default {
     onMut: function () {
         window.scroll(0, this.pageYOffsetData[this.currentPage]);
     },
-    updateModifyTime: function () {
+    createNewModifyBuffer: function () {
         this.modifyTime = new Date().getTime().toString();
+        this.modifyBuffer = {};
         localStorage.setItem(config.storageKeys.STORAGE_MODIFY_TIME, this.modifyTime);
     },
     saveUsersData: function () {
@@ -130,10 +129,22 @@ export default {
                     let s = modify.tags[tagName][reasonUrl].score;
                     let reason = user.tags[tagName][reasonUrl];
                     reason.score += s;
+                    if (reason.score == 0) {
+                        Vue.delete(user.tags[tagName], reasonUrl);
+                    }
+                    if (Object.keys(user.tags[tagName]).length == 0) {
+                        Vue.delete(user.tags, tagName);
+                    }
                     user.score += s;
                 });
             });
         }
+    },
+    mergeModifyToBuffer: function (userId, modify) {
+        if (!Object.prototype.hasOwnProperty.call(this.modifyBuffer, userId)) {
+            this.modifyBuffer[userId] = this.getEmptyUser();
+        }
+        this.mergeModify(this.modifyBuffer[userId], modify);
     },
     mergeModifies: function (modifies, ifImport) {
         Object.keys(modifies).forEach(userId => {
@@ -141,10 +152,7 @@ export default {
             this.mergeModify(this.usersData[userId], modifies[userId]);
             if (!ifImport) {
                 // 本地添加数据
-                if (!Object.prototype.hasOwnProperty.call(this.modifyBuffer, userId)) {
-                    this.modifyBuffer[userId] = this.getEmptyUser();
-                }
-                this.mergeModify(this.modifyBuffer[userId], modifies[userId]);
+                this.mergeModifyToBuffer(userId, modifies[userId]);
             }
         });
         this.saveUsersData();
@@ -165,7 +173,6 @@ export default {
         });
     },
     acceptImportArticles: function (importArticles) {
-        console.log(importArticles);
         this.article.keys().then(
             (keys) => {
                 Object.keys(importArticles).forEach((inputKey) => {
@@ -190,7 +197,7 @@ export default {
         localforage.getItem(url, callback)
     },
     getModifies: function (callback) {
-        this.updateModifyTime();
+        this.createNewModifyBuffer();
         let modifies = {}
         this.modify.iterate(function (value, key) {
             modifies[key] = value;
