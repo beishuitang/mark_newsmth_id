@@ -1,7 +1,7 @@
 <template>
   <div>
     <span>{{tagName}} ({{reason.score}})</span>
-    <a :href="href">{{href}}</a>
+    <a :href="href" target="_blank">{{href}}</a>
     <p v-html="content"></p>
   </div>
 </template>
@@ -28,11 +28,15 @@ export default {
   },
   computed: {
     href: function() {
-      return this.reasonUrl;
+      let arr = this.reasonUrl.split("/");
+      return "#!article/" + arr[0] + "/" + arr[1];
     }
   }
 };
 </script>
 
 <style scoped>
+div {
+  border: double;
+}
 </style>
