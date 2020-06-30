@@ -35,12 +35,14 @@ export default function () {
         a_u_name.appendChild(userScoreEl);
 
         // mobile function
-        let li = document.createElement('li');
-        li.appendChild(a_u_sex);
-        li.appendChild(a_u_name);
-        a_func.insertBefore(li, a_func.firstChild);
-        a_func.appendChild(a_pos);
-        a_bottom.lastElementChild.appendChild(a_func_info);
+        if (config.onMobile) {
+            let li = document.createElement('li');
+            li.appendChild(a_u_sex);
+            li.appendChild(a_u_name);
+            a_func.insertBefore(li, a_func.firstChild);
+            a_func.appendChild(a_pos);
+            a_bottom.lastElementChild.appendChild(a_func_info);
+        }
         // simplify
         let p = articleElement.querySelector('.a-body .a-content>p');
         let pClone = document.createElement('div');
@@ -55,6 +57,7 @@ export default function () {
         });
         a_head.setAttribute('v-on:dblclick', 'switchShowContent')
         a_body.setAttribute('v-if', 'state.showContent')
+        a_body.querySelector('.a-u-img').setAttribute('v-if', '!simplify')
         a_bottom.setAttribute('v-if', '!simplify')
         p.setAttribute('v-show', '!simplify')
         p.setAttribute('v-on:dblclick', 'simplify=!simplify')

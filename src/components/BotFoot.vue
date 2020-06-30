@@ -38,19 +38,19 @@ html {
 /* #top_head #top_menu {
   float: right;
 } */
-#main {
+#html #main {
   margin: unset;
 }
-#main #body {
+#html #main #body {
   margin-bottom: 0.5rem;
 }
-#bot_logo {
+#html #bot_logo {
   text-align: center;
 }
-#bot_info {
+#html #bot_info {
   padding: 0rem 2rem;
 }
-#bot_logo img {
+#html #bot_logo img {
   border: unset;
 }
 #html #html_body .hidden_item {
@@ -65,7 +65,7 @@ html {
   max-height: 100%;
   overflow-y: scroll;
 }
-#left_line samp {
+#html #left_line samp {
   right: 0;
 }
 #html #html_body .toggler {
@@ -78,42 +78,42 @@ html {
   height: 2rem;
   line-height: 2rem;
 }
-.leaf-last samp,
-.leaf samp {
+#html .leaf-last samp,
+#html .leaf samp {
   vertical-align: text-top;
 }
-#u_login {
+#html #u_login {
   padding: 0.5rem 0;
 }
-#menu #u_login .u-login-input input {
+#html #menu #u_login .u-login-input input {
   width: 5rem;
 }
-#menu .u-login-op .submit {
+#html #menu .u-login-op .submit {
   margin: 0 -2px 0 22px;
 }
-.u-login-check {
+#html .u-login-check {
   padding-left: 0.4rem;
 }
-#menu #b_search {
+#html #menu #b_search {
   width: 5rem;
   height: 1rem;
   margin: 0;
   margin-right: 1rem;
 }
-#main #body #top10 h3 {
+#html #main #body #top10 h3 {
   height: 30px;
 }
-.tg_href {
+#html .tg_href {
   padding: 1rem;
 }
-.cur {
+#html .cur {
   text-align: center;
 }
-#main .acts div {
+#html #main .acts div {
   text-align: center;
   display: inline-block;
 }
-#pictures div ul {
+#html #pictures div ul {
   display: flex;
   overflow-x: scroll;
 }
@@ -130,32 +130,32 @@ html {
 #html #ranking ul {
   background-size: 1rem auto;
 }
-.a-left {
+#html .a-left {
   display: none;
 }
-.a-u-sex {
+#html .a-u-sex {
   margin-right: unset;
 }
-.a-u-sex,
-.a-u-name,
-.a-func {
+#html .a-u-sex,
+#html .a-u-name,
+#html .a-func {
   float: unset;
 }
-#main .likes {
+#html #main .likes {
   margin: unset;
 }
-#main #body .b-head .n-right,
-#main #body .a-pos,
-#main #body .a-back {
+#html #main #body .b-head .n-right,
+#html #main #body .a-pos,
+#html #main #body .a-back {
   padding-top: unset;
 }
-#main #body .article {
+#html #main #body .article {
   width: 100%;
 }
-#main #body #quick_reply {
+#html #main #body #quick_reply {
   width: 100%;
 }
-#main #body #quick_submit {
+#html #main #body #quick_submit {
   width: 5rem;
 }
 #html #html_body textarea {
@@ -168,7 +168,7 @@ html {
 #html .post-list {
   padding: unset;
 }
-#main .b-right-m {
+#html #main .b-right-m {
   text-align: unset;
   padding-left: unset;
 }

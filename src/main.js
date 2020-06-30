@@ -1,5 +1,5 @@
 import mainFunc from './mainFunc'
-// import test from './test'
-
 mainFunc();
-// test();
+
+// import test from './test'
+// test.init();

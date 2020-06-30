@@ -1,4 +1,5 @@
 export default {
+  onMobile: false,
   PROJECT_NAME: 'mark_newsmth_id',
   PREFIX_STR: "smth_id_mark_",
   storageKeys: {
@@ -32,6 +33,10 @@ export default {
     showModifierSwitch: true
   },
   init: function () {
+    if (navigator.userAgent.match(/(Mobile)|(Android)/)) {
+      this.onMobile = true;
+    }
+
     for (const key in this.storageKeys) {
       if (Object.prototype.hasOwnProperty.call(this.storageKeys, key)) {
         const storage_key = this.storageKeys[key];

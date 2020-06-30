@@ -1,3 +1,4 @@
+import config from '../../config/config'
 export default function () {
     function moveSlider() {
         let slider = document.querySelector('#slider');
@@ -28,5 +29,7 @@ export default function () {
         }
         slider.remove();
     }
-    moveSlider();
+    if (config.onMobile) {
+        moveSlider();
+    }
 }

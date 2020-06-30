@@ -8,21 +8,25 @@ import pageDispatcher from './js/pageDispatcher'
 
 export default function () {
     config.init();
-    frameUtils.loadCss();
-    frameUtils.initDom();
-    menuUtils.init();
     mainData.init();
-    eventUtils.preventDblclickDefault();
-    eventUtils.initMenuAction();
+    if (config.onMobile) {
+        frameUtils.loadCss();
+        frameUtils.initDom();
+        menuUtils.init();
+        eventUtils.preventDblclickDefault();
+        eventUtils.initMenuAction();
+    }
     window.addEventListener('hashchange', () => {
         mainData.onhashchange();
     });
     function actionOnMut() {
-        pageDispatcher.dispatch();
-        removeAd();
         mainData.onMut();
-        frameUtils.onMut();
-        menuUtils.onMut();
+        pageDispatcher.dispatch();
+        if (config.onMobile) {
+            removeAd();
+            frameUtils.onMut();
+            menuUtils.onMut();
+        }
     }
     let bodyElement = document.querySelector('#body');
     if (bodyElement.firstChild != null) {
