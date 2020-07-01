@@ -59,7 +59,7 @@ export default {
         this.pageYOffsetData[this.prePage] = window.pageYOffset;
     },
     onMut: function () {
-        window.scroll(0, this.pageYOffsetData[this.currentPage]);
+        //
     },
     createNewModifyBuffer: function () {
         this.modifyTime = new Date().getTime().toString();
