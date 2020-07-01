@@ -187,16 +187,10 @@ html {
 #html #html_body .u-info dd {
   line-height: 2rem;
 }
-#html #html_body .title_12 {
-  width: 8rem;
-  text-align: center;
-}
 #html #html_body .board-list.corner .title_1 {
-  /* max-width: 6rem; */
   text-align: center;
 }
 #html #html_body .board-list.corner .title_4 {
-  /* max-width: 2rem; */
   text-align: center;
 }
 </style>

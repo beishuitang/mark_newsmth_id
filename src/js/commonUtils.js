@@ -37,6 +37,36 @@ function relayTr(tr, tdIndexsToMergeArr, tdIndexToDelete) {
         tds[i].remove();
     }
 }
+export function splitTableAll(tableEl, tdIndexsToMoveUp, tdIndexToDelete) {
+    splitTable(tableEl.querySelector('thead'), tdIndexsToMoveUp, tdIndexToDelete);
+    splitTable(tableEl.querySelector('tbody'), tdIndexsToMoveUp, tdIndexToDelete);
+}
+function splitTable(trWrapper, tdIndexsToMoveUp, tdIndexToDelete) {
+    let trs = trWrapper.children;
+    for (let index = trs.length - 1; index > -1; index--) {
+        const tr = trs[index];
+        splitTr(tr, tdIndexsToMoveUp, tdIndexToDelete);
+    }
+}
+function splitTr(tr, tdIndexsToMoveUp, tdIndexToDelete) {
+    let trClone = tr.cloneNode(false);
+    tr.parentNode.insertBefore(trClone, tr);
+    let tds = tr.children;
+    let tdBuffer = [];
+    for (let index = tdIndexToDelete.length - 1; index >= 0; index--) {
+        const i = tdIndexToDelete[index];
+        // tds[i].remove();
+        tdBuffer.push(tds[i]);
+    }
+    tdIndexsToMoveUp.forEach(tdIndexAndColspan => {
+        let td = tds[tdIndexAndColspan[0]];
+        td.setAttribute('colspan', tdIndexAndColspan[1]);
+        trClone.appendChild(td);
+    });
+    tdBuffer.forEach(td => {
+        td.remove();
+    });
+}
 export function removeAd() {
     let list = [];
     // list.push(document.querySelectorAll('.clearfix'))

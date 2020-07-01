@@ -7,5 +7,9 @@ export default function () {
     if (config.onMobile) {
         splitName(userEls);
         relayTableAll(tableEl, [[3, 2]], [0, 2, 4, 5, 6, 7, 8]);
+        // splitTableAll(tableEl, [[1, 8]], [0, 4, 5, 6, 8]);
+        userEls.forEach((el) => {
+            el.style = 'width:8rem;text-align:center';
+        })
     }
 }
