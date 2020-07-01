@@ -109,6 +109,9 @@ html {
 #html .cur {
   text-align: center;
 }
+#html #hotspot .topics {
+  border: unset;
+}
 #html #main .acts div {
   text-align: center;
   display: inline-block;
