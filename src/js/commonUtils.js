@@ -49,7 +49,8 @@ export function removeAd() {
     list.forEach(elements => {
         for (let index = 0; index < elements.length; index++) {
             const element = elements[index];
-            element.remove();
+            // element.remove();
+            element.style = 'display:none';
         }
     });
 }
