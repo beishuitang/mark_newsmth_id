@@ -141,7 +141,8 @@ html {
 }
 #html .a-u-sex,
 #html .a-u-name,
-#html .a-func {
+#html .a-func,
+#html .page {
   float: unset;
 }
 #html #main .likes {
