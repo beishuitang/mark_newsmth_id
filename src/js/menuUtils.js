@@ -5,10 +5,10 @@ import { mut } from './commonUtils'
 export default {
     init: function () {
         let menu = document.querySelector('#menu')
-        let left_adv = menu.querySelector('#left_adv');
-        if (left_adv != null) {
-            left_adv.remove();
-        }
+        // let left_adv = menu.querySelector('#left_adv');
+        // if (left_adv != null) {
+        //     left_adv.remove();
+        // }
         let m = Vue.extend(Menu);
         let newMenu = document.createElement('menu');
         document.querySelector('body').insertBefore(newMenu, menu);
