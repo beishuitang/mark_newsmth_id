@@ -7,9 +7,7 @@ export default {
 </script>
 
 <style>
-html {
-  word-break: break-word;
-}
+/* html {  word-break: break-word;} */
 #html,
 #html_body,
 #html #html_body * {

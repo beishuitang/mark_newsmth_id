@@ -34,7 +34,8 @@ function relayTr(tr, tdIndexsToMergeArr, tdIndexToDelete) {
     });
     for (let index = tdIndexToDelete.length - 1; index >= 0; index--) {
         const i = tdIndexToDelete[index];
-        tds[i].remove();
+        tds[i].style.display = 'none';
+        // tds[i].remove();
     }
 }
 export function splitTableAll(tableEl, tdIndexsToMoveUp, tdIndexToDelete) {
