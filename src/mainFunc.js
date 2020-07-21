@@ -5,6 +5,7 @@ import eventUtils from './js/eventUtil'
 import { mut, removeAd } from './js/commonUtils'
 import mainData from './js/mainData'
 import pageDispatcher from './js/pageDispatcher'
+import browseUtil from './js/browseUtil'
 
 export default function () {
     config.init();
@@ -15,6 +16,7 @@ export default function () {
         menuUtils.init();
         eventUtils.preventDblclickDefault();
         eventUtils.initMenuAction();
+        browseUtil.init();
     }
     window.addEventListener('hashchange', () => {
         mainData.onhashchange();
