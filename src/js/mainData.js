@@ -5,25 +5,29 @@ import localforage from "localforage"
 export default {
     // session data
     pageYOffsetData: {},
-    prePage: location.hash,
-    currentPage: location.hash,
+    prePageHash: location.hash,
+    currentPageHash: location.hash,
     mainHash: '',
     mainpagePart: {},
     picturesXOffset: 0,
     reg: /#!(\w+)(\/|$)/,
+    articleReg: /(article\/[\w|.]+\/\d+)(\?p=(\d+))?/,
+    linksBeforeTopic: [],
+    topicLinks: [],
     // storage data
     modifyTime: '0',
     usersData: {},
     // forageData
     modify: null,
     article: null,
+    topicInfo: null,
     modifyBuffer: {},
 
     init: function () {
         // sessionData
         let m = location.hash.match(this.reg);
         this.mainHash = m[1];
-
+        // TODO
         // storageData
         let usersData = localStorage.getItem(config.storageKeys.STORAGE_USERS_DATA);
         if (usersData != null) {
@@ -38,6 +42,7 @@ export default {
         // forageData
         this.article = localforage.createInstance({ name: config.PROJECT_NAME, storeName: "article" });
         this.modify = localforage.createInstance({ name: config.PROJECT_NAME, storeName: "modify" });
+        this.topicInfo = localforage.createInstance({ name: config.PROJECT_NAME, storeName: "topic" });
 
         // modifyTime modifyBuffer
         this.modifyTime = localStorage.getItem(config.storageKeys.STORAGE_MODIFY_TIME);
@@ -54,12 +59,22 @@ export default {
             this.picturesXOffset = container.scrollLeft;
         }
         this.mainHash = location.hash.match(this.reg)[1];
-        this.prePage = this.currentPage;
-        this.currentPage = location.hash.replace(/\?p=1$/, '');
-        this.pageYOffsetData[this.prePage] = window.pageYOffset;
+        this.prePageHash = this.currentPageHash;
+        this.currentPageHash = location.hash.replace(/\?p=1$/, '');
+        this.pageYOffsetData[this.prePageHash] = window.pageYOffset;
     },
     onMut: function () {
-        //
+        let m = this.currentPageHash.match(this.articleReg);
+        let a_names = document.querySelectorAll('#body>.b-content>a');
+        if (m != null && a_names.length > 0) {
+            let pos = a_names[a_names.length - 1].name.substr(1);
+            this.saveTopicInfo(m[1], { p: parseInt(m[3] ? m[3] : '1'), pos: parseInt(pos) });
+        }
+        let m0 = this.prePageHash.match(this.articleReg);
+        if (m != null && m0 == null) {
+            this.linksBeforeTopic.pop();
+            this.linksBeforeTopic.push(location.origin + location.pathname + this.prePageHash);
+        }
     },
     createNewModifyBuffer: function () {
         this.modifyTime = new Date().getTime().toString();
@@ -193,7 +208,7 @@ export default {
         this.article.setItem(article.url, article.content);
     },
     getArticle: function (url, callback) {
-        localforage.getItem(url, callback)
+        this.article.getItem(url, callback)
     },
     getModifies: function (callback) {
         this.createNewModifyBuffer();
@@ -215,5 +230,12 @@ export default {
         }).catch(function (err) {
             console.log(err);
         });
-    }
+    },
+    saveTopicInfo: function (topicUrl, topicInfo, callback) {
+        this.topicInfo.setItem(topicUrl, topicInfo, callback);
+    },
+    getTopicInfo: function (topicUrl, callback) {
+        this.topicInfo.getItem(topicUrl, callback)
+    },
+
 }
