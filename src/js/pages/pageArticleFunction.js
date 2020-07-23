@@ -47,21 +47,21 @@ export default function () {
         let p = articleElement.querySelector('.a-body .a-content>p');
         let pClone = document.createElement('div');
         // let pClone = p.cloneNode(false);
-        articleElement.setAttribute('v-if', 'state.showUser')
-        a_body.setAttribute('v-if', 'state.showContent')
+        articleElement.setAttribute('v-show', 'state.showUser')
+        a_body.setAttribute('v-show', 'state.showContent')
         Object.keys(mainData.simplifyConfig).forEach(key => {
             let target = a_func.querySelector('.' + key)
             if (target != null) {
-                target.parentNode.setAttribute('v-if', `state.showContent && (!simplify || simplifyConfig["${key}"])`);
+                target.parentNode.setAttribute('v-show', `state.showContent && (!simplify || simplifyConfig["${key}"])`);
             }
         });
         a_head.setAttribute('v-on:dblclick', 'switchShowContent')
-        a_body.setAttribute('v-if', 'state.showContent')
-        a_body.querySelector('.a-u-img').setAttribute('v-if', '!simplify')
-        a_bottom.setAttribute('v-if', '!simplify')
+        a_body.setAttribute('v-show', 'state.showContent')
+        a_body.querySelector('.a-u-img').setAttribute('v-show', '!simplify')
+        a_bottom.setAttribute('v-show', '!simplify')
         p.setAttribute('v-show', '!simplify')
         p.setAttribute('v-on:dblclick', 'simplify=!simplify')
-        pClone.setAttribute('v-if', 'simplify')
+        pClone.setAttribute('v-show', 'simplify')
         pClone.setAttribute('v-on:dblclick', 'simplify=!simplify')
         let childNodes = p.childNodes;
         let referenceDiv1 = document.createElement('div');
