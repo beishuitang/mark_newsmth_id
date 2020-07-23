@@ -15,8 +15,8 @@ export default function () {
         frameUtils.initDom();
         menuUtils.init();
         eventUtils.preventDblclickDefault();
-        eventUtils.initMenuAction();
         browseUtil.init();
+        eventUtils.initAction();
     }
     window.addEventListener('hashchange', () => {
         mainData.onhashchange();

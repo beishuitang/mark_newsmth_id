@@ -16,24 +16,33 @@ export default {
         else
             element["on" + type] = handler;
     },
-    initMenuAction: function () {
+    initAction: function () {
         let menuConfig = config.menuConfig;
-        this.listenTouchDirection(document.querySelector('body'), false, false, function () {
-            if (menuConfig.hand == 'left' && menuConfig.showMenu != true) {
-                menuConfig.showMenu = true;
-            } else if (menuConfig.hand != 'left' && menuConfig.showMenu != false) {
-                menuConfig.showMenu = false;
-            }
-        }, false, function () {
-            if (menuConfig.hand != 'left' && menuConfig.showMenu != true) {
-                menuConfig.showMenu = true;
-            }
-            if (menuConfig.hand == 'left' && menuConfig.showMenu != false) {
-                menuConfig.showMenu = false;
-            }
-        });
+        this.listenTouchDirection(
+            document.querySelector('body'),
+            false,
+            false,
+            function () {
+                if (menuConfig.hand == 'left' && menuConfig.showMenu != true) {
+                    menuConfig.showMenu = true;
+                } else if (menuConfig.hand != 'left' && menuConfig.showMenu != false) {
+                    menuConfig.showMenu = false;
+                }
+            },
+            false,
+            function () {
+                if (menuConfig.hand != 'left' && menuConfig.showMenu != true) {
+                    menuConfig.showMenu = true;
+                }
+                if (menuConfig.hand == 'left' && menuConfig.showMenu != false) {
+                    menuConfig.showMenu = false;
+                }
+            },
+            this.bottomUpCallback
+        );
 
     },
+    bottomUpCallback: null,
     preventDblclickDefault: function () {
         document.querySelector('#body').addEventListener('mousedown', function (event) {
             if (event.detail > 1) {
@@ -49,18 +58,21 @@ export default {
      * @param rightCallback     向右滑动的监听回调（若不关心，可以不传，或传false）
      * @param downCallback      向下滑动的监听回调（若不关心，可以不传，或传false）
      * @param leftCallback      向左滑动的监听回调（若不关心，可以不传，或传false）
+     * @param bottomUpCallback  从底部向上滑动的监听回调（若不关心，可以不传，或传false）
      */
-    listenTouchDirection: function (target, isPreventDefault, upCallback, rightCallback, downCallback, leftCallback) {
+    listenTouchDirection: function (target, isPreventDefault, upCallback, rightCallback, downCallback, leftCallback, bottomUpCallback) {
         this.addHandler(target, "touchstart", handleTouchEvent);
         this.addHandler(target, "touchend", handleTouchEvent);
         this.addHandler(target, "touchmove", handleTouchEvent);
         var startX;
         var startY;
+        var bottom;
         function handleTouchEvent(event) {
             switch (event.type) {
                 case "touchstart":
                     startX = event.touches[0].clientX;
                     startY = event.touches[0].clientY;
+                    bottom = (window.scrollY + window.innerHeight + 2) > document.body.clientHeight;
                     break;
                 case "touchend":
                     var path = event.path;
@@ -86,13 +98,13 @@ export default {
                                 leftCallback();
                             }
                         }
-                    } else {                                    //认定为垂直方向滑动
+                    } else if (2 * Math.abs(spanX) < Math.abs(spanY)) {   //认定为垂直方向滑动
                         if (spanY > 30) {         //向下
                             if (downCallback)
                                 downCallback();
                         } else if (spanY < -30) {//向上
-                            if (upCallback)
-                                upCallback();
+                            if (bottom && bottomUpCallback)
+                                bottomUpCallback();
                         }
                     }
                     break;
