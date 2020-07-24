@@ -1,6 +1,7 @@
 import config from '../../config/config'
 import mainData from '../mainData'
 import { splitName, relayTableAll } from '../commonUtils'
+import browserUtil from '../browseUtil'
 export default function () {
     let bodyEl = document.getElementById('body');
     let tableEl = bodyEl.querySelector('table');
@@ -18,18 +19,10 @@ export default function () {
     // let topicTrs = document.querySelectorAll('.board-list .title_9>a');
     mainData.topicLinks.splice(0, mainData.topicLinks.length);
     for (let index = 0; index < topicTrs.length; index++) {
-        let topicEl = topicTrs[index].querySelector('.title_9>a');
-        let a_href = topicEl.href;
+        let topic_el = topicTrs[index].querySelector('.title_9>a');
+        // let a_href = topic_el.href;
         let pos_el = topicTrs[index].querySelectorAll('.middle')[2];
         let pos = parseInt(pos_el.innerHTML);
-        let m1 = a_href.match(mainData.articleReg);
-        mainData.getTopicInfo(m1[1], (err, inputInfo) => {
-            let info = inputInfo ? inputInfo : { p: 1, pos: -1 };
-            if (pos > info.pos) {
-                mainData.topicLinks.push(a_href += `?p=${info.p}`);
-            } else {
-                topicEl.style.color = 'currentcolor'
-            }
-        })
+        browserUtil.addVisitedLinkStyle(topic_el, pos)
     }
 }
