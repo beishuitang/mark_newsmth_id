@@ -67,8 +67,12 @@ export default {
         let m = this.currentPageHash.match(this.articleReg);
         let a_names = document.querySelectorAll('#body>.b-content>a');
         if (m != null && a_names.length > 0) {
-            let pos = a_names[a_names.length - 1].name.substr(1);
-            this.saveTopicInfo(m[1], { p: parseInt(m[3] ? m[3] : '1'), pos: parseInt(pos) });
+            let pos = parseInt(a_names[a_names.length - 1].name.substr(1));
+            this.getTopicInfo(m[1], (err, info) => {
+                if (!info || info.pos < pos) {
+                    this.saveTopicInfo(m[1], { p: parseInt(m[3] ? m[3] : '1'), pos: pos });
+                }
+            })
         }
         let m0 = this.prePageHash.match(this.articleReg);
         if (m != null && m0 == null) {
