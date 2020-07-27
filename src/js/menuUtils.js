@@ -33,17 +33,17 @@ export default {
         this.addSettingMenu();
     },
     addSettingMenu: function () {
-        if (document.querySelector('#setting') != null) {
+        if (document.querySelector('#menu_setting') != null) {
             return;
         }
         let ul = document.querySelector('#menu #xlist>ul');
         let li = ul.querySelector('li').cloneNode(true);
-        li.setAttribute('id', 'setting');
+        li.setAttribute('id', 'menu_setting');
         li.querySelector('ul').remove();
         li.querySelector('.toggler').style = 'background-position:-255px -20px';
         li.querySelector('a').innerText = '设置选项';
         li.onclick = function () {
-            config.setting.show = !config.setting.show;
+            config.settingConfig.show = !config.settingConfig.show;
             config.menuConfig.showMenu = false;
         }
         ul.appendChild(li);
