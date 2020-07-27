@@ -49,12 +49,14 @@ export default function () {
         // let pClone = p.cloneNode(false);
         articleElement.setAttribute('v-show', 'state.showUser')
         a_body.setAttribute('v-show', 'state.showContent')
-        Object.keys(mainData.simplifyConfig).forEach(key => {
-            let target = a_func.querySelector('.' + key)
-            if (target != null) {
-                target.parentNode.setAttribute('v-show', `state.showContent && (!simplify || simplifyConfig["${key}"])`);
+        let funcConfig = config.simplifyConfig.func;
+        let li_a = a_func.querySelectorAll('li>a');
+        for (let index = 0; index < li_a.length; index++) {
+            const a = li_a[index];
+            if (Object.prototype.hasOwnProperty.call(funcConfig, a.innerText)) {
+                a.parentNode.setAttribute('v-show', `!simplify || simplifyConfig.func['${a.innerText}']`);
             }
-        });
+        }
         a_head.setAttribute('v-on:dblclick', 'switchShowContent')
         a_body.setAttribute('v-show', 'state.showContent')
         a_body.querySelector('.a-u-img').setAttribute('v-show', '!simplify')

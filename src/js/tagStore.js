@@ -26,7 +26,7 @@ export default {
     getModifierSwitchElement: function () {
         let element = document.createElement('modifier-switch');
         element.setAttribute('v-on:click.native', 'switchModifier');
-        element.setAttribute('v-if', 'state.showContent && simplifyConfig.showModifierSwitch');
+        element.setAttribute('v-if', '!simplify || simplifyConfig.func["标记"]');
         return element;
     },
     getTagModifierElement: function () {
