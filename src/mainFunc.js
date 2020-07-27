@@ -6,10 +6,12 @@ import { mut, removeAd } from './js/commonUtils'
 import mainData from './js/mainData'
 import pageDispatcher from './js/pageDispatcher'
 import browseUtil from './js/browseUtil'
+import settingUtil from './js/settingUtil'
 
 export default function () {
     config.init();
     mainData.init();
+    settingUtil.init();
     if (config.onMobile) {
         frameUtils.loadCss();
         frameUtils.initDom();

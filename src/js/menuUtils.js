@@ -5,10 +5,7 @@ import { mut } from './commonUtils'
 export default {
     init: function () {
         let menu = document.querySelector('#menu')
-        // let left_adv = menu.querySelector('#left_adv');
-        // if (left_adv != null) {
-        //     left_adv.remove();
-        // }
+
         let m = Vue.extend(Menu);
         let newMenu = document.createElement('menu');
         document.querySelector('body').insertBefore(newMenu, menu);
@@ -31,6 +28,19 @@ export default {
     },
     onMenuMut: function () {
         // this.savePassword();
+        this.addSettingMenu();
+    },
+    addSettingMenu: function () {
+        let ul = document.querySelector('#menu #xlist>ul');
+        let li = ul.querySelector('li').cloneNode(true);
+        li.querySelector('ul').remove();
+        li.querySelector('.toggler').style = 'background-position:-255px -20px';
+        li.querySelector('a').innerText = '设置选项';
+        li.onclick = function () {
+            config.setting.show = !config.setting.show;
+            config.menuConfig.showMenu = false;
+        }
+        ul.appendChild(li);
     },
     savepassword: function () {
         let ifAutoFillPassword = config.menuConfig.autoFillPassword;
