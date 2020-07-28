@@ -1,9 +1,7 @@
 <script>
 export default {
+  props: ["frameConfig"],
   name: "TopHead",
-  props: {
-    msg: String
-  }
 };
 </script>
 
