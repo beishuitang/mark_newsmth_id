@@ -25,10 +25,13 @@ export default {
     return {
       state: this.user.state,
       showModifier: false,
-      simplify: this.simplifyConfig.simplify,
+      simplified: this.simplifyConfig.simplify,
     };
   },
   computed: {
+    simplify: function () {
+      return this.simplified && this.simplifyConfig.simplify;
+    },
     article: function () {
       return { url: this.articleUrl, content: this.articleContent };
     },

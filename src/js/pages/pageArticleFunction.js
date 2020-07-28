@@ -62,9 +62,9 @@ export default function () {
         a_body.querySelector('.a-u-img').setAttribute('v-show', '!simplify')
         a_bottom.setAttribute('v-show', '!simplify')
         p.setAttribute('v-show', '!simplify')
-        p.setAttribute('v-on:dblclick', 'simplify=!simplify')
+        p.setAttribute('v-on:dblclick', 'simplified=!simplified')
         pClone.setAttribute('v-show', 'simplify')
-        pClone.setAttribute('v-on:dblclick', 'simplify=!simplify')
+        pClone.setAttribute('v-on:dblclick', 'simplified=!simplified')
         let childNodes = p.childNodes;
         let referenceDiv1 = document.createElement('div');
         let referenceDiv2 = document.createElement('div');
