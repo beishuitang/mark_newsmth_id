@@ -33,17 +33,17 @@ export default {
         this.addSettingMenu();
     },
     addSettingMenu: function () {
-        if (document.querySelector('#setting') != null) {
+        if (document.querySelector('#menu_setting') != null) {
             return;
         }
         let ul = document.querySelector('#menu #xlist>ul');
         let li = ul.querySelector('li').cloneNode(true);
-        li.setAttribute('id', 'setting');
+        li.setAttribute('id', 'menu_setting');
         li.querySelector('ul').remove();
         li.querySelector('.toggler').style = 'background-position:-255px -20px';
         li.querySelector('a').innerText = '设置选项';
         li.onclick = function () {
-            config.setting.show = !config.setting.show;
+            config.settingConfig.show = !config.settingConfig.show;
             config.menuConfig.showMenu = false;
         }
         ul.appendChild(li);
@@ -53,10 +53,14 @@ export default {
         let u_id = document.querySelector('#u_login_id');
         let u_passwd = document.querySelector('#u_login_passwd');
         let u_login_submit = document.querySelector('#u_login_submit');
+        let storageIdKey = config.storageKeys.STORAGE_ID;
+        let storagePasswdKey = config.storageKeys.STORAGE_PASSWORD;
+        if (!ifAutoFillPassword) {
+            localStorage.setItem(storagePasswdKey, '');
+            localStorage.setItem(storageIdKey, '');
+        }
         if (ifAutoFillPassword && u_id != null && u_passwd != null && !u_id.getAttribute('watched')) {
             u_id.setAttribute('watched', true);
-            let storageIdKey = config.storageKeys.STORAGE_ID;
-            let storagePasswdKey = config.storageKeys.STORAGE_PASSWORD;
             u_id.value = localStorage.getItem(storageIdKey);
             u_passwd.value = localStorage.getItem(storagePasswdKey);
             u_login_submit.addEventListener('click', function () {

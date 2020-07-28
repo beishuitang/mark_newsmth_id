@@ -12,56 +12,59 @@ export default {
     TagModifier,
     UserTags,
     ModifierSwitch,
-    ShowSwitch
+    ShowSwitch,
   },
   props: {
     articleUrl: String,
     articleContent: String,
     userId: String,
     user: Object,
-    simplifyConfig: Object
+    simplifyConfig: Object,
   },
-  data: function() {
+  data: function () {
     return {
       state: this.user.state,
       showModifier: false,
-      simplify: this.simplifyConfig.simplify
+      simplified: this.simplifyConfig.simplify,
     };
   },
   computed: {
-    article: function() {
+    simplify: function () {
+      return this.simplified && this.simplifyConfig.simplify;
+    },
+    article: function () {
       return { url: this.articleUrl, content: this.articleContent };
-    }
+    },
     // articleContent: function() {
     //   return this.$el.querySelector(".a-content p").innerHTML;
     // }
   },
   methods: {
     // TODO modify对象滚动
-    modifyTag: function(tags) {
+    modifyTag: function (tags) {
       let usersData = {};
       usersData[this.userId] = { tags: tags };
       mainData.acceptModify(usersData);
       mainData.saveArticle(this.article);
     },
-    modifyConfig: function(key) {
+    modifyConfig: function (key) {
       let usersData = { state: {} };
       usersData.state[key] = this.state[key];
       mainData.acceptModify(usersData);
       mainData.saveArticle(this.article);
     },
-    switchModifier: function() {
+    switchModifier: function () {
       this.showModifier = !this.showModifier;
     },
-    switchTags: function() {
+    switchTags: function () {
       this.state.showTags = !this.state.showTags;
       this.modifyConfig("showTags");
     },
-    switchShowContent: function() {
+    switchShowContent: function () {
       this.state.showContent = !this.state.showContent;
       this.modifyConfig("showContent");
-    }
-  }
+    },
+  },
 };
 </script>
 

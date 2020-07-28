@@ -50,10 +50,18 @@ export default {
     //     });
     // },
     initDom: function () {
-        new (Vue.extend(TopHead))({ el: '#top_head' });
+        document.querySelector('#top_head').setAttribute('v-show', 'frameConfig.showHead');
+        new (Vue.extend(TopHead))({
+            el: '#top_head',
+            propsData: { frameConfig: config.frameConfig }
+        });
         let backup = document.createElement('backup');
         document.querySelector('#bot_info').appendChild(backup);
-        new (Vue.extend(BotFoot))({ el: '#bot_foot' });
+        document.querySelector('#bot_foot').setAttribute('v-show', 'frameConfig.showFoot');
+        new (Vue.extend(BotFoot))({
+            el: '#bot_foot',
+            propsData: { frameConfig: config.frameConfig }
+        });
 
         // let span = document.createElement('span');
         // span.setAttribute('id', 'backup')
