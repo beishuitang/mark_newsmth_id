@@ -29,7 +29,47 @@ export default function () {
         }
         slider.remove();
     }
+    function initSection() {
+        let sections = config.mainpageConfig.section.concat(config.mainpageConfig.others);
+        for (let index = 0; index < sections.length; index++) {
+            const sectionInfo = sections[index];
+            let els = document.querySelectorAll(sectionInfo.main);
+            for (let i = 0; i < els.length; i++) {
+                const el = els[i];
+                let title_el = el.querySelector(sectionInfo.title);
+                // console.log(title_el)
+                if (title_el != null) {
+                    title_el.ondblclick = function () {
+                        for (let m = 0; m < el.children.length; m++) {
+                            const child_el = el.children[m];
+                            if (title_el !== child_el) {
+                                if (child_el.classList.contains('hidden_item')) {
+                                    child_el.classList.remove('hidden_item');
+                                } else {
+                                    child_el.classList.add('hidden_item');
+                                }
+                            }
+                        }
+                    }
+                }
+                switch (sectionInfo.state) {
+                    case '0':
+                        // el.classList.add('hidden_item');
+                        el.style.display = 'none';
+                        break;
+                    case '1':
+                        title_el.ondblclick()
+                        // el.classList.remove('hidden_item');
+                        break;
+                    default:
+                        // el.classList.remove('hidden_item');
+                        break;
+                }
+            }
+        }
+    }
     if (config.onMobile) {
         moveSlider();
+        initSection();
     }
 }
