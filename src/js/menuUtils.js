@@ -20,7 +20,7 @@ export default {
             newMenu.appendChild(menu.firstChild);
         }
         menu.remove();
-        this.onMenuMut();
+        // this.onMenuMut();
         mut(newMenu, { attributes: true, childList: false, subtree: false }, () => {
             this.onMenuMut();
         });
