@@ -7,7 +7,7 @@ import mainData from './js/mainData'
 import pageDispatcher from './js/pageDispatcher'
 import browseUtil from './js/browseUtil'
 import settingUtil from './js/settingUtil'
-
+import panelUtil from './js/panelUtil'
 export default function () {
     config.init();
     mainData.init();
@@ -16,6 +16,7 @@ export default function () {
         frameUtils.loadCss();
         frameUtils.initDom();
         menuUtils.init();
+        panelUtil.init();
         eventUtils.preventDblclickDefault();
         browseUtil.init();
         eventUtils.initAction();

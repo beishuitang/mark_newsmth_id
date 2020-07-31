@@ -18,24 +18,24 @@ export default {
     },
     initAction: function () {
         let menuConfig = config.menuConfig;
+        let panelConfig = config.panelConfig;
         this.listenTouchDirection(
             document.querySelector('body'),
             false,
             false,
             function () {
-                if (menuConfig.hand == 'left' && menuConfig.showMenu != true) {
+                if (panelConfig.showPanel == true) {
+                    panelConfig.showPanel = false;
+                } else {
                     menuConfig.showMenu = true;
-                } else if (menuConfig.hand != 'left' && menuConfig.showMenu != false) {
-                    menuConfig.showMenu = false;
                 }
             },
             false,
             function () {
-                if (menuConfig.hand != 'left' && menuConfig.showMenu != true) {
-                    menuConfig.showMenu = true;
-                }
-                if (menuConfig.hand == 'left' && menuConfig.showMenu != false) {
+                if (menuConfig.showMenu == true) {
                     menuConfig.showMenu = false;
+                } else {
+                    panelConfig.showPanel = true;
                 }
             },
             this.bottomUpCallback

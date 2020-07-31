@@ -22,6 +22,9 @@ export default {
     showMenu: false,
     autoFillPassword: true
   },
+  panelConfig: {
+    showPanel: false,
+  },
   frameConfig: {
     showHead: true,
     showFoot: false
@@ -78,6 +81,7 @@ export default {
       this.simplifyConfig = storageConfig.simplifyConfig;
       this.menuConfig = storageConfig.menuConfig;
       this.mainpageConfig = storageConfig.mainpageConfig;
+      this.panelConfig = storageConfig.panelConfig;
     }
     window.smthConfig = this;
   }
