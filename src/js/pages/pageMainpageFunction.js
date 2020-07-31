@@ -52,17 +52,14 @@ export default function () {
                         }
                     }
                 }
-                switch (sectionInfo.state) {
-                    case '0':
-                        // el.classList.add('hidden_item');
+                switch (parseInt(sectionInfo.state)) {
+                    case 0:
                         el.style.display = 'none';
                         break;
-                    case '1':
+                    case 1:
                         title_el.ondblclick()
-                        // el.classList.remove('hidden_item');
                         break;
                     default:
-                        // el.classList.remove('hidden_item');
                         break;
                 }
             }
