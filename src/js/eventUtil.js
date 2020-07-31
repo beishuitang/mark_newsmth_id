@@ -1,4 +1,5 @@
 import config from '../config/config'
+import mainData from '../js/mainData'
 export default {
     addHandler: function (element, type, handler) {
         if (element.addEventListener)
@@ -22,7 +23,6 @@ export default {
         this.listenTouchDirection(
             document.querySelector('body'),
             false,
-            false,
             function () {
                 if (panelConfig.showPanel == true) {
                     panelConfig.showPanel = false;
@@ -30,7 +30,6 @@ export default {
                     menuConfig.showMenu = true;
                 }
             },
-            false,
             function () {
                 if (menuConfig.showMenu == true) {
                     menuConfig.showMenu = false;
@@ -38,11 +37,42 @@ export default {
                     panelConfig.showPanel = true;
                 }
             },
-            this.bottomUpCallback
+            this.bottomUpCallback.bind(this),
+            this.topDownCallback.bind(this),
         );
 
     },
-    bottomUpCallback: null,
+    topBottomCallback: function (direction) {
+        // if (mainData.mainHash != 'article') {
+        //     return;
+        // }
+        let currentPageEl = document.querySelector(".page-select");
+        let pageEl;
+        if (direction) {
+            pageEl = currentPageEl.nextElementSibling;
+        } else {
+            pageEl = currentPageEl.previousElementSibling
+        }
+        if (pageEl != null) {
+            pageEl.querySelector("a").click();
+        } else {
+            // let el = currentPageEl.querySelector("a");
+            let el = document.createElement('a');
+            let linksBefore = mainData.linksBefore;
+            if (linksBefore.length != 0) {
+                el.href = linksBefore[0];
+                el.click();
+            }
+        }
+    },
+    bottomUpCallback: function () {
+        this.topBottomCallback(true);
+    },
+    topDownCallback: function () {
+        this.topBottomCallback(false);
+    },
+
+
     preventDblclickDefault: function () {
         document.querySelector('#body').addEventListener('mousedown', function (event) {
             if (event.detail > 1) {
@@ -54,25 +84,26 @@ export default {
      * 监听触摸的方向
      * @param target            要绑定监听的目标元素
      * @param isPreventDefault  是否屏蔽掉触摸滑动的默认行为（例如页面的上下滚动，缩放等）
-     * @param upCallback        向上滑动的监听回调（若不关心，可以不传，或传false）
-     * @param rightCallback     向右滑动的监听回调（若不关心，可以不传，或传false）
-     * @param downCallback      向下滑动的监听回调（若不关心，可以不传，或传false）
+     * @param rightCallback      向下滑动的监听回调（若不关心，可以不传，或传false）
      * @param leftCallback      向左滑动的监听回调（若不关心，可以不传，或传false）
      * @param bottomUpCallback  从底部向上滑动的监听回调（若不关心，可以不传，或传false）
+     * @param topDownCallback   从顶部向下滑动的监听回调（若不关心，可以不传，或传false）
      */
-    listenTouchDirection: function (target, isPreventDefault, upCallback, rightCallback, downCallback, leftCallback, bottomUpCallback) {
+    listenTouchDirection: function (target, isPreventDefault, rightCallback, leftCallback, bottomUpCallback, topDownCallback) {
         this.addHandler(target, "touchstart", handleTouchEvent);
         this.addHandler(target, "touchend", handleTouchEvent);
         this.addHandler(target, "touchmove", handleTouchEvent);
         var startX;
         var startY;
         var bottom;
+        var top;
         function handleTouchEvent(event) {
             switch (event.type) {
                 case "touchstart":
                     startX = event.touches[0].clientX;
                     startY = event.touches[0].clientY;
                     bottom = (window.scrollY + window.innerHeight + 2) > document.body.clientHeight;
+                    top = window.scrollY < 1;
                     break;
                 case "touchend":
                     var path = event.path;
@@ -100,10 +131,10 @@ export default {
                         }
                     } else if (2 * Math.abs(spanX) < Math.abs(spanY)) {   //认定为垂直方向滑动
                         if (spanY > 30) {         //向下
-                            if (downCallback)
-                                downCallback();
+                            if (top)
+                                topDownCallback();
                         } else if (spanY < -30) {//向上
-                            if (bottom && bottomUpCallback)
+                            if (bottom)
                                 bottomUpCallback();
                         }
                     }

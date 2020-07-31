@@ -5,14 +5,15 @@ import localforage from "localforage"
 export default {
     // session data
     pageYOffsetData: {},
-    prePageHash: location.hash,
-    currentPageHash: location.hash,
+    prePageHref: location.href,
+    currentPageHref: location.href,
     mainHash: '',
+    preMainHash: '',
     mainpagePart: {},
     picturesXOffset: 0,
     reg: /#!(\w+)(\/|$)/,
     articleReg: /(article\/[\w|.]+\/\d+)(\?p=(\d+))?/,
-    linksBeforeTopic: [],
+    linksBefore: [],
     topicLinks: [],
     // storage data
     modifyTime: '0',
@@ -58,13 +59,21 @@ export default {
             let container = document.querySelector('#pictures>div>ul');
             this.picturesXOffset = container.scrollLeft;
         }
+        this.preMainHash = this.mainHash;
         this.mainHash = location.hash.match(this.reg)[1];
-        this.prePageHash = this.currentPageHash;
-        this.currentPageHash = location.hash.replace(/\?p=1$/, '');
-        this.pageYOffsetData[this.prePageHash] = window.pageYOffset;
+        this.prePageHref = this.currentPageHref;
+        this.currentPageHref = location.href.replace(/\?p=1$/, '');
+        this.pageYOffsetData[this.prePageHref] = window.pageYOffset;
+        if (this.mainHash != this.preMainHash) {
+            if (this.linksBefore.length > 0 && this.currentPageHref == this.linksBefore[0]) {
+                this.linksBefore.shift();
+            } else {
+                this.linksBefore.unshift(this.prePageHref);
+            }
+        }
     },
     onMut: function () {
-        let m = this.currentPageHash.match(this.articleReg);
+        let m = this.currentPageHref.match(this.articleReg);
         let a_names = document.querySelectorAll('#body>.b-content>a');
         if (m != null && a_names.length > 0) {
             let pos = parseInt(a_names[a_names.length - 1].name.substr(1));
@@ -74,11 +83,11 @@ export default {
                 }
             })
         }
-        let m0 = this.prePageHash.match(this.articleReg);
-        if (m != null && m0 == null) {
-            this.linksBeforeTopic.pop();
-            this.linksBeforeTopic.push(location.origin + location.pathname + this.prePageHash);
-        }
+        // let m0 = this.prePageHref.match(this.articleReg);
+        // if (m != null && m0 == null) {
+        //     this.linksBefore.pop();
+        //     this.linksBefore.push(location.origin + location.pathname + this.prePageHref);
+        // }
     },
     createNewModifyBuffer: function () {
         this.modifyTime = new Date().getTime().toString();

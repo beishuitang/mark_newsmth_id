@@ -1,6 +1,5 @@
 import Vue from 'vue/dist/vue.esm'
 import QuickBrowse from '../components/QuickBrowse'
-import eventUtil from './eventUtil'
 import mainData from './mainData'
 export default {
     browseButton: function () {
@@ -15,22 +14,6 @@ export default {
         })
     },
     init: function () {
-        eventUtil.bottomUpCallback = function () {
-            if (mainData.mainHash != 'article') {
-                return;
-            }
-            let currentPageEl = document.querySelector(".page-select");
-            let nextPageEl = currentPageEl.nextElementSibling;
-            if (nextPageEl != null) {
-                nextPageEl.querySelector("a").click();
-            } else {
-                // let el = currentPageEl.querySelector("a");
-                let el = document.createElement('a');
-                el.href = mainData.linksBeforeTopic[0];
-                el.click();
-            }
-
-        }
     },
     addVisitedLinkStyle: function (a_el, pos, a_wrapper) {
         console.log(a_wrapper)

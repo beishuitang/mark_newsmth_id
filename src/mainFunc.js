@@ -32,7 +32,7 @@ export default function () {
             frameUtils.onMut();
             menuUtils.onMut();
         }
-        window.scroll(0, mainData.pageYOffsetData[mainData.currentPageHash]);
+        window.scroll(0, mainData.pageYOffsetData[mainData.currentPageHref]);
     }
     let bodyElement = document.querySelector('#body');
     if (bodyElement.firstChild != null) {
