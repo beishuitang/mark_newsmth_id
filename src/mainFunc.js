@@ -24,6 +24,9 @@ export default function () {
     window.addEventListener('hashchange', () => {
         mainData.onhashchange();
     });
+    window.addEventListener('beforeunload', function () {
+        mainData.onBeforeUnload();
+    })
     function actionOnMut() {
         mainData.onMut();
         pageDispatcher.dispatch();

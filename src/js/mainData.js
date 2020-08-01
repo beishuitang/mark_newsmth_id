@@ -25,6 +25,11 @@ export default {
     modifyBuffer: {},
 
     init: function () {
+
+        let sessionConfig = JSON.parse(sessionStorage.getItem(config.PROJECT_NAME + '_config'));
+        if (sessionConfig != null) {
+            Object.assign(this, sessionConfig);
+        }
         // sessionData
         let m = location.hash.match(this.reg);
         this.mainHash = m[1];
@@ -39,7 +44,7 @@ export default {
         })
         // TODO 无用？
         this.simplifyConfig = config.simplifyConfig;
-
+        window.mainData = this;
         // forageData
         this.article = localforage.createInstance({ name: config.PROJECT_NAME, storeName: "article" });
         this.modify = localforage.createInstance({ name: config.PROJECT_NAME, storeName: "modify" });
@@ -72,6 +77,16 @@ export default {
             }
         }
     },
+    onBeforeUnload: function () {
+        sessionStorage.setItem(config.PROJECT_NAME + '_config', JSON.stringify({
+            pageYOffsetData: this.pageYOffsetData,
+            prePageHref: this.prePageHref,
+            preMainHash: this.preMainHash,
+            picturesXOffset: this.picturesXOffset,
+            linksBefore: this.linksBefore,
+            topicLinks: this.topicLinks,
+        }));
+    },
     onMut: function () {
         let m = this.currentPageHref.match(this.articleReg);
         let a_names = document.querySelectorAll('#body>.b-content>a');
@@ -83,11 +98,6 @@ export default {
                 }
             })
         }
-        // let m0 = this.prePageHref.match(this.articleReg);
-        // if (m != null && m0 == null) {
-        //     this.linksBefore.pop();
-        //     this.linksBefore.push(location.origin + location.pathname + this.prePageHref);
-        // }
     },
     createNewModifyBuffer: function () {
         this.modifyTime = new Date().getTime().toString();
