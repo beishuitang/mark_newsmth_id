@@ -38,14 +38,15 @@ export default {
   computed: {
     filtedUsersData: function () {
       let result = {};
+      let reg = new RegExp(this.searchText, "ig");
       Object.keys(this.usersData).forEach((key) => {
         let userData = this.usersData[key];
-        if (key.match(this.searchText)) {
+        if (key.match(reg)) {
           result[key] = userData;
         } else {
           let tags = userData.tags;
           Object.keys(tags).forEach((tagName) => {
-            if (tagName.match(this.searchText)) {
+            if (tagName.match(reg)) {
               result[key] = userData;
             }
           });
