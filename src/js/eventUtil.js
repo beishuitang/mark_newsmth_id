@@ -90,15 +90,40 @@ export default {
      * @param topDownCallback   从顶部向下滑动的监听回调（若不关心，可以不传，或传false）
      */
     listenTouchDirection: function (target, isPreventDefault, rightCallback, leftCallback, bottomUpCallback, topDownCallback) {
-        this.addHandler(target, "touchstart", handleTouchEvent);
-        this.addHandler(target, "touchend", handleTouchEvent);
-        this.addHandler(target, "touchmove", handleTouchEvent);
-        this.addHandler(target, "keyup", handleTouchEvent);
+        target = document.querySelector('body');
+        let target2 = document.querySelector('#main');
+        this.addHandler(target, "touchstart", handleTouchEventLR);
+        this.addHandler(target, "touchend", handleTouchEventLR);
+        this.addHandler(target, "touchmove", handleTouchEventLR);
+        this.addHandler(target2, "touchstart", handleTouchEventUD);
+        this.addHandler(target2, "touchend", handleTouchEventUD);
+        this.addHandler(target2, "touchmove", handleTouchEventUD);
+
+        this.addHandler(target, "keyup", handleTouchEventKey);
+        // this.addHandler(target2, "keyup", handleTouchEventUD);
         var startX;
         var startY;
-        function handleTouchEvent(event) {
-            var bottom = (window.scrollY + window.innerHeight + 2) > document.body.clientHeight;
-            var top = window.scrollY < 1;
+        function handleTouchEventKey(event) {
+            switch (event.type) {
+                case 'keyup':
+                    var bottom = (window.scrollY + window.innerHeight + 2) > document.body.clientHeight;
+                    var top = window.scrollY < 1;
+                    if (leftCallback && event.keyCode == 37) {
+                        leftCallback();
+                    }
+                    if (rightCallback && event.keyCode == 39) {
+                        rightCallback();
+                    }
+                    if (top && event.keyCode == 38) {
+                        topDownCallback();
+                    } else if (bottom && event.keyCode == 40) {
+                        bottomUpCallback();
+                    }
+                    break;
+            }
+        }
+
+        function handleTouchEventLR(event) {
             switch (event.type) {
                 case "touchstart":
                     startX = event.touches[0].clientX;
@@ -128,14 +153,6 @@ export default {
                                 leftCallback();
                             }
                         }
-                    } else if (2 * Math.abs(spanX) < Math.abs(spanY)) {   //认定为垂直方向滑动
-                        if (spanY > 30) {         //向下
-                            if (top)
-                                topDownCallback();
-                        } else if (spanY < -30) {//向上
-                            if (bottom)
-                                bottomUpCallback();
-                        }
                     }
                     break;
                 case "touchmove":
@@ -150,13 +167,49 @@ export default {
                     if (rightCallback && event.keyCode == 39) {
                         rightCallback();
                     }
-                    if (top && event.keyCode == 38) {
-                        topDownCallback();
-                    } else if (bottom && event.keyCode == 40) {
-                        bottomUpCallback();
-                    }
                     break;
             }
         }
+        function handleTouchEventUD(event) {
+            var bottom = (window.scrollY + window.innerHeight + 2) > document.body.clientHeight;
+            var top = window.scrollY < 1;
+            switch (event.type) {
+                case "touchstart":
+                    startX = event.touches[0].clientX;
+                    startY = event.touches[0].clientY;
+                    break;
+                case "touchend":
+                    var path = event.path;
+                    var touch_on_pictures = false;
+                    path.forEach(element => {
+                        let id = element.id;
+                        if (id === 'pictures') {
+                            touch_on_pictures = true;
+                        }
+                    });
+                    if (touch_on_pictures) {
+                        break;
+                    }
+                    var spanX = event.changedTouches[0].clientX - startX;
+                    var spanY = event.changedTouches[0].clientY - startY;
+
+                    if (2 * Math.abs(spanX) < Math.abs(spanY)) {   //认定为垂直方向滑动
+                        if (spanY > 30) {         //向下
+                            if (top)
+                                topDownCallback();
+                        } else if (spanY < -30) {//向上
+                            if (bottom)
+                                bottomUpCallback();
+                        }
+                    }
+                    break;
+                case "touchmove":
+                    //阻止默认行为
+                    if (isPreventDefault)
+                        event.preventDefault();
+                    break;
+            }
+        }
+
     }
 };
