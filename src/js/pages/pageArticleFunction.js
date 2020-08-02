@@ -68,14 +68,14 @@ export default function () {
         let childNodes = p.childNodes;
         let referenceDiv1 = document.createElement('div');
         let referenceDiv2 = document.createElement('div');
+        let referenceDiv3 = document.createElement('div');
         referenceDiv1.classList.add('webkit-line-clamp');
         referenceDiv2.classList.add('webkit-line-clamp');
-        // referenceDiv1.style = 'max-height:3rem;overflow:hidden';
-        // referenceDiv2.style = 'max-height:2rem;overflow:hidden';
         let replyDiv = document.createElement('div');
         pClone.appendChild(replyDiv);
         pClone.appendChild(referenceDiv1);
         pClone.appendChild(referenceDiv2);
+        pClone.appendChild(referenceDiv3);
         let endChecked = false;
         let replyChecked = false;
         let currentDiv = replyDiv;
@@ -83,7 +83,7 @@ export default function () {
             const childNode = childNodes[index];
             let childNodeClone = childNode.cloneNode(true);
             if (endChecked) {
-                if (childNode.nodeName == 'A') {
+                if (childNode.nodeName == 'A' && childNode.querySelector('img') != null) {
                     pClone.appendChild(childNodeClone);
                 }
             }
@@ -93,13 +93,28 @@ export default function () {
             } else {
                 if (childNode.nodeName == '#text' && childNode.nodeValue.match(/^ 【\s?在.*的大作中提到:\s?】/) != null) {
                     currentDiv = referenceDiv1;
-                }
-                else if (childNode.nodeName == '#text' && childNode.nodeValue.match(/[^\s]/) != null) {
+                } else if (childNode.nodeName == '#text' && childNode.nodeValue.match(/[^\s]/) != null) {
                     if (currentDiv == replyDiv) {
                         replyChecked = true;
                     } else if (!replyChecked) {
                         currentDiv = referenceDiv2;
                     }
+                } else if (childNode.nodeName == 'FONT' && childNode.querySelector('a>img') != null) {
+                    currentDiv = referenceDiv3;
+                } else if (childNode.nodeName == 'FONT' && childNode.querySelector('a') != null) {
+                    let font = childNode.querySelector('font');
+                    if (font != null && font.color == 'blue' && font.innerText.match(/^附件/)) {
+                        currentDiv = referenceDiv3;
+                    }
+                } else if (childNode.nodeName == 'FONT' && childNode.color == 'blue' && childNode.innerText.match(/^附件/)) {
+                    currentDiv = referenceDiv3;
+                    // let n = 0;
+                    // while (n < 3) {
+                    //     currentDiv.appendChild(childNodes[index + n].cloneNode(true));
+                    //     n++;
+                    // }
+                    // index += n;
+                    // childNodeClone = childNodes[index].cloneNode(true);
                 }
                 currentDiv.appendChild(childNodeClone);
             }
