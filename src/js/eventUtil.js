@@ -93,17 +93,16 @@ export default {
         this.addHandler(target, "touchstart", handleTouchEvent);
         this.addHandler(target, "touchend", handleTouchEvent);
         this.addHandler(target, "touchmove", handleTouchEvent);
+        this.addHandler(target, "keyup", handleTouchEvent);
         var startX;
         var startY;
-        var bottom;
-        var top;
         function handleTouchEvent(event) {
+            var bottom = (window.scrollY + window.innerHeight + 2) > document.body.clientHeight;
+            var top = window.scrollY < 1;
             switch (event.type) {
                 case "touchstart":
                     startX = event.touches[0].clientX;
                     startY = event.touches[0].clientY;
-                    bottom = (window.scrollY + window.innerHeight + 2) > document.body.clientHeight;
-                    top = window.scrollY < 1;
                     break;
                 case "touchend":
                     var path = event.path;
@@ -143,6 +142,19 @@ export default {
                     //阻止默认行为
                     if (isPreventDefault)
                         event.preventDefault();
+                    break;
+                case 'keyup':
+                    if (leftCallback && event.keyCode == 37) {
+                        leftCallback();
+                    }
+                    if (rightCallback && event.keyCode == 39) {
+                        rightCallback();
+                    }
+                    if (top && event.keyCode == 38) {
+                        topDownCallback();
+                    } else if (bottom && event.keyCode == 40) {
+                        bottomUpCallback();
+                    }
                     break;
             }
         }
