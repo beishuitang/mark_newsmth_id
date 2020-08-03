@@ -49,9 +49,9 @@ export default {
         let currentPageEl = document.querySelector(".page-select");
         let pageEl;
         if (direction) {
-            pageEl = currentPageEl.nextElementSibling;
+            pageEl = currentPageEl ? currentPageEl.nextElementSibling : null;
         } else {
-            pageEl = currentPageEl.previousElementSibling
+            pageEl = currentPageEl ? currentPageEl.previousElementSibling : null;
         }
         if (pageEl != null) {
             pageEl.querySelector("a").click();
