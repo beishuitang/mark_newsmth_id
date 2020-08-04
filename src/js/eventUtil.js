@@ -18,37 +18,22 @@ export default {
             element["on" + type] = handler;
     },
     initAction: function () {
-        let menuConfig = config.menuConfig;
-        let panelConfig = config.panelConfig;
         this.listenTouchDirection(
             document.querySelector('body'),
             false,
-            function () {
-                if (panelConfig.showPanel == true) {
-                    panelConfig.showPanel = false;
-                } else {
-                    menuConfig.showMenu = true;
-                }
-            },
-            function () {
-                if (menuConfig.showMenu == true) {
-                    menuConfig.showMenu = false;
-                } else {
-                    panelConfig.showPanel = true;
-                }
-            },
+            this.rightCallback.bind(this),
+            this.leftCallback.bind(this),
             this.bottomUpCallback.bind(this),
             this.topDownCallback.bind(this),
         );
-
     },
-    topBottomCallback: function (direction) {
+    topBottomCallback: function (ifDown) {
         // if (mainData.mainHash != 'article') {
         //     return;
         // }
         let currentPageEl = document.querySelector(".page-select");
         let pageEl;
-        if (direction) {
+        if (ifDown) {
             pageEl = currentPageEl ? currentPageEl.nextElementSibling : null;
         } else {
             pageEl = currentPageEl ? currentPageEl.previousElementSibling : null;
@@ -71,7 +56,20 @@ export default {
     topDownCallback: function () {
         this.topBottomCallback(false);
     },
-
+    leftRightCallback: function (ifLeft) {
+        let menuConfig = config.menuConfig;
+        let panelConfig = config.panelConfig;
+        let leftShow = menuConfig.showMenu;
+        let rightShow = panelConfig.showPanel;
+        menuConfig.showMenu = !ifLeft && !rightShow;
+        panelConfig.showPanel = ifLeft && !leftShow;
+    },
+    leftCallback: function () {
+        this.leftRightCallback(true);
+    },
+    rightCallback: function () {
+        this.leftRightCallback(false);
+    },
 
     preventDblclickDefault: function () {
         document.querySelector('#body').addEventListener('mousedown', function (event) {
@@ -89,25 +87,52 @@ export default {
      * @param bottomUpCallback  从底部向上滑动的监听回调（若不关心，可以不传，或传false）
      * @param topDownCallback   从顶部向下滑动的监听回调（若不关心，可以不传，或传false）
      */
-    listenTouchDirection: function (target, isPreventDefault, rightCallback, leftCallback, bottomUpCallback, topDownCallback) {
-        target = document.querySelector('body');
-        let target2 = document.querySelector('#main');
-        this.addHandler(target, "touchstart", handleTouchEventLR);
-        this.addHandler(target, "touchend", handleTouchEventLR);
-        this.addHandler(target, "touchmove", handleTouchEventLR);
-        this.addHandler(target2, "touchstart", handleTouchEventUD);
-        this.addHandler(target2, "touchend", handleTouchEventUD);
-        this.addHandler(target2, "touchmove", handleTouchEventUD);
-
-        this.addHandler(target, "keyup", handleTouchEventKey);
-        // this.addHandler(target2, "keyup", handleTouchEventUD);
+    listenTouchDirection: function (target, isPreventDefault, rightCall, leftCall, bottomUpCall, topDownCall) {
+        // target = document.querySelector('body');
+        this.addHandler(target, "touchstart", handleTouchEvent);
+        this.addHandler(target, "touchend", handleTouchEvent);
+        this.addHandler(target, "touchmove", handleTouchEvent);
+        this.addHandler(target, "keyup", handleTouchEvent);
+        this.addHandler(target, "keydown", handleTouchEvent);
         var startX;
         var startY;
-        function handleTouchEventKey(event) {
+        var bottom = false;
+        var top = false;
+        function handleTouchEvent(event) {
+            function allowUpDownAction() {
+                return !config.panelConfig.showPanel;
+            }
+            function allowLeftRightAction() {
+                var path = event.path;
+                path = path ? path : [];
+                let result = true;
+                path.forEach(element => {
+                    let id = element.id;
+                    if (id === 'pictures') {
+                        result = false;
+                    }
+                });
+                return result;
+            }
+            function leftCallback() {
+                allowLeftRightAction() && leftCall();
+            }
+            function rightCallback() {
+                allowLeftRightAction() && rightCall();
+            }
+            function bottomUpCallback() {
+                allowUpDownAction() && bottomUpCall();
+            }
+            function topDownCallback() {
+                allowUpDownAction() && topDownCall();
+            }
+
             switch (event.type) {
+                case 'keydown':
+                    bottom = (window.scrollY + window.innerHeight + 2) > document.body.clientHeight;
+                    top = window.scrollY < 1;
+                    break;
                 case 'keyup':
-                    var bottom = (window.scrollY + window.innerHeight + 2) > document.body.clientHeight;
-                    var top = window.scrollY < 1;
                     if (leftCallback && event.keyCode == 37) {
                         leftCallback();
                     }
@@ -120,76 +145,13 @@ export default {
                         bottomUpCallback();
                     }
                     break;
-            }
-        }
-
-        function handleTouchEventLR(event) {
-            switch (event.type) {
                 case "touchstart":
+                    bottom = (window.scrollY + window.innerHeight + 2) > document.body.clientHeight;
+                    top = window.scrollY < 1;
                     startX = event.touches[0].clientX;
                     startY = event.touches[0].clientY;
                     break;
                 case "touchend":
-                    var path = event.path;
-                    var touch_on_pictures = false;
-                    path.forEach(element => {
-                        let id = element.id;
-                        if (id === 'pictures') {
-                            touch_on_pictures = true;
-                        }
-                    });
-                    if (touch_on_pictures) {
-                        break;
-                    }
-                    var spanX = event.changedTouches[0].clientX - startX;
-                    var spanY = event.changedTouches[0].clientY - startY;
-                    if (2 * Math.abs(spanY) < Math.abs(spanX)) {      //认定为水平方向滑动
-                        if (spanX > 30) {         //向右
-                            if (rightCallback) {
-                                rightCallback();
-                            }
-                        } else if (spanX < -30) { //向左
-                            if (leftCallback) {
-                                leftCallback();
-                            }
-                        }
-                    }
-                    break;
-                case "touchmove":
-                    //阻止默认行为
-                    if (isPreventDefault)
-                        event.preventDefault();
-                    break;
-                case 'keyup':
-                    if (leftCallback && event.keyCode == 37) {
-                        leftCallback();
-                    }
-                    if (rightCallback && event.keyCode == 39) {
-                        rightCallback();
-                    }
-                    break;
-            }
-        }
-        function handleTouchEventUD(event) {
-            var bottom = (window.scrollY + window.innerHeight + 2) > document.body.clientHeight;
-            var top = window.scrollY < 1;
-            switch (event.type) {
-                case "touchstart":
-                    startX = event.touches[0].clientX;
-                    startY = event.touches[0].clientY;
-                    break;
-                case "touchend":
-                    var path = event.path;
-                    var touch_on_pictures = false;
-                    path.forEach(element => {
-                        let id = element.id;
-                        if (id === 'pictures') {
-                            touch_on_pictures = true;
-                        }
-                    });
-                    if (touch_on_pictures) {
-                        break;
-                    }
                     var spanX = event.changedTouches[0].clientX - startX;
                     var spanY = event.changedTouches[0].clientY - startY;
 
@@ -202,12 +164,25 @@ export default {
                                 bottomUpCallback();
                         }
                     }
+                    if (2 * Math.abs(spanY) < Math.abs(spanX)) {      //认定为水平方向滑动
+                        if (spanX > 30) {         //向右
+                            if (rightCallback) {
+                                rightCallback();
+                            }
+                        } else if (spanX < -30) { //向左
+                            if (leftCallback) {
+                                leftCallback();
+                            }
+                        }
+                    }
+
                     break;
                 case "touchmove":
                     //阻止默认行为
                     if (isPreventDefault)
                         event.preventDefault();
                     break;
+
             }
         }
 
