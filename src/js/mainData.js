@@ -32,7 +32,7 @@ export default {
         }
         // sessionData
         let m = location.hash.match(this.reg);
-        this.mainHash = m[1];
+        this.mainHash = m ? m[1] : '';
         // TODO
         // storageData
         let usersData = localStorage.getItem(config.storageKeys.STORAGE_USERS_DATA);
