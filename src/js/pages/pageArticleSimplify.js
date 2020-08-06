@@ -1,66 +1,65 @@
-import { storageData } from '@/js/mainData'
-export default function () {
-    console.log('article simplify')
-    let articles = document.querySelectorAll('table.article')
-    for (let index = 0; index < articles.length; index++) {
-        const article = articles[index];
-        let a_body = article.querySelector('.a-body');
-        let a_bottom = article.querySelector('.a-bottom')
-        let p = article.querySelector('.a-body .a-content>p');
-        let pClone = p.cloneNode(false);
-        let a_func = article.querySelector('.a-head .a-func');
-        article.setAttribute('v-if', 'show')
-        a_body.setAttribute('v-if', 'showContent')
-        Object.keys(storageData.simplifyConfig).forEach(key => {
-            let target = a_func.querySelector('.' + key)
-            // console.log(key)
-            // console.log(target)
-            if (target != null) {
-                target.parentNode.setAttribute('v-if', `simplifyConfig["${key}"]`);
-            }
-        });
+export default function (articleElement) {
 
-        a_bottom.setAttribute('v-if', '!simplify')
-        pClone.setAttribute('v-if', 'simplify')
-        p.setAttribute('v-if', '!simplify')
-        p.setAttribute('v-on:dblclick', 'simplify=!simplify')
-        pClone.setAttribute('v-on:dblclick', 'simplify=!simplify')
-        let childNodes = p.childNodes;
-        let replyChecked = false;
-        let endChecked = false;
-        let preBR = false;
-        for (let index = 6; index < childNodes.length; index++) {
-            const childNode = childNodes[index];
-            let div = document.createElement('div');
-            let fontNode = childNode.cloneNode(true);
-            div.style = 'max-height:3rem;overflow:hidden';
-            if (endChecked) {
-                if (childNode.nodeName == 'A') {
-                    pClone.appendChild(childNode.cloneNode(true));
+    let p = articleElement.querySelector('.a-body .a-content>p');
+    let pClone = document.createElement('div');
+    p.setAttribute('v-show', '!simplify')
+    p.setAttribute('v-on:dblclick', 'simplified=!simplified')
+    pClone.setAttribute('v-show', 'simplify')
+    pClone.setAttribute('v-on:dblclick', 'simplified=!simplified')
+    p.parentNode.insertBefore(pClone, p.nextSibling);
+    let referenceDiv = document.createElement('div');
+    referenceDiv.classList.add('webkit-line-clamp');
+    let childNodes = p.childNodes;
+
+    let endChecked = false;
+    // let replyChecked = false;
+    for (let index = 6; index < childNodes.length; index++) {
+        const childNode = childNodes[index];
+        let childNodeClone = childNode.cloneNode(true);
+        if (endChecked) {
+            break;
+        }
+        if (childNode.nodeName == '#text' && childNode.nodeValue == ' -- ') {
+            pClone.appendChild(childNodeClone);
+            endChecked = true;
+        } else if (childNode.nodeName == '#text' && childNode.nodeValue.match(/^ 【\s?在.*的大作中提到:\s?】/) != null) {
+            referenceDiv.appendChild(childNodeClone);
+            referenceDiv.appendChild(document.createElement('br'));
+            pClone.appendChild(referenceDiv);
+        } else if (childNode.nodeName == 'FONT') {
+            if (childNode.innerText.startsWith(':')) {
+                if (childNode.nodeName == 'FONT' && childNode.querySelector('a>img') != null) {
+                    pClone.appendChild(childNodeClone);
+                } else if (childNode.nodeName == 'FONT' && childNode.querySelector('a') != null) {
+                    let font = childNode.querySelector('font');
+                    if (font != null && font.color == 'blue' && font.innerText.match(/^附件/)) {
+                        pClone.appendChild(childNodeClone);
+                    }
+                } else {
+                    referenceDiv.appendChild(childNodeClone);
                 }
-            } else if (childNode.nodeName == '#text' && childNode.nodeValue == ' -- ') {
-                pClone.appendChild(childNode.cloneNode(true));
-                endChecked = true;
-                // TODO 
-            } else if (childNode.nodeName == 'FONT' && childNode.classList.length > 0) {
-                if (!replyChecked) {
-                    pClone.appendChild(div);
-                    preBR = false;
-                }
-                div.appendChild(fontNode);
-                replyChecked = true;
-            } else if (childNode.nodeName == 'BR') {
-                if (!preBR == true) {
-                    pClone.appendChild(childNode.cloneNode(true));
-                }
-                preBR = true;
-            } else if (childNode.nodeName == '#text' && childNode.nodeValue.match(/[^\s]/) == null) {
-                pClone.appendChild(childNode.cloneNode(true));
+            } else if (childNode.innerText.startsWith('※')) {
+                continue;
             } else {
-                preBR = false;
-                pClone.appendChild(childNode.cloneNode(true));
+                pClone.appendChild(childNodeClone);
+            }
+        } else {
+            pClone.appendChild(childNodeClone);
+        }
+    }
+    let els = pClone.childNodes
+    let hasBr = false;
+    if (els.length > 2) {
+        for (let index = els.length - 1; index > 0; index--) {
+            const el = els[index];
+            if (el.nodeName == 'BR') {
+                if (hasBr || els[index - 1].nodeName == 'DIV') {
+                    el.remove();
+                }
+                hasBr = true;
+            } else if (el.nodeName == '#text' && el.nodeValue.match(/[^\s]/)) {
+                hasBr = false;
             }
         }
-        p.parentNode.insertBefore(pClone, p.nextSibling);
     }
 }

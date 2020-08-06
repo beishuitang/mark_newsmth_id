@@ -1,6 +1,7 @@
 import config from '../../config/config'
 import mainData from "../mainData";
 import tagStore from '@/js/tagStore'
+import pageArticleSimplify from './pageArticleSimplify'
 // import pageArticleSimplify from "./pageArticleSimplify";
 export default function () {
     console.log('page article function')
@@ -44,8 +45,7 @@ export default function () {
             a_bottom.lastElementChild.appendChild(a_func_info);
         }
         // simplify
-        let p = articleElement.querySelector('.a-body .a-content>p');
-        let pClone = document.createElement('div');
+        let p_el = articleElement.querySelector('.a-body .a-content>p');
         // let pClone = p.cloneNode(false);
         articleElement.setAttribute('v-show', 'state.showUser')
         a_body.setAttribute('v-show', 'state.showContent')
@@ -61,65 +61,7 @@ export default function () {
         a_body.setAttribute('v-show', 'state.showContent')
         a_body.querySelector('.a-u-img').setAttribute('v-show', '!simplify')
         a_bottom.setAttribute('v-show', '!simplify')
-        p.setAttribute('v-show', '!simplify')
-        p.setAttribute('v-on:dblclick', 'simplified=!simplified')
-        pClone.setAttribute('v-show', 'simplify')
-        pClone.setAttribute('v-on:dblclick', 'simplified=!simplified')
-        let childNodes = p.childNodes;
-        let referenceDiv1 = document.createElement('div');
-        let referenceDiv2 = document.createElement('div');
-        let referenceDiv3 = document.createElement('div');
-        referenceDiv1.classList.add('webkit-line-clamp');
-        referenceDiv2.classList.add('webkit-line-clamp');
-        let replyDiv = document.createElement('div');
-        pClone.appendChild(replyDiv);
-        pClone.appendChild(referenceDiv1);
-        pClone.appendChild(referenceDiv2);
-        pClone.appendChild(referenceDiv3);
-        let endChecked = false;
-        let replyChecked = false;
-        let currentDiv = replyDiv;
-        for (let index = 6; index < childNodes.length; index++) {
-            const childNode = childNodes[index];
-            let childNodeClone = childNode.cloneNode(true);
-            if (endChecked) {
-                if (childNode.nodeName == 'A' && childNode.querySelector('img') != null) {
-                    pClone.appendChild(childNodeClone);
-                }
-            }
-            else if (childNode.nodeName == '#text' && childNode.nodeValue == ' -- ') {
-                pClone.appendChild(childNodeClone);
-                endChecked = true;
-            } else {
-                if (childNode.nodeName == '#text' && childNode.nodeValue.match(/^ 【\s?在.*的大作中提到:\s?】/) != null) {
-                    currentDiv = referenceDiv1;
-                } else if (childNode.nodeName == '#text' && childNode.nodeValue.match(/[^\s]/) != null) {
-                    if (currentDiv == replyDiv) {
-                        replyChecked = true;
-                    } else if (!replyChecked) {
-                        currentDiv = referenceDiv2;
-                    }
-                } else if (childNode.nodeName == 'FONT' && childNode.querySelector('a>img') != null) {
-                    currentDiv = referenceDiv3;
-                } else if (childNode.nodeName == 'FONT' && childNode.querySelector('a') != null) {
-                    let font = childNode.querySelector('font');
-                    if (font != null && font.color == 'blue' && font.innerText.match(/^附件/)) {
-                        currentDiv = referenceDiv3;
-                    }
-                } else if (childNode.nodeName == 'FONT' && childNode.color == 'blue' && childNode.innerText.match(/^附件/)) {
-                    currentDiv = referenceDiv3;
-                    // let n = 0;
-                    // while (n < 3) {
-                    //     currentDiv.appendChild(childNodes[index + n].cloneNode(true));
-                    //     n++;
-                    // }
-                    // index += n;
-                    // childNodeClone = childNodes[index].cloneNode(true);
-                }
-                currentDiv.appendChild(childNodeClone);
-            }
-        }
-        p.parentNode.insertBefore(pClone, p.nextSibling);
+        pageArticleSimplify(articleElement);
         // vue function
         let articleId = a_post.href.substring(a_post.href.lastIndexOf('/'))
         let userId = a_u_name.querySelector('a').innerText;
@@ -128,7 +70,7 @@ export default function () {
             el: articleElement,
             propsData: {
                 articleUrl: board + '/' + topicId + articleId,
-                articleContent: p.innerHTML,
+                articleContent: p_el.innerHTML,
                 userId: userId,
                 user: mainData.usersData[userId],
                 simplifyConfig: config.simplifyConfig
