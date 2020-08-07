@@ -17,9 +17,10 @@ export default function (articleElement) {
         const childNode = childNodes[index];
         let childNodeClone = childNode.cloneNode(true);
         if (endChecked) {
-            break;
-        }
-        if (childNode.nodeName == '#text' && childNode.nodeValue == ' -- ') {
+            if (childNode.nodeName == 'A' && childNode.querySelector('img') != null) {
+                pClone.appendChild(childNodeClone);
+            }
+        } else if (childNode.nodeName == '#text' && childNode.nodeValue == ' -- ') {
             pClone.appendChild(childNodeClone);
             endChecked = true;
         } else if (childNode.nodeName == '#text' && childNode.nodeValue.match(/^ 【\s?在.*的大作中提到:\s?】/) != null) {
