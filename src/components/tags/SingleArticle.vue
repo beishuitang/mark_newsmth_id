@@ -32,20 +32,21 @@ export default {
     simplify: function () {
       return this.simplified && this.simplifyConfig.simplify;
     },
-    article: function () {
-      return { url: this.articleUrl, content: this.articleContent };
-    },
+    // article: function () {
+    //   return { url: this.articleUrl, content: this.articleContent };
+    // },
     // articleContent: function() {
     //   return this.$el.querySelector(".a-content p").innerHTML;
     // }
   },
   methods: {
     // TODO modify对象滚动
-    modifyTag: function (tags) {
-      let usersData = {};
-      usersData[this.userId] = { tags: tags };
-      mainData.acceptModify(usersData);
-      mainData.saveArticle(this.article);
+    modifyTag: function (modify) {
+      modify.url = this.articleUrl;
+      modify.p = this.articleContent;
+      modify.id = this.userId;
+      modify.m = new Date().getTime();
+      mainData.acceptModify(modify);
     },
     modifyConfig: function (key) {
       let usersData = { state: {} };

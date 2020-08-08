@@ -15,18 +15,18 @@ export default {
   props: {
     msg: String,
     reasonUrl: String,
-    tags: Object
+    tags: Object,
   },
-  data: function() {
+  data: function () {
     return {
-      tagName: ""
+      tagName: "",
     };
   },
   computed: {
     // TODO 转移到article
-    currentTags: function() {
+    currentTags: function () {
       let str = "";
-      Object.keys(this.tags).forEach(tagName => {
+      Object.keys(this.tags).forEach((tagName) => {
         if (
           Object.prototype.hasOwnProperty.call(
             this.tags[tagName],
@@ -38,7 +38,7 @@ export default {
       });
       return str;
     },
-    currentScore: function() {
+    currentScore: function () {
       let tagName = this.tagName;
       let result = 0;
       let tags = this.tags;
@@ -48,18 +48,16 @@ export default {
         console.log();
       }
       return result;
-    }
+    },
   },
   methods: {
-    // TODO 响应式更新？
-    modify: function(step) {
-      let tag = {};
-      tag[this.reasonUrl] = { score: step };
-      let tags = {};
-      tags[this.tagName] = tag;
-      this.$emit("modify", tags);
-    }
-  }
+    modify: function (step) {
+      this.$emit("modify", {
+        tagName: this.tagName,
+        step: step,
+      });
+    },
+  },
 };
 </script>
 

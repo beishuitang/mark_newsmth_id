@@ -19,13 +19,10 @@ export default {
     modifyTime: '0',
     usersData: {},
     // forageData
-    modify: null,
-    article: null,
-    topicInfo: null,
-    modifyBuffer: {},
+    markStore: null,
+    topicInfoStore: null,
 
     init: function () {
-
         let sessionConfig = JSON.parse(sessionStorage.getItem(config.PROJECT_NAME + '_config'));
         if (sessionConfig != null) {
             Object.assign(this, sessionConfig);
@@ -33,7 +30,6 @@ export default {
         // sessionData
         let m = location.hash.match(this.reg);
         this.mainHash = m ? m[1] : '';
-        // TODO
         // storageData
         let usersData = localStorage.getItem(config.storageKeys.STORAGE_USERS_DATA);
         if (usersData != null) {
@@ -42,22 +38,11 @@ export default {
         Object.values(this.usersData).forEach((user) => {
             this.reComputeScore(user);
         })
-        // TODO 无用？
-        this.simplifyConfig = config.simplifyConfig;
         window.mainData = this;
         // forageData
-        this.article = localforage.createInstance({ name: config.PROJECT_NAME, storeName: "article" });
-        this.modify = localforage.createInstance({ name: config.PROJECT_NAME, storeName: "modify" });
-        this.topicInfo = localforage.createInstance({ name: config.PROJECT_NAME, storeName: "topic" });
+        this.markStore = localforage.createInstance({ name: config.PROJECT_NAME, storeName: "mark" });
+        this.topicInfoStore = localforage.createInstance({ name: config.PROJECT_NAME, storeName: "topic" });
 
-        // modifyTime modifyBuffer
-        this.modifyTime = localStorage.getItem(config.storageKeys.STORAGE_MODIFY_TIME);
-        if (this.modifyTime == null) {
-            this.createNewModifyBuffer();
-        }
-        this.modify.getItem(this.modifyTime).then((value) => {
-            this.modifyBuffer = value ? value : {}
-        })
     },
     onhashchange: function () {
         if (this.mainHash === 'mainpage') {
@@ -99,10 +84,6 @@ export default {
             })
         }
     },
-    createNewModifyBuffer: function () {
-        this.modifyTime = new Date().getTime().toString();
-        this.modifyBuffer = {};
-    },
     saveUsersData: function () {
         let newUsersData = {};
         Object.keys(this.usersData).forEach(userId => {
@@ -114,15 +95,12 @@ export default {
         localStorage.setItem(config.storageKeys.STORAGE_USERS_DATA, JSON.stringify(newUsersData));
     },
     getUsersData: function () {
-        return JSON.parse(localStorage.getItem(config.storageKeys.STORAGE_USERS_DATA));
-    },
-    saveModify: function (modifyTime, modify) {
-        // this.modify.setItem(this.modifyTime, this.modifyBuffer);
-        this.modify.setItem(modifyTime, modify);
+        return this.usersData;
     },
     getEmptyUser: function () {
         return {
             score: 0,
+            // TODO 改为二进制表示
             state: {
                 showUser: true,
                 showContent: true,
@@ -147,118 +125,65 @@ export default {
         });
         user.score = score;
     },
-    mergeModify: function (user, modify) {
-        // Object.assign(user, update);
-        if (Object.prototype.hasOwnProperty.call(modify, 'state')) {
-            Object.keys(modify.state).forEach(key => {
-                user.state[key] = modify.state[key];
-            });
-        }
-        if (Object.prototype.hasOwnProperty.call(modify, 'tags')) {
-            Object.keys(modify.tags).forEach(tagName => {
-                Object.keys(modify.tags[tagName]).forEach(reasonUrl => {
-                    if (!Object.prototype.hasOwnProperty.call(user.tags, tagName)) {
-                        Vue.set(user.tags, tagName, {});
-                    }
-                    if (!Object.prototype.hasOwnProperty.call(user.tags[tagName], reasonUrl)) {
-                        Vue.set(user.tags[tagName], reasonUrl, { score: 0 });
-                    }
-                    let s = modify.tags[tagName][reasonUrl].score;
-                    let reason = user.tags[tagName][reasonUrl];
-                    reason.score += s;
-                    if (reason.score == 0) {
-                        Vue.delete(user.tags[tagName], reasonUrl);
-                    }
-                    if (Object.keys(user.tags[tagName]).length == 0) {
-                        Vue.delete(user.tags, tagName);
-                    }
-                    user.score += s;
-                });
-            });
-        }
+    acceptModify: function (modify) {
+        this.mergeModifyToMarkStore(modify);
+        this.mergeModifyToUsersData(modify);
     },
-    mergeModifyToBuffer: function (userId, modify) {
-        if (!Object.prototype.hasOwnProperty.call(this.modifyBuffer, userId)) {
-            this.modifyBuffer[userId] = this.getEmptyUser();
-        }
-        this.mergeModify(this.modifyBuffer[userId], modify);
-    },
-    mergeModifies: function (modifies, ifImport) {
-        Object.keys(modifies).forEach(userId => {
-            this.checkUser(userId);
-            this.mergeModify(this.usersData[userId], modifies[userId]);
-            if (!ifImport) {
-                // 本地添加数据
-                this.mergeModifyToBuffer(userId, modifies[userId]);
+    mergeModifyToMarkStore: function (modify) {
+        this.markStore.getItem(modify.url, (err, oldMark) => {
+            let mark = oldMark ? oldMark : { id: modify.id, tags: {}, p: modify.p, };
+            mark.m = modify.m;
+            let tags = mark.tags;
+            let oldScore = tags[modify.tagName] ? tags[modify.tagName].score : 0;
+
+            tags[modify.tagName] = { score: oldScore + modify.step }
+            if (tags[modify.tagName].score == 0) {
+                delete tags[modify.tagName];
             }
-        });
-        this.saveUsersData();
-        this.saveModify(this.modifyTime, this.modifyBuffer);
+            this.markStore.setItem(modify.url, mark);
+        })
     },
-    acceptImportModifies: function (importModifies) {
-        this.modify.keys().then((keys) => {
-            let inputKeys = Object.keys(importModifies);
-            inputKeys.forEach((inputKey) => {
-                if (!keys || !keys.includes(inputKey)) {
-                    this.mergeModifies(importModifies[inputKey], true);
-                    this.saveModify(inputKey, importModifies[inputKey]);
-                }
-            });
+    mergeModifyToUsersData: function (modify) {
+        let tags = this.usersData[modify.id].tags;
+        let tagName = modify.tagName;
+
+        if (!Object.prototype.hasOwnProperty.call(tags, tagName)) {
+            Vue.set(tags, tagName, {});
         }
-        ).catch(function (err) {
-            console.log(err);
-        });
-    },
-    acceptImportArticles: function (importArticles) {
-        this.article.keys().then(
-            (keys) => {
-                Object.keys(importArticles).forEach((inputKey) => {
-                    if (!keys || !keys.includes(inputKey)) {
-                        this.saveArticle({
-                            url: inputKey,
-                            content: importArticles[inputKey]
-                        });
-                    }
-                })
-            }).catch(function (err) {
-                console.log(err);
-            });
-    },
-    acceptModify: function (ModifyData) {
-        this.mergeModifies(ModifyData, false);
-    },
-    saveArticle: function (article) {
-        this.article.setItem(article.url, article.content);
+        if (!Object.prototype.hasOwnProperty.call(tags[tagName], modify.url)) {
+            Vue.set(tags[tagName], modify.url, { score: 0 });
+        }
+        let reason = tags[tagName][modify.url];
+        reason.score += modify.step;
+        if (reason.score == 0) {
+            Vue.delete(tags[tagName], modify.url);
+        }
+        if (Object.keys(tags[tagName]).length == 0) {
+            Vue.delete(tags, tagName);
+        }
+        this.usersData[modify.id].score += modify.step;
+        this.saveUsersData();
     },
     getArticle: function (url, callback) {
-        this.article.getItem(url, callback)
+        this.markStore.getItem(url, (err, mark) => {
+            callback(err, mark.p)
+        })
     },
-    getModifies: function (callback) {
-        this.createNewModifyBuffer();
-        let modifies = {}
-        this.modify.iterate(function (value, key) {
-            modifies[key] = value;
+    getAllMarks: function (callback) {
+        let marks = {}
+        this.markStore.iterate(function (value, key) {
+            marks[key] = value;
         }).then(function () {
-            callback(modifies);
-        }).catch(function (err) {
-            console.log(err);
-        });
-    },
-    getArticles: function (callback) {
-        let articles = {}
-        this.article.iterate(function (value, key) {
-            articles[key] = value;
-        }).then(function () {
-            callback(articles);
+            callback(marks);
         }).catch(function (err) {
             console.log(err);
         });
     },
     saveTopicInfo: function (topicUrl, topicInfo, callback) {
-        this.topicInfo.setItem(topicUrl, topicInfo, callback);
+        this.topicInfoStore.setItem(topicUrl, topicInfo, callback);
     },
     getTopicInfo: function (topicUrl, callback) {
-        this.topicInfo.getItem(topicUrl, callback)
+        this.topicInfoStore.getItem(topicUrl, callback)
     },
 
 }
