@@ -14,24 +14,24 @@ export default {
     msg: String,
     reason: Object,
     reasonUrl: String,
-    tagName: String
+    tagName: String,
   },
-  data: function() {
+  data: function () {
     return {
-      content: ""
+      content: "",
     };
   },
-  mounted: function() {
-    mainData.article.getItem(this.reasonUrl).then(value => {
+  mounted: function () {
+    mainData.getArticle(this.reasonUrl, (err, value) => {
       this.content = value;
     });
   },
   computed: {
-    href: function() {
+    href: function () {
       let arr = this.reasonUrl.split("/");
       return "#!article/" + arr[0] + "/" + arr[1];
-    }
-  }
+    },
+  },
 };
 </script>
 

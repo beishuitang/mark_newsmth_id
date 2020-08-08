@@ -41,15 +41,17 @@ export default {
       let reg = new RegExp(this.searchText, "ig");
       Object.keys(this.usersData).forEach((key) => {
         let userData = this.usersData[key];
-        if (key.match(reg)) {
-          result[key] = userData;
-        } else {
-          let tags = userData.tags;
-          Object.keys(tags).forEach((tagName) => {
-            if (tagName.match(reg)) {
-              result[key] = userData;
-            }
-          });
+        let tags = userData.tags;
+        if (Object.keys(tags).length !== 0) {
+          if (key.match(reg)) {
+            result[key] = userData;
+          } else {
+            Object.keys(tags).forEach((tagName) => {
+              if (tagName.match(reg)) {
+                result[key] = userData;
+              }
+            });
+          }
         }
       });
       return result;
