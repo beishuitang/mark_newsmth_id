@@ -26,7 +26,9 @@ export default function (articleElement) {
         } else if (childNode.nodeName == '#text' && childNode.nodeValue.match(/^ 【\s?在.*的大作中提到:\s?】/) != null) {
             referenceDiv.appendChild(childNodeClone);
             referenceDiv.appendChild(document.createElement('br'));
-            pClone.appendChild(referenceDiv);
+            if (referenceDiv.parentNode == null) {
+                pClone.appendChild(referenceDiv);
+            }
         } else if (childNode.nodeName == 'FONT') {
             if (childNode.innerText.startsWith(':')) {
                 if (childNode.nodeName == 'FONT' && childNode.querySelector('a>img') != null) {
