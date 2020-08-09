@@ -1,5 +1,6 @@
 <template>
   <div id="setting" v-if="settingConfig.show" style="width: fit-content;height: fit-content">
+    <span @click="settingConfig.show=!settingConfig.show" style="float:right">关闭</span>
     <div>
       <div>
         <h3>显示</h3>
