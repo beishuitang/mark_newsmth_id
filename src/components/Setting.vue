@@ -55,12 +55,18 @@
           </label>
         </div>
       </div>
+      <div>
+        <h3>备份</h3>
+        <backup></backup>
+      </div>
     </div>
   </div>
 </template>
 <script>
+import Backup from "./Backup";
 export default {
   name: "Setting",
+  components: { Backup },
   props: {
     msg: String,
     config: Object,
@@ -95,10 +101,10 @@ export default {
   left: 0;
   right: 0;
   top: 0;
-  bottom: 0;
   margin: auto;
   background-color: bisque;
   padding: 1rem;
+  z-index: 1;
 }
 label {
   margin-right: 1rem;
