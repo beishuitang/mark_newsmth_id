@@ -1,9 +1,7 @@
 <script>
-import Backup from "./Backup";
 export default {
   props: ["frameConfig"],
   name: "BotFoot",
-  components: { Backup },
 };
 </script>
 

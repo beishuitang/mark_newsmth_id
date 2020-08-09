@@ -55,8 +55,6 @@ export default {
             el: '#top_head',
             propsData: { frameConfig: config.frameConfig }
         });
-        let backup = document.createElement('backup');
-        document.querySelector('#bot_info').appendChild(backup);
         document.querySelector('#bot_foot').setAttribute('v-show', 'frameConfig.showFoot');
         new (Vue.extend(BotFoot))({
             el: '#bot_foot',

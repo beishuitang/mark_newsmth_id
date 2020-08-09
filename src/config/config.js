@@ -82,6 +82,7 @@ export default {
       this.menuConfig = storageConfig.menuConfig;
       this.mainpageConfig = storageConfig.mainpageConfig;
       this.panelConfig = storageConfig.panelConfig;
+      this.frameConfig = storageConfig.frameConfig;
     }
     window.smthConfig = this;
   }
