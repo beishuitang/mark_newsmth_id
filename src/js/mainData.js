@@ -126,6 +126,7 @@ export default {
         user.score = score;
     },
     acceptModify: function (modify) {
+        console.log(modify)
         this.mergeModifyToMarkStore(modify);
         this.mergeModifyToUsersData(modify);
     },
@@ -135,7 +136,6 @@ export default {
             mark.m = modify.m;
             let tags = mark.tags;
             let oldScore = tags[modify.tagName] ? tags[modify.tagName].score : 0;
-
             tags[modify.tagName] = { score: oldScore + modify.step }
             if (tags[modify.tagName].score == 0) {
                 delete tags[modify.tagName];
@@ -179,11 +179,45 @@ export default {
             console.log(err);
         });
     },
+    mergeMarks: function (marks) {
+        Object.keys(marks).forEach((url) => {
+            this.markStore.getItem(url, (err, oldMark) => {
+                oldMark = oldMark ? oldMark : { tags: {}, m: 0 };
+                if (marks[url].m > oldMark.m) {
+                    let modifies = this.getModifiesFromMarksDiff(url, oldMark, marks[url]);
+                    modifies.forEach((modify) => {
+                        this.checkUser(modify.id);
+                        this.mergeModifyToUsersData(modify);
+                    })
+                    this.markStore.setItem(url, marks[url]);
+                }
+            })
+        })
+    },
     saveTopicInfo: function (topicUrl, topicInfo, callback) {
         this.topicInfoStore.setItem(topicUrl, topicInfo, callback);
     },
     getTopicInfo: function (topicUrl, callback) {
         this.topicInfoStore.getItem(topicUrl, callback)
     },
+    getModifiesFromMarksDiff: function (url, oldMark, newMark) {
+        let modifies = [];
+        function addModify(tagName, step) {
+            let modify = { id: newMark.id, m: newMark.m, p: newMark.p, url: url }
+            modify.tagName = tagName;
+            modify.step = step;
+            modifies.push(modify);
+        }
+        Object.keys(newMark.tags).forEach((tagName) => {
+            let oldStep = oldMark.tags[tagName] ? oldMark.tags[tagName].score : 0;
+            addModify(tagName, newMark.tags[tagName].score - oldStep);
+        });
+        Object.keys(oldMark.tags).forEach((tagName) => {
+            if (!Object.prototype.hasOwnProperty.call(newMark.tags, tagName)) {
+                addModify(tagName, 0 - oldMark.tags[tagName].score);
+            }
+        });
+        return modifies;
+    }
 
 }
