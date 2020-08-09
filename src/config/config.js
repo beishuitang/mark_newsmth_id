@@ -38,9 +38,9 @@ export default {
       { main: '#hotspot', title: 'h3', name: '近期热帖', state: 2 },
       { main: '#pictures', title: 'h3', name: '精彩贴图', state: 2 },
       { main: '.b_section.block', title: 'h3', name: '分区十大', state: 2 },
-      { main: '#ranking .boards.rec_boards', title: 'h4', name: '推荐版面', state: 2 },
+      { main: '#ranking .boards.rec_boards', title: 'h4', name: '推荐版面', state: 1 },
       { main: '#ranking .boards.hot_boards', title: 'h4', name: '人气排行', state: 2 },
-      { main: '#ranking .boards.new_boards', title: 'h4', name: '新开版面', state: 2 },
+      { main: '#ranking .boards.new_boards', title: 'h4', name: '新开版面', state: 1 },
     ],
     others: [
       { main: '.w_section .boards', name: 'boards', state: 0 },
