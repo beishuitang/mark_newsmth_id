@@ -26,10 +26,10 @@ export default {
             if (!info) {
                 return;
             }
-            console.log(info)
             a_href += `?p=${info.p}`;
             a_el.href = a_href;
-            mainData.pageYOffsetData[a_href] = info.pageYOffset;
+            let href = a_href.replace('nForum/', 'nForum/#!')
+            mainData.pageYOffsetData[href] = info.pageYOffset;
             if (pos > info.pos) {
                 mainData.topicLinks.push(a_href);
                 if (info.pos !== -1) {
