@@ -42,7 +42,6 @@ export default {
         // forageData
         this.markStore = localforage.createInstance({ name: config.PROJECT_NAME, storeName: "mark" });
         this.topicInfoStore = localforage.createInstance({ name: config.PROJECT_NAME, storeName: "topic" });
-
     },
     onhashchange: function () {
         if (this.mainHash === 'mainpage') {
@@ -61,6 +60,7 @@ export default {
                 this.linksBefore.unshift(this.prePageHref);
             }
         }
+        this.saveTopicInfo(this.prePageHref);
     },
     onBeforeUnload: function () {
         sessionStorage.setItem(config.PROJECT_NAME + '_config', JSON.stringify({
@@ -71,18 +71,10 @@ export default {
             linksBefore: this.linksBefore,
             topicLinks: this.topicLinks,
         }));
+        this.saveTopicInfo(this.currentPageHref);
     },
     onMut: function () {
-        let m = this.currentPageHref.match(this.articleReg);
-        let a_names = document.querySelectorAll('#body>.b-content>a');
-        if (m != null && a_names.length > 0) {
-            let pos = parseInt(a_names[a_names.length - 1].name.substr(1));
-            this.getTopicInfo(m[1], (err, info) => {
-                if (!info || info.pos < pos) {
-                    this.saveTopicInfo(m[1], { p: parseInt(m[3] ? m[3] : '1'), pos: pos });
-                }
-            })
-        }
+        this.saveTopicInfo(this.currentPageHref);
     },
     saveUsersData: function () {
         let newUsersData = {};
@@ -126,7 +118,6 @@ export default {
         user.score = score;
     },
     acceptModify: function (modify) {
-        console.log(modify)
         this.mergeModifyToMarkStore(modify);
         this.mergeModifyToUsersData(modify);
     },
@@ -194,8 +185,18 @@ export default {
             })
         })
     },
-    saveTopicInfo: function (topicUrl, topicInfo, callback) {
-        this.topicInfoStore.setItem(topicUrl, topicInfo, callback);
+    saveTopicInfo: function (pageHref) {
+        let m = pageHref.match(this.articleReg);
+        let a_names = document.querySelectorAll('#body>.b-content>a');
+        if (m != null && a_names.length > 0) {
+            let pos = parseInt(a_names[a_names.length - 1].name.substr(1));
+            this.getTopicInfo(m[1], (err, info) => {
+                if (!info || info.pos <= pos) {
+                    this.topicInfoStore.setItem(m[1], { p: parseInt(m[3] ? m[3] : '1'), pos: pos, pageYOffset: window.pageYOffset });
+                    localStorage.setItem('aaaa', 'aaaaaa')
+                }
+            })
+        }
     },
     getTopicInfo: function (topicUrl, callback) {
         this.topicInfoStore.getItem(topicUrl, callback)
