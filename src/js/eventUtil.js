@@ -126,13 +126,21 @@ export default {
             function topDownCallback() {
                 allowUpDownAction() && topDownCall();
             }
-
+            function focusOnInput() {
+                return ['INPUT', 'TEXTAREA', 'SELECT', 'OPTION'].includes(document.activeElement.nodeName);
+            }
             switch (event.type) {
                 case 'keydown':
+                    if (focusOnInput()) {
+                        break;
+                    }
                     bottom = (window.scrollY + window.innerHeight + 2) > document.body.clientHeight;
                     top = window.scrollY < 1;
                     break;
                 case 'keyup':
+                    if (focusOnInput()) {
+                        break;
+                    }
                     if (leftCallback && event.keyCode == 37) {
                         leftCallback();
                     }
@@ -175,7 +183,6 @@ export default {
                             }
                         }
                     }
-
                     break;
                 case "touchmove":
                     //阻止默认行为
