@@ -6,7 +6,12 @@ export default {
 </script>
 
 <style>
-/* html {  word-break: break-word;} */
+html {
+  word-break: break-word;
+}
+.tiz {
+  word-break: initial;
+}
 #html,
 #html_body,
 #html #html_body * {
