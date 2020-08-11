@@ -1,4 +1,5 @@
 import config from '../../config/config'
+import browseUtil from '../browseUtil'
 export default function () {
     function moveSlider() {
         let slider = document.querySelector('#slider');
@@ -68,5 +69,10 @@ export default function () {
     if (config.onMobile) {
         moveSlider();
         initSection();
+        let a_links = document.querySelectorAll('#mp_wrapper a');
+        for (let index = 0; index < a_links.length; index++) {
+            const a_link = a_links[index];
+            browseUtil.addVisitedLinkStyle(a_link);
+        }
     }
 }

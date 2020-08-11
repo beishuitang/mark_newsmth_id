@@ -2,13 +2,15 @@
   <div>
     <button @click="showImport=!showImport">导入备份</button>
     <button @click="prepareBackup">导出备份</button>
+    <br />
+    <br />
     <div v-if="showImport">
       <input type="file" id="newsmth_backup" accept="text/plain" />
       <button @click="handleFiles">导入数据</button>
     </div>
     <div v-if="showExport">
       <button @click="copyToClipboard">{{dataPrepared?'复制到剪切板':'准备数据中'}}</button>
-      <button :disabled="!dataPrepared" @click="saveBackup">{{dataPrepared?'下载':'准备数据中'}}</button>
+      <button :disabled="!dataPrepared" @click="saveBackup">{{dataPrepared?'以文件形式下载':'准备数据中'}}</button>
       <textarea id="copytextarea" v-model="backup" readonly></textarea>
     </div>
   </div>
@@ -22,8 +24,8 @@ export default {
   props: [],
   data: function () {
     return {
-      showImport: true,
-      showExport: true,
+      showImport: false,
+      showExport: false,
       dataPrepared: false,
       backup: "",
     };

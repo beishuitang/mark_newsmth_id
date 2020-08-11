@@ -2,7 +2,6 @@ import config from '../../config/config'
 import mainData from "../mainData";
 import tagStore from '@/js/tagStore'
 import pageArticleSimplify from './pageArticleSimplify'
-// import pageArticleSimplify from "./pageArticleSimplify";
 export default function () {
     console.log('page article function')
     // pageArticleSimplify();
@@ -15,6 +14,9 @@ export default function () {
     let articles = document.querySelectorAll('.article');
     for (let index = 0; index < articles.length; index++) {
         const articleElement = articles[index];
+        fnArticle(articleElement);
+    }
+    function fnArticle(articleElement) {
         let a_head = articleElement.querySelector('.a-head');
         let a_body = articleElement.querySelector('.a-body');
         let a_bottom = articleElement.querySelector('.a-bottom');
