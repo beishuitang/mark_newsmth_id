@@ -159,6 +159,9 @@ export default {
 #html #main #body #quick_submit {
   width: 5rem;
 }
+#quick_post {
+  display: none;
+}
 #html #html_body textarea {
   height: 5rem;
   width: 98%;
