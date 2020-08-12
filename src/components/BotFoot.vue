@@ -158,6 +158,9 @@ html {
 #html #main #body .article {
   width: 100%;
 }
+#html #main #body .article.readed .a-pos {
+  color: unset;
+}
 #html #main #body #quick_reply {
   width: 100%;
 }

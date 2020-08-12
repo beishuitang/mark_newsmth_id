@@ -15,6 +15,7 @@ export default {
     articleReg: /(article\/[\w|.]+\/\d+)(\?p=(\d+))?/,
     linksBefore: [],
     topicLinks: [],
+    topicTimestamp: {},
     // storage data
     modifyTime: '0',
     usersData: {},
@@ -74,7 +75,7 @@ export default {
         this.saveTopicInfo(this.currentPageHref);
     },
     onMut: function () {
-        this.saveTopicInfo(this.currentPageHref);
+        // this.saveTopicInfo(this.currentPageHref);
     },
     saveUsersData: function () {
         let newUsersData = {};
@@ -189,11 +190,17 @@ export default {
         let m = pageHref.match(this.articleReg);
         let a_names = document.querySelectorAll('#body>.b-content>a');
         if (m != null && a_names.length > 0) {
+            let artile_els = document.querySelectorAll('#body table.article')
+            let article_timestamp = parseInt(artile_els[artile_els.length - 1].getAttribute('article_timestamp'))
             let pos = parseInt(a_names[a_names.length - 1].name.substr(1));
             this.getTopicInfo(m[1], (err, info) => {
-                if (!info || info.pos <= pos) {
-                    this.topicInfoStore.setItem(m[1], { p: parseInt(m[3] ? m[3] : '1'), pos: pos, pageYOffset: window.pageYOffset });
-                    localStorage.setItem('aaaa', 'aaaaaa')
+                if (!info || info.pos < pos || info.t < article_timestamp) {
+                    this.topicInfoStore.setItem(m[1], {
+                        p: parseInt(m[3] ? m[3] : '1'),
+                        pos: pos,
+                        pageYOffset: window.pageYOffset,
+                        t: article_timestamp
+                    });
                 }
             })
         }
