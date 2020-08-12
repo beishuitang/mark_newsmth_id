@@ -56,6 +56,20 @@
         </div>
       </div>
       <div>
+        <h3>标注</h3>
+        <div>
+          分数低于
+          <input
+            type="number"
+            name="foldThreshold"
+            id="foldThreshold"
+            v-model="markConfig.foldThreshold"
+            style="width:2rem"
+          />
+          的id会被自动折叠
+        </div>
+      </div>
+      <div>
         <h3>备份</h3>
         <backup></backup>
       </div>
@@ -78,6 +92,7 @@ export default {
       simplifyConfig: this.config.simplifyConfig,
       mainpageConfig: this.config.mainpageConfig,
       frameConfig: this.config.frameConfig,
+      markConfig: this.config.markConfig,
     };
   },
   watch: {

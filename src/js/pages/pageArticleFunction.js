@@ -50,7 +50,6 @@ export default function () {
         let p_el = articleElement.querySelector('.a-body .a-content>p');
         // let pClone = p.cloneNode(false);
         articleElement.setAttribute('v-show', 'state.showUser')
-        a_body.setAttribute('v-show', 'state.showContent')
         let funcConfig = config.simplifyConfig.func;
         let li_a = a_func.querySelectorAll('li>a');
         for (let index = 0; index < li_a.length; index++) {
@@ -60,7 +59,7 @@ export default function () {
             }
         }
         a_head.setAttribute('v-on:dblclick', 'switchShowContent')
-        a_body.setAttribute('v-show', 'state.showContent')
+        a_body.setAttribute('v-show', 'showContent')
         a_body.querySelector('.a-u-img').setAttribute('v-show', '!simplify')
         a_bottom.setAttribute('v-show', '!simplify')
         pageArticleSimplify(articleElement);

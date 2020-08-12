@@ -5,6 +5,7 @@ import UserTags from "./UserTags";
 import ModifierSwitch from "./ModifierSwitch";
 import ShowSwitch from "./ShowSwitch";
 import mainData from "../../js/mainData";
+import config from "../../config/config";
 export default {
   name: "SingleArticle",
   components: {
@@ -26,18 +27,21 @@ export default {
       state: this.user.state,
       showModifier: false,
       simplified: this.simplifyConfig.simplify,
+      switchScore: false,
     };
   },
   computed: {
     simplify: function () {
       return this.simplified && this.simplifyConfig.simplify;
     },
-    // article: function () {
-    //   return { url: this.articleUrl, content: this.articleContent };
-    // },
-    // articleContent: function() {
-    //   return this.$el.querySelector(".a-content p").innerHTML;
-    // }
+    showContent: function () {
+      return this.switchScore
+        ? !this.originShowContent
+        : this.originShowContent;
+    },
+    originShowContent: function () {
+      return this.user.score >= config.markConfig.foldThreshold;
+    },
   },
   methods: {
     // TODO modify对象滚动
@@ -62,8 +66,7 @@ export default {
       this.modifyConfig("showTags");
     },
     switchShowContent: function () {
-      this.state.showContent = !this.state.showContent;
-      this.modifyConfig("showContent");
+      this.switchScore = !this.switchScore;
     },
   },
 };
