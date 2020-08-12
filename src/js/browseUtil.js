@@ -16,16 +16,13 @@ export default {
     init: function () {
     },
     addVisitedLinkStyle: function (a_el, pos) {
-        pos = pos ? pos : 0;
         let a_href = a_el.href;
         let m = a_href.match(mainData.articleReg);
         if (!m) {
             return;
         }
         mainData.getTopicInfo(m[1], (err, info) => {
-            if (!info) {
-                return;
-            }
+            info = info ? info : { pos: -1, p: 1, pageYOffset: 0, t: 0 };
             if (info.p != 1) {
                 a_href += `?p=${info.p}`;
             }
@@ -33,13 +30,15 @@ export default {
             let href = a_href.replace('nForum/', 'nForum/#!')
             mainData.pageYOffsetData[href] = info.pageYOffset;
             mainData.topicTimestamp[m[1]] = info.t;
-            if (pos > info.pos) {
-                mainData.topicLinks.push(a_href);
-                if (info.pos !== -1) {
-                    a_el.style['font-style'] = 'italic';
+            if (pos != null) {
+                if (pos > info.pos) {
+                    mainData.topicLinks.push(a_href);
+                } else {
+                    a_el.style.color = 'currentcolor'
                 }
-            } else {
-                a_el.style.color = 'currentcolor'
+                let span_el = document.createElement('span');
+                span_el.innerText = `(${info.pos + 1}/${pos + 1})`;
+                a_el.parentNode.appendChild(span_el);
             }
         })
     },
