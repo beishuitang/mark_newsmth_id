@@ -26,7 +26,9 @@ export default {
             if (!info) {
                 return;
             }
-            a_href += `?p=${info.p}`;
+            if (info.p != 1) {
+                a_href += `?p=${info.p}`;
+            }
             a_el.href = a_href;
             let href = a_href.replace('nForum/', 'nForum/#!')
             mainData.pageYOffsetData[href] = info.pageYOffset;
