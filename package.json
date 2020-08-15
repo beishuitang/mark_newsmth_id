@@ -5,7 +5,7 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "buildDevelopmentLib": "vue-cli-service build --target lib --name mark_newsmth_id --inline-vue --mode development 'src/main.js'",
+    "buildDevelopmentLib": "vue-cli-service build --target lib --name mark_newsmth_id.dev --inline-vue --mode development 'src/main.js'",
     "buildProductionLib": "vue-cli-service build --target lib --name mark_newsmth_id --inline-vue 'src/main.js'",
     "test:unit": "vue-cli-service test:unit",
     "lint": "vue-cli-service lint"
