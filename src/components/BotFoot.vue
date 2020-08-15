@@ -6,7 +6,12 @@ export default {
 </script>
 
 <style>
-/* html {  word-break: break-word;} */
+html {
+  word-break: break-word;
+}
+.tiz {
+  word-break: initial;
+}
 #html,
 #html_body,
 #html #html_body * {
@@ -152,6 +157,12 @@ export default {
 }
 #html #main #body .article {
   width: 100%;
+}
+#html #main #body .article.readed .a-pos {
+  color: unset;
+}
+#html #main #body .threads-tab {
+  display: none;
 }
 #html #main #body #quick_reply {
   width: 100%;

@@ -19,7 +19,8 @@ export default {
     },
     initAction: function () {
         this.listenTouchDirection(
-            document.querySelector('body'),
+            // document.querySelector('body'),
+            window,
             false,
             this.rightCallback.bind(this),
             this.leftCallback.bind(this),

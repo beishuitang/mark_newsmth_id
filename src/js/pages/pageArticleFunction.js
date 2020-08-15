@@ -2,6 +2,7 @@ import config from '../../config/config'
 import mainData from "../mainData";
 import tagStore from '@/js/tagStore'
 import pageArticleSimplify from './pageArticleSimplify'
+import browseUtil from '../browseUtil'
 export default function () {
     console.log('page article function')
     // pageArticleSimplify();
@@ -47,10 +48,7 @@ export default function () {
             a_bottom.lastElementChild.appendChild(a_func_info);
         }
         // simplify
-        let p_el = articleElement.querySelector('.a-body .a-content>p');
-        // let pClone = p.cloneNode(false);
-        articleElement.setAttribute('v-show', 'state.showUser')
-        a_body.setAttribute('v-show', 'state.showContent')
+        pageArticleSimplify(articleElement);
         let funcConfig = config.simplifyConfig.func;
         let li_a = a_func.querySelectorAll('li>a');
         for (let index = 0; index < li_a.length; index++) {
@@ -59,11 +57,15 @@ export default function () {
                 a.parentNode.setAttribute('v-show', `!simplify || simplifyConfig.func['${a.innerText}']`);
             }
         }
+        // timeStamp
+        browseUtil.readTimestamp(articleElement)
+        // vue
+        let p_el = articleElement.querySelector('.a-body .a-content>p');
+        articleElement.setAttribute('v-show', 'state.showUser')
         a_head.setAttribute('v-on:dblclick', 'switchShowContent')
-        a_body.setAttribute('v-show', 'state.showContent')
+        a_body.setAttribute('v-show', 'showContent')
         a_body.querySelector('.a-u-img').setAttribute('v-show', '!simplify')
         a_bottom.setAttribute('v-show', '!simplify')
-        pageArticleSimplify(articleElement);
         // vue function
         let articleId = a_post.href.substring(a_post.href.lastIndexOf('/'))
         let userId = a_u_name.querySelector('a').innerText;

@@ -64,6 +64,9 @@ export default {
       '标记': true,
     },
   },
+  markConfig: {
+    foldThreshold: -5,
+  },
   init: function () {
     if (navigator.userAgent.match(/(Mobile)|(Android)/)) {
       this.onMobile = true;
@@ -77,12 +80,7 @@ export default {
     }
     let storageConfig = JSON.parse(localStorage.getItem(this.storageKeys.STORAGE_CONFIG));
     if (storageConfig != null) {
-      this.settingConfig = storageConfig.settingConfig;
-      this.simplifyConfig = storageConfig.simplifyConfig;
-      this.menuConfig = storageConfig.menuConfig;
-      this.mainpageConfig = storageConfig.mainpageConfig;
-      this.panelConfig = storageConfig.panelConfig;
-      this.frameConfig = storageConfig.frameConfig;
+      Object.assign(this, storageConfig);
     }
     window.smthConfig = this;
   }
