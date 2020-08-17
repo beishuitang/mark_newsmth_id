@@ -19,8 +19,6 @@ export default function () {
             let topic_el = topicTrs[index].querySelector('.title_9>a');
             let pos_el = topicTrs[index].querySelectorAll('.middle')[0];
             let pos = parseInt(pos_el.innerHTML);
-            console.log(topic_el)
-            console.log(pos)
             browserUtil.addVisitedLinkStyle(topic_el, pos)
         }
     }
