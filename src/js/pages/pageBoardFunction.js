@@ -22,12 +22,19 @@ export default function () {
             splitName(userEls);
             relayTableAll(tableEl, [[3, 2]], [0, 2, 4, 5, 6, 7, 8]);
         }
+        document.querySelector('.board-list>thead>tr>.middle').innerText = '[评分/like数]主题(已读/全部)';
         mainData.topicLinks.splice(0, mainData.topicLinks.length);
         for (let index = 0; index < topicTrs.length; index++) {
             let topic_el = topicTrs[index].querySelector('.title_9>a');
-            let pos_el = topicTrs[index].querySelectorAll('.middle')[2];
-            let pos = parseInt(pos_el.innerHTML);
-            browserUtil.addVisitedLinkStyle(topic_el, pos)
+            let middle_els = topicTrs[index].querySelectorAll('.middle');
+            let score = middle_els[0].innerHTML;
+            let like = middle_els[1].innerHTML;
+            let pos = middle_els[2].innerHTML;
+            let topic_p1 = document.createElement('a');
+            topic_p1.href = topic_el.href;
+            topic_p1.innerHTML = `[${score}${score + like == '' ? ' ' : '/'}${like}]`;
+            topic_el.parentNode.insertBefore(topic_p1, topic_el);
+            browserUtil.addVisitedLinkStyle(topic_el, parseInt(pos))
         }
     }
 }
