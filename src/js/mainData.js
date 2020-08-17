@@ -194,7 +194,7 @@ export default {
             let article_timestamp = parseInt(artile_els[artile_els.length - 1].getAttribute('article_timestamp'))
             let pos = parseInt(a_names[a_names.length - 1].name.substr(1));
             this.getTopicInfo(m[1], (err, info) => {
-                if (!info || info.pos < pos || info.t < article_timestamp) {
+                if (!info || info.pos <= pos || info.t < article_timestamp) {
                     this.topicInfoStore.setItem(m[1], {
                         p: parseInt(m[3] ? m[3] : '1'),
                         pos: pos,
