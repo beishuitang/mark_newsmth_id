@@ -10,7 +10,7 @@ export default function () {
     if (topicTrs.length == 1) {
         let i = sessionStorage.getItem('iReload');
         i = i ? parseInt(i) : 0;
-        if (i < 5) {
+        if (i < config.boardConfig.refreshTimes) {
             sessionStorage.setItem('iReload', i + 1);
             setTimeout(() => {
                 window.location.reload(true);
@@ -37,6 +37,4 @@ export default function () {
             browserUtil.addVisitedLinkStyle(topic_el, parseInt(pos))
         }
     }
-
-
 }

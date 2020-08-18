@@ -67,6 +67,9 @@ export default {
   markConfig: {
     foldThreshold: -5,
   },
+  boardConfig: {
+    refreshTimes: 5,
+  },
   init: function () {
     if (navigator.userAgent.match(/(Mobile)|(Android)/)) {
       this.onMobile = true;
