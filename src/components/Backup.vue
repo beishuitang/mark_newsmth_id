@@ -9,7 +9,7 @@
       <button @click="handleFiles">导入数据</button>
     </div>
     <div v-if="showExport">
-      <button @click="copyToClipboard">{{dataPrepared?'复制到剪切板':'准备数据中'}}</button>
+      <button :disabled="!dataPrepared" @click="copyToClipboard">{{dataPrepared?'复制到剪切板':'准备数据中'}}</button>
       <button :disabled="!dataPrepared" @click="saveBackup">{{dataPrepared?'以文件形式下载':'准备数据中'}}</button>
       <textarea id="copytextarea" v-model="backup" readonly></textarea>
     </div>
