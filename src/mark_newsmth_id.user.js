@@ -10,6 +10,11 @@
 
 (function () {
     'use strict';
+    if (window.mark_newsmth_id) {
+        return;
+    } else {
+        window.mark_newsmth_id = true;
+    }
     function add_script(src, el) {
         let sc = document.createElement('script');
         sc.charset = 'UTF-8';
