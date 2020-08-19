@@ -1,4 +1,4 @@
-## 忆水木 --水木社区浏览器脚本工具
+## 忆水木 --水木社区浏览器脚本
 
 ### 主要功能：
 #### 1. 标注id：
@@ -17,7 +17,7 @@
 + 进入同一主题后直接转到上次阅读位置
 + 区分显示已读/未读
 + 保存密码（非私人设备慎用）
-+ 草稿箱，预防敏感词
+<!-- + 草稿箱，预防敏感词 -->
 
 ### 适用范围：所有支持自定义脚本的浏览器,包括但不限于：
 + pc平台：火狐、chrome、edge、qq浏览器等支持油猴插件的浏览器
@@ -33,7 +33,13 @@
 3. 代码处填入以下代码：
 
 ```  
-function add_script(src, el) {
+(function add_script(src, el) {
+    'use strict';
+    if (window.mark_newsmth_id) {
+        return;
+    } else {
+        window.mark_newsmth_id = true;
+    }
     let sc = document.createElement('script');
     sc.charset = 'UTF-8';
     sc.src = src;
@@ -42,7 +48,7 @@ function add_script(src, el) {
     };
     let href = 'https://cdn.jsdelivr.net/beishuitang/mark_newsmth_id/src/dist/mark_newsmth_id.umd.min.js';
     add_script(href, 'body');
-}
+})();
 ```
 
 #### yandex和firefox等支持油猴插件的浏览器:
