@@ -60,8 +60,13 @@ export default {
       reader.readAsText(selectedFile); //读取文件的内容
       reader.onload = function () {
         // console.log("读取结果：", this.result); //当读取完成之后会回调这个函数，然后此时文件的内容存储到了result中。直接操作即可。
-        let json = JSON.parse(this.result);
-        mainData.mergeMarks(json.marks);
+        try {
+          let json = JSON.parse(this.result);
+          mainData.mergeMarks(json.marks);
+          alert("导入成功");
+        } catch (e) {
+          alert("导入失败，请检查输入内容是否完整");
+        }
       };
     },
     saveBackup: function () {
@@ -85,10 +90,12 @@ export default {
       copyTextarea.select();
       try {
         var successful = document.execCommand("copy");
-        var msg = successful ? "successful" : "unsuccessful";
-        console.log("Copying text command was " + msg);
+        var msg = successful ? "复制成功" : "复制失败";
+        alert(
+          msg + "! 粘贴到文件后请检查是否粘贴完整（通常是以连续几个大括号结尾）"
+        );
       } catch (err) {
-        console.log("Oops, unable to copy");
+        alert("Oops, unable to copy");
       }
     },
   },
