@@ -27,15 +27,20 @@ export default {
       showImport: false,
       showExport: false,
       dataPrepared: false,
-      backup: "",
+      backupData: {},
     };
+  },
+  computed: {
+    backup: function () {
+      return this.dataPrepared ? JSON.stringify(this.backupData) : "{}";
+    },
   },
   methods: {
     prepareBackup: function () {
       this.showExport = !this.showExport;
       if (this.showExport) {
         mainData.getAllMarks((marks) => {
-          this.backup = JSON.stringify(marks);
+          this.backupData.marks = marks;
           this.dataPrepared = true;
         });
       }
@@ -56,7 +61,7 @@ export default {
       reader.onload = function () {
         // console.log("读取结果：", this.result); //当读取完成之后会回调这个函数，然后此时文件的内容存储到了result中。直接操作即可。
         let json = JSON.parse(this.result);
-        mainData.mergeMarks(json);
+        mainData.mergeMarks(json.marks);
       };
     },
     saveBackup: function () {
