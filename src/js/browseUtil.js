@@ -23,9 +23,9 @@ export default {
         }
         mainData.getTopicInfo(m[1], (err, info) => {
             info = info ? info : { pos: -1, p: 1, pageYOffset: 0, t: 0 };
-            if (info.p != 1) {
-                a_href += `?p=${info.p}`;
-            }
+            // if (info.p != 1) {
+            a_href += `?p=${info.p}`;
+            // }
             a_el.href = a_href;
             let href = a_href.replace('nForum/', 'nForum/#!')
             mainData.pageYOffsetData[href] = info.pageYOffset;

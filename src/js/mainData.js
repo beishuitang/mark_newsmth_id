@@ -52,7 +52,8 @@ export default {
         this.preMainHash = this.mainHash;
         this.mainHash = location.hash.match(this.reg)[1];
         this.prePageHref = this.currentPageHref;
-        this.currentPageHref = location.href.replace(/\?p=1$/, '');
+        this.currentPageHref = location.href;
+        // this.currentPageHref = location.href.replace(/\?p=1$/, '');
         this.pageYOffsetData[this.prePageHref] = window.pageYOffset;
         if (this.mainHash != this.preMainHash) {
             if (this.linksBefore.length > 0 && this.currentPageHref == this.linksBefore[0]) {
