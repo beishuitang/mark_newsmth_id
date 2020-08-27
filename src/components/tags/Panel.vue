@@ -7,20 +7,25 @@
     >
       <div>
         <div class="boder" v-for="(userData,id) in filtedUsersData" :key="id">
-          <h3>{{id}}</h3>
+          <h3>{{id}} ({{userData.score}})</h3>
           <UserTags :tags="userData.tags"></UserTags>
         </div>
         <br />
       </div>
       <div class="search">
         <input type="text" placeholder="搜索" v-model="searchText" />
+        <select v-model.number="panelConfig.scoreFilter" style="height:2rem">
+          <option disabled>id评分</option>
+          <option value="1">正分</option>
+          <option value="0">全部</option>
+          <option value="-1">负分</option>
+        </select>
       </div>
     </div>
   </transition>
 </template>
 
 <script>
-// TODO 搜索功能
 import UserTags from "./UserTags";
 export default {
   name: "Panel",
@@ -41,6 +46,9 @@ export default {
       let reg = new RegExp(this.searchText, "ig");
       Object.keys(this.usersData).forEach((key) => {
         let userData = this.usersData[key];
+        if (userData.score * this.panelConfig.scoreFilter < 0) {
+          return;
+        }
         let tags = userData.tags;
         if (Object.keys(tags).length !== 0) {
           if (key.match(reg)) {

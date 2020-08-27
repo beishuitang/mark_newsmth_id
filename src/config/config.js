@@ -1,5 +1,5 @@
 export default {
-  onMobile: false,
+  onMobile: true,
   PROJECT_NAME: 'mark_newsmth_id',
   PREFIX_STR: "smth_id_mark_",
   storageKeys: {
@@ -24,6 +24,7 @@ export default {
   },
   panelConfig: {
     showPanel: false,
+    scoreFilter: 0
   },
   frameConfig: {
     showHead: true,
@@ -71,9 +72,9 @@ export default {
     refreshTimes: 5,
   },
   init: function () {
-    if (navigator.userAgent.match(/(Mobile)|(Android)/)) {
-      this.onMobile = true;
-    }
+    // if (navigator.userAgent.match(/(Mobile)|(Android)/)) {
+    // this.onMobile = true;
+    // }
 
     for (const key in this.storageKeys) {
       if (Object.prototype.hasOwnProperty.call(this.storageKeys, key)) {
