@@ -16,9 +16,9 @@
         <input type="text" placeholder="搜索" v-model="searchText" />
         <select v-model.number="panelConfig.scoreFilter" style="height:2rem">
           <option disabled>id评分</option>
-          <option value="1">非正</option>
+          <option value="1">正分</option>
           <option value="0">全部</option>
-          <option value="-1">非负</option>
+          <option value="-1">负分</option>
         </select>
       </div>
     </div>
