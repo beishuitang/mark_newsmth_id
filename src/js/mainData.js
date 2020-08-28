@@ -1,6 +1,7 @@
 import Vue from 'vue/dist/vue.esm'
 import config from '../config/config'
 import localforage from "localforage"
+import { rmPage1 } from './commonUtils'
 
 export default {
     // session data
@@ -53,8 +54,6 @@ export default {
         this.mainHash = location.hash.match(this.reg)[1];
         this.prePageHref = this.currentPageHref;
         this.currentPageHref = location.href;
-        // this.currentPageHref = location.href.replace(/\?p=1$/, '');
-        this.pageYOffsetData[this.prePageHref] = window.pageYOffset;
         if (this.mainHash != this.preMainHash) {
             if (this.linksBefore.length > 0 && this.currentPageHref == this.linksBefore[0]) {
                 this.linksBefore.shift();
@@ -62,7 +61,7 @@ export default {
                 this.linksBefore.unshift(this.prePageHref);
             }
         }
-        this.saveTopicInfo(this.prePageHref);
+        this.saveHrefInfo(this.prePageHref);
     },
     onBeforeUnload: function () {
         sessionStorage.setItem(config.PROJECT_NAME + '_config', JSON.stringify({
@@ -73,7 +72,7 @@ export default {
             linksBefore: this.linksBefore,
             topicLinks: this.topicLinks,
         }));
-        this.saveTopicInfo(this.currentPageHref);
+        this.saveHrefInfo(this.currentPageHref);
     },
     onMut: function () {
         // this.saveTopicInfo(this.currentPageHref);
@@ -187,10 +186,23 @@ export default {
             })
         })
     },
-    saveTopicInfo: function (pageHref) {
+    restoreHrefInfo: function (pageHref) {
         let m = pageHref.match(this.articleReg);
-        let a_names = document.querySelectorAll('#body>.b-content>a');
-        if (m != null && a_names.length > 0) {
+        if (m == null) {
+            pageHref = rmPage1(pageHref);
+        }
+        window.scroll(0, this.pageYOffsetData[pageHref]);
+    },
+    saveHrefInfo: function (pageHref) {
+        let m = pageHref.match(this.articleReg);
+        let href = pageHref;
+        if (m == null) {
+            href = rmPage1(pageHref);
+        } else {
+            let a_names = document.querySelectorAll('#body>.b-content>a');
+            if (a_names.length == 0) {
+                return
+            }
             let artile_els = document.querySelectorAll('#body table.article')
             let article_timestamp = parseInt(artile_els[artile_els.length - 1].getAttribute('article_timestamp'))
             let pos = parseInt(a_names[a_names.length - 1].name.substr(1));
@@ -205,6 +217,7 @@ export default {
                 }
             })
         }
+        this.pageYOffsetData[href] = window.pageYOffset;
     },
     getTopicInfo: function (topicUrl, callback) {
         this.topicInfoStore.getItem(topicUrl, callback)

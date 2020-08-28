@@ -93,3 +93,10 @@ export function addTransition(el, name) {
     transition.appendChild(el);
     return transition;
 }
+export function rmPage1(pageHref) {
+    let href = pageHref.replace(/\?p=1$/, '');
+    href = href.replace(/\?p=1&/, '?');
+    href = href.replace(/&p=1$/, '');
+    href = href.replace(/&p=1&/, '&');
+    return href;
+}
