@@ -22,6 +22,6 @@
         sc.type = 'text/javascript';
         document.querySelector(el).appendChild(sc);
     };
-    let href = 'https://cdn.jsdelivr.net/beishuitang/mark_newsmth_id/src/dist/mark_newsmth_id.umd.min.js'
+    let href = 'https://cdn.jsdelivr.net/gh/beishuitang/mark_newsmth_id/dist/mark_newsmth_id.umd.min.js';
     add_script(href, 'body');
 })();

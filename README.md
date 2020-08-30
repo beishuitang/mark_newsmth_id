@@ -33,20 +33,21 @@
 3. 代码处填入以下代码：
 
 ```  
-(function add_script(src, el) {
+(function () {
     'use strict';
     if (window.mark_newsmth_id) {
         return;
     } else {
         window.mark_newsmth_id = true;
     }
-    let sc = document.createElement('script');
-    sc.charset = 'UTF-8';
-    sc.src = src;
-    sc.type = 'text/javascript';
-    document.querySelector(el).appendChild(sc);
+    function add_script(src, el) {
+        let sc = document.createElement('script');
+        sc.charset = 'UTF-8';
+        sc.src = src;
+        sc.type = 'text/javascript';
+        document.querySelector(el).appendChild(sc);
     };
-    let href = 'https://cdn.jsdelivr.net/beishuitang/mark_newsmth_id/src/dist/mark_newsmth_id.umd.min.js';
+    let href = 'https://cdn.jsdelivr.net/gh/beishuitang/mark_newsmth_id/dist/mark_newsmth_id.umd.min.js';
     add_script(href, 'body');
 })();
 ```
@@ -58,7 +59,7 @@
   
 2. 安装脚本
 点击链接:  
-https://cdn.jsdelivr.net/beishuitang/mark_newsmth_id/src/mark_newsmth_id.user.js
+https://cdn.jsdelivr.net/gh/beishuitang/mark_newsmth_id/src/mark_newsmth_id.user.js
 在弹出的页面点击install安装即可  
 ps:外网比较慢，可能需要稍等或者多试几次
 
