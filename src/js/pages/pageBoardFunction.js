@@ -12,9 +12,19 @@ export default function () {
         i = i ? parseInt(i) : 0;
         if (i < config.boardConfig.refreshTimes) {
             sessionStorage.setItem('iReload', i + 1);
-            setTimeout(() => {
-                window.location.reload(true);
-            }, 500);
+            var xmlhttp;
+            if (window.XMLHttpRequest) {
+                xmlhttp = new XMLHttpRequest();
+            }
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    window.location.reload();
+                }
+            }
+            let t = new Date().getTime();
+            xmlhttp.open("GET", window.location.href.replace(/[?$]/, `?ajax&t=${t}&`), true);
+            xmlhttp.setRequestHeader('Cache-Control', 'no-cache');
+            xmlhttp.send();
         }
     } else {
         sessionStorage.setItem('iReload', 0);
