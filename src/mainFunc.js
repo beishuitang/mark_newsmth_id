@@ -52,4 +52,5 @@ export default function () {
         console.log('on mut')
         actionOnMut();
     })
+    mainData.restoreHrefInfo();
 }

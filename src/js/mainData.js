@@ -64,6 +64,7 @@ export default {
         this.saveHrefInfo(this.prePageHref);
     },
     onBeforeUnload: function () {
+        this.saveHrefInfo(this.currentPageHref);
         sessionStorage.setItem(config.PROJECT_NAME + '_config', JSON.stringify({
             pageYOffsetData: this.pageYOffsetData,
             prePageHref: this.prePageHref,
@@ -72,7 +73,6 @@ export default {
             historyRecord: this.historyRecord,
             topicLinks: this.topicLinks,
         }));
-        this.saveHrefInfo(this.currentPageHref);
     },
     onMut: function () {
         // this.saveTopicInfo(this.currentPageHref);
