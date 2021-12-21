@@ -29,9 +29,10 @@ export default {
         );
     },
     topBottomCallback: function (ifDown) {
-        // if (mainData.mainHash != 'article') {
-        //     return;
-        // }
+        let mainHash = mainData.mainHash;
+        if (mainHash == 'mainpage') {
+            return;
+        }
         let currentPageEl = document.querySelector(".page-select");
         let pageEl;
         if (ifDown) {
@@ -42,11 +43,18 @@ export default {
         if (pageEl != null) {
             pageEl.querySelector("a").click();
         } else {
-            // let el = currentPageEl.querySelector("a");
-            let el = document.createElement('a');
-            let linksBefore = mainData.linksBefore;
-            if (linksBefore.length != 0) {
-                el.href = linksBefore[0];
+            let historyRecord = mainData.historyRecord;
+            if (historyRecord.length != 0) {
+                let href = historyRecord.pop();
+                let m = href.match(mainData.reg);
+                let hash = m ? m[1] : '';
+                while (hash == mainHash && historyRecord.length > 0) {
+                    href = historyRecord.pop();
+                    m = href.match(mainData.reg);
+                    hash = m ? m[1] : '';
+                }
+                let el = document.createElement('a');
+                el.href = href;
                 el.click();
             }
         }

@@ -14,7 +14,7 @@ export default {
     picturesXOffset: 0,
     reg: /#!(\w+)(\/|$)/,
     articleReg: /(article\/[\w|.]+\/\d+)(\?p=(\d+))?/,
-    linksBefore: [],
+    historyRecord: [],
     topicLinks: [],
     topicTimestamp: {},
     // storage data
@@ -44,6 +44,12 @@ export default {
         // forageData
         this.markStore = localforage.createInstance({ name: config.PROJECT_NAME, storeName: "mark" });
         this.topicInfoStore = localforage.createInstance({ name: config.PROJECT_NAME, storeName: "topic" });
+        this.recordHistory();
+    },
+    recordHistory: function () {
+        if (this.historyRecord.length == 0 || this.currentPageHref != this.historyRecord[this.historyRecord.length - 1]) {
+            this.historyRecord.push(location.hash);
+        }
     },
     onhashchange: function () {
         if (this.mainHash === 'mainpage') {
@@ -54,13 +60,7 @@ export default {
         this.mainHash = location.hash.match(this.reg)[1];
         this.prePageHref = this.currentPageHref;
         this.currentPageHref = location.href;
-        if (this.mainHash != this.preMainHash) {
-            if (this.linksBefore.length > 0 && this.currentPageHref == this.linksBefore[0]) {
-                this.linksBefore.shift();
-            } else {
-                this.linksBefore.unshift(this.prePageHref);
-            }
-        }
+        this.recordHistory();
         this.saveHrefInfo(this.prePageHref);
     },
     onBeforeUnload: function () {
@@ -69,7 +69,7 @@ export default {
             prePageHref: this.prePageHref,
             preMainHash: this.preMainHash,
             picturesXOffset: this.picturesXOffset,
-            linksBefore: this.linksBefore,
+            historyRecord: this.historyRecord,
             topicLinks: this.topicLinks,
         }));
         this.saveHrefInfo(this.currentPageHref);
