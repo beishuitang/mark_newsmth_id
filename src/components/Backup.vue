@@ -1,7 +1,8 @@
 <template>
   <div>
-    <button @click="showImport=!showImport">导入备份</button>
+    <button @click="showImport = !showImport">导入备份</button>
     <button @click="prepareBackup">导出备份</button>
+    <input type="number" v-model="limit" style="width: 2rem" />
     <br />
     <br />
     <div v-if="showImport">
@@ -9,9 +10,15 @@
       <button @click="handleFiles">导入数据</button>
     </div>
     <div v-if="showExport">
-      <button :disabled="!dataPrepared" @click="copyToClipboard">{{dataPrepared?'复制到剪切板':'准备数据中'}}</button>
-      <button :disabled="!dataPrepared" @click="saveBackup">{{dataPrepared?'以文件形式下载':'准备数据中'}}</button>
-      <textarea id="copytextarea" v-model="backup" readonly></textarea>
+      <div v-for="(singleData, index) in backup" v-bind:key="index" readonly>
+        <button
+          :disabled="!dataPrepared"
+          :value="index"
+          @click="copyToClipboard"
+        >
+          {{ dataPrepared ? "复制到剪切板" : "准备数据中" }}{{ index }}
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -27,12 +34,14 @@ export default {
       showImport: false,
       showExport: false,
       dataPrepared: false,
-      backupData: {},
+      limit: 10,
+      backupData: [],
     };
   },
   computed: {
     backup: function () {
-      return this.dataPrepared ? JSON.stringify(this.backupData) : "{}";
+      return this.dataPrepared ? this.backupData : [];
+      // return this.dataPrepared ? JSON.stringify(this.backupData) : "{}";
     },
   },
   methods: {
@@ -40,7 +49,27 @@ export default {
       this.showExport = !this.showExport;
       if (this.showExport) {
         mainData.getAllMarks((marks) => {
-          this.backupData.marks = marks;
+          // this.backupData.marks = marks;
+          let singleDataMarks = {};
+          let singleData = { marks: singleDataMarks };
+          let bundleDatas = [singleData];
+          for (const key in marks) {
+            if (Object.hasOwnProperty.call(marks, key)) {
+              const mark = marks[key];
+              if (Object.keys(singleDataMarks).length > this.limit) {
+                // console.log(Object.keys);
+                singleDataMarks = {};
+                singleData = { marks: singleDataMarks };
+                bundleDatas.push(singleData);
+              }
+              singleDataMarks[key] = mark;
+            }
+          }
+          bundleDatas.forEach((singleData) => {
+            this.backupData.push(JSON.stringify(singleData));
+          });
+          bundleDatas = [];
+          // this.backupData = bundleDatas;
           this.dataPrepared = true;
         });
       }
@@ -84,19 +113,21 @@ export default {
         ".txt";
       FileSaver.saveAs(blob, fileName);
     },
-    copyToClipboard: function () {
-      var copyTextarea = document.querySelector("#copytextarea");
-      copyTextarea.focus();
-      copyTextarea.select();
-      try {
-        var successful = document.execCommand("copy");
-        var msg = successful ? "复制成功" : "复制失败";
-        alert(
-          msg + "! 粘贴到文件后请检查是否粘贴完整（通常是以连续几个大括号结尾）"
-        );
-      } catch (err) {
-        alert("Oops, unable to copy");
-      }
+    copyToClipboard: function (e) {
+      console.log(e.target.value);
+      navigator.clipboard.writeText(this.backup[e.target.value]);
+      // var copyTextarea = document.querySelector("#copytextarea");
+      // copyTextarea.focus();
+      // copyTextarea.select();
+      // try {
+      //   var successful = document.execCommand("copy");
+      //   var msg = successful ? "复制成功" : "复制失败";
+      //   alert(
+      //     msg + "! 粘贴到文件后请检查是否粘贴完整（通常是以连续几个大括号结尾）"
+      //   );
+      // } catch (err) {
+      //   alert("Oops, unable to copy");
+      // }
     },
   },
 };
