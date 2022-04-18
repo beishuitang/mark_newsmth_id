@@ -69,14 +69,14 @@
           的id会被自动折叠
         </div>
       </div>
-      <div>
+      <!-- <div>
         <h3>文章列表</h3>
         <div>
           返回空文章列表时，最多自动刷新
           <input type="number" v-model="boardConfig.refreshTimes" style="width:2rem" />
           次
         </div>
-      </div>
+      </div> -->
       <div>
         <h3>备份</h3>
         <backup></backup>
