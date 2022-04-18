@@ -11,15 +11,14 @@
     </div>
     <div v-if="showExport">
       <div>
-        <button
+        <textarea
           v-for="(singleData, index) in backup"
           v-bind:key="index"
           :disabled="!dataPrepared"
-          :value="index"
+          :value="singleData"
           @click="copyToClipboard"
         >
-          {{ dataPrepared ? "复制" : "准备数据中" }}{{ index }}
-        </button>
+        </textarea>
       </div>
     </div>
   </div>
@@ -117,22 +116,26 @@ export default {
     },
     copyToClipboard: function (e) {
       console.log(e.target.value);
-      navigator.clipboard.writeText(this.backup[e.target.value]);
+      // navigator.clipboard.writeText(this.backup[e.target.value]);
       // var copyTextarea = document.querySelector("#copytextarea");
-      // copyTextarea.focus();
-      // copyTextarea.select();
-      // try {
-      //   var successful = document.execCommand("copy");
-      //   var msg = successful ? "复制成功" : "复制失败";
-      //   alert(
-      //     msg + "! 粘贴到文件后请检查是否粘贴完整（通常是以连续几个大括号结尾）"
-      //   );
-      // } catch (err) {
-      //   alert("Oops, unable to copy");
-      // }
+      var copyTextarea = e.target;
+      copyTextarea.focus();
+      copyTextarea.select();
+      try {
+        var successful = document.execCommand("copy");
+        var msg = successful ? "复制成功" : "复制失败";
+        alert(msg);
+      } catch (err) {
+        alert("Oops, unable to copy");
+      }
     },
   },
 };
 </script>
 
-<style></style>
+<style scoped>
+textarea {
+  width: 3rem !important;
+  height: 2rem !important;
+}
+</style>
