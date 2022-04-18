@@ -10,13 +10,15 @@
       <button @click="handleFiles">导入数据</button>
     </div>
     <div v-if="showExport">
-      <div v-for="(singleData, index) in backup" v-bind:key="index" readonly>
+      <div>
         <button
+          v-for="(singleData, index) in backup"
+          v-bind:key="index"
           :disabled="!dataPrepared"
           :value="index"
           @click="copyToClipboard"
         >
-          {{ dataPrepared ? "复制到剪切板" : "准备数据中" }}{{ index }}
+          {{ dataPrepared ? "复制" : "准备数据中" }}{{ index }}
         </button>
       </div>
     </div>
