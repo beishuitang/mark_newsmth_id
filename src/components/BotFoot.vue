@@ -14,7 +14,28 @@ html {
 }
 #html,
 #html_body,
-#html #html_body * {
+#html #top_head * {
+  font-size: 1rem;
+  line-height: unset;
+  height: unset;
+  width: unset;
+  max-width: 100% !important;
+}
+#html #menu * {
+  font-size: 1rem;
+  line-height: unset;
+  height: unset;
+  width: unset;
+  max-width: 100% !important;
+}
+#html #main * {
+  font-size: 1rem;
+  line-height: unset;
+  height: unset;
+  width: unset;
+  max-width: 100% !important;
+}
+#html #bot_foot * {
   font-size: 1rem;
   line-height: unset;
   height: unset;
