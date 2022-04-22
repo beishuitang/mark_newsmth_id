@@ -33,6 +33,8 @@ export default {
         let m = location.hash.match(this.reg);
         this.mainHash = m ? m[1] : '';
         // storageData
+    },
+    initData: function () {
         let usersData = localStorage.getItem(config.storageKeys.STORAGE_USERS_DATA);
         if (usersData != null) {
             this.usersData = JSON.parse(usersData);

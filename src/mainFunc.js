@@ -16,6 +16,7 @@ export default function () {
         frameUtils.loadCss();
         frameUtils.initDom();
         menuUtils.init();
+        mainData.initData();
         panelUtil.init();
         eventUtils.preventDblclickDefault();
         browseUtil.init();
